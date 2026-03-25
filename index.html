@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Quest - Millionaire Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .game-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00f5ff, #a855f7, #00f5ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #00f5ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Main Container with Sidebar */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        /* Level Ladder Sidebar */
+        .level-ladder {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .ladder-title {
+            text-align: center;
+            font-size: 1.3em;
+            color: #00f5ff;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .ladder-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ladder-item.current {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.3), rgba(0, 245, 255, 0.3));
+            border-color: #00f5ff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 245, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 245, 255, 0.8); }
+        }
+
+        .ladder-item.completed {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+        }
+
+        .ladder-item.milestone {
+            background: rgba(255, 193, 7, 0.2);
+            border-color: #ffc107;
+        }
+
+        .ladder-item.milestone.completed {
+            background: rgba(255, 193, 7, 0.3);
+            border-color: #ffc107;
+        }
+
+        .ladder-level {
+            font-weight: bold;
+            color: #00f5ff;
+        }
+
+        .ladder-reward {
+            color: #ffd700;
+            font-size: 0.9em;
+        }
+
+        .ladder-icon {
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        /* Game Container */
+        .game-container {
+            flex: 1;
+            max-width: 900px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .question-number {
+            color: #a855f7;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #00f5ff;
+            font-weight: 600;
+        }
+
+        .question-example {
+            font-size: 1em;
+            color: #ccc;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .timer-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #ffbe0b);
+            transition: width 0.1s linear;
+        }
+
+        /* Answer Options – mỗi đáp án một dòng, thẳng hàng */
+        .answers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .answer-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            text-align: left;
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .answer-btn:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #00f5ff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .answer-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .answer-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .answer-btn.correct {
+            background: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+            animation: correct-flash 0.5s ease;
+        }
+
+        .answer-btn.wrong {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correct-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Feedback */
+        .feedback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .feedback-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .feedback-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #00f5ff;
+        }
+
+        .feedback-text {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .continue-btn {
+            background: linear-gradient(90deg, #a855f7, #00f5ff);
+            border: none;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Start Screen */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .start-content {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .start-title {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00f5ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .start-subtitle {
+            font-size: 1.5em;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .start-btn {
+            background: linear-gradient(90deg, #a855f7, #00f5ff);
+            border: none;
+            color: #fff;
+            padding: 20px 60px;
+            border-radius: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00f5ff;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-30px) translateX(20px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column-reverse;
+            }
+            
+            .level-ladder {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 1.8em;
+            }
+            .question-text {
+                font-size: 1.3em;
+            }
+            .answers-grid {
+                flex-direction: column;
+            }
+            .start-title {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Start Screen -->
+    <div class="start-screen" id="startScreen">
+        <div class="start-content">
+            <h1 class="start-title">🎮 TEST</h1>
+            <p class="start-subtitle"> Kiểm tra từ vựng </p>
+            <button class="start-btn" onclick="startGame()">BẮT ĐẦU </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="game-title">💰 TEST</h1>
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-label">Câu hỏi hiện tại</div>
+                <div class="stat-value" id="currentLevel">1</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Tổng điểm</div>
+                <div class="stat-value" id="totalScore">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Lần chơi tốt nhất</div>
+                <div class="stat-value" id="bestScore">0</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Level Ladder -->
+        <aside class="level-ladder">
+            <div class="ladder-title">🏆 THANG ĐIỂM</div>
+            <div id="ladderItems"></div>
+        </aside>
+
+        <!-- Game Container -->
+        <main class="game-container">
+            <div class="question-card" id="questionCard">
+                <div class="question-number" id="questionNumber">Câu hỏi 1</div>
+                <div class="question-text" id="questionText">Loading...</div>
+                <div class="question-example" id="questionExample"></div>
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill" style="width: 100%"></div>
+                </div>
+                <div class="answers-grid" id="answersGrid"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Overlay -->
+    <div class="feedback-overlay" id="feedbackOverlay">
+        <div class="feedback-card">
+            <div class="feedback-icon" id="feedbackIcon">✅</div>
+            <div class="feedback-title" id="feedbackTitle">Chính xác!</div>
+            <div class="feedback-text" id="feedbackText"></div>
+            <button class="continue-btn" onclick="handleFeedbackAction()">Tiếp tục</button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== GAME DATA ====================
+        const vocabulary = [
+            { word: "able (adj)", meaning: "có thể", example: "", level: 1 },
+{ word: "than (conj)", meaning: "hơn", example: "This job is better than my old job." },
+{ word: "your (adj)", meaning: "của bạn", example: "What is your name?" },
+{ word: "begin (v)", meaning: "bắt đầu", example: "I begin work at 9 AM." },
+{ word: "century (n)", meaning: "thế kỷ", example: "This building is over a century old." },
+{ word: "consider (v)", meaning: "cân nhắc", example: "I will consider your offer." },
+{ word: "dark (adj)", meaning: "tối", example: "It gets dark at night." },
+{ word: "exchange (v/n)", meaning: "trao đổi", example: "We exchange ideas at work." },
+{ word: "government (n)", meaning: "chính phủ", example: "The government has new rules." },
+{ word: "hear (v)", meaning: "nghe", example: "I can hear you clearly." },
+{ word: "jump (v)", meaning: "nhảy", example: "The child can jump high." },
+{ word: "material (n)", meaning: "vật liệu", example: "This table is made of strong material." },
+{ word: "near (prep/adj)", meaning: "gần", example: "I live near my workplace." },
+{ word: "past (n/adj)", meaning: "quá khứ", example: "In the past, I worked in a factory." },
+{ word: "produce (v)", meaning: "sản xuất", example: "This company produces food." },
+{ word: "remove (v)", meaning: "loại bỏ", example: "Please remove the trash." },
+{ word: "value (n)", meaning: "giá trị", example: "Hard work has great value." },
+{ word: "when (adv)", meaning: "khi", example: "Tell me when you are ready." },
+{ word: "behind (prep)", meaning: "phía sau", example: "The kitchen is behind the counter." },
+{ word: "draw (v)", meaning: "vẽ", example: "He can draw very well." },
+{ word: "examine (v)", meaning: "kiểm tra", example: "The manager will examine the work." },
+{ word: "fall (v)", meaning: "rơi", example: "Be careful not to fall." },
+{ word: "grow (v)", meaning: "phát triển", example: "I want to grow in my career." },
+{ word: "immediately (adv)", meaning: "ngay lập tức", example: "I will do it immediately." },
+{ word: "low (adj)", meaning: "thấp", example: "The price is low." },
+{ word: "mind (n)", meaning: "tâm trí", example: "Keep an open mind." },
+{ word: "shoe (n)", meaning: "giày", example: "I bought new shoes." },
+{ word: "sure (adj)", meaning: "chắc chắn", example: "I am sure about this job." },
+{ word: "usual (adj)", meaning: "thông thường", example: "This is my usual schedule." },
+{ word: "while (conj)", meaning: "trong khi", example: "I listen while working." },
+
+{ word: "along (prep)", meaning: "dọc theo", example: "We walked along the street." },
+{ word: "bear (v)", meaning: "chịu đựng", example: "I can bear the pressure." },
+{ word: "condition (n)", meaning: "điều kiện", example: "The working condition is good." },
+{ word: "direct (adj/v)", meaning: "trực tiếp", example: "I talk directly to customers." },
+{ word: "edge (n)", meaning: "cạnh", example: "Be careful at the edge." },
+{ word: "half (n)", meaning: "một nửa", example: "I worked half a day." },
+{ word: "increase (v)", meaning: "tăng", example: "Sales increased this month." },
+{ word: "magazine (n)", meaning: "tạp chí", example: "I read a magazine." },
+{ word: "plate (n)", meaning: "đĩa", example: "I bring plates to customers." },
+{ word: "poor (adj)", meaning: "nghèo/kém", example: "The service was poor." },
+{ word: "respect (v/n)", meaning: "tôn trọng", example: "I respect my manager." },
+{ word: "sharp (adj)", meaning: "sắc", example: "Be careful, the knife is sharp." },
+{ word: "still (adv)", meaning: "vẫn", example: "I am still learning English." },
+{ word: "tall (adj)", meaning: "cao", example: "He is very tall." },
+{ word: "would (modal)", meaning: "sẽ (lịch sự)", example: "I would like this job." },
+
+{ word: "among (prep)", meaning: "trong số", example: "I work among many people." },
+{ word: "built (v)", meaning: "đã xây dựng", example: "The shop was built in 2020." },
+{ word: "common (adj)", meaning: "phổ biến", example: "This problem is common." },
+{ word: "depend (v)", meaning: "phụ thuộc", example: "It depends on the situation." },
+{ word: "happen (v)", meaning: "xảy ra", example: "Mistakes can happen." },
+{ word: "introduce (v)", meaning: "giới thiệu", example: "Let me introduce myself." },
+{ word: "less (adj)", meaning: "ít hơn", example: "I need less time." },
+{ word: "mark (n)", meaning: "dấu", example: "Make a mark here." },
+{ word: "patient (adj)", meaning: "kiên nhẫn", example: "I am very patient." },
+{ word: "perhaps (adv)", meaning: "có lẽ", example: "Perhaps I can try." },
+{ word: "rise (v)", meaning: "tăng/lên", example: "Prices rise quickly." },
+{ word: "sense (n)", meaning: "cảm giác", example: "I have a good sense of service." },
+{ word: "short (adj)", meaning: "ngắn", example: "I prefer a short shift." },
+{ word: "state (n)", meaning: "trạng thái", example: "He is in a good state." },
+{ word: "turn (v)", meaning: "xoay/đến lượt", example: "It’s your turn." },
+
+{ word: "break (v)", meaning: "nghỉ/đập vỡ", example: "I take a break at noon." },
+{ word: "course (n)", meaning: "khóa học", example: "I joined an English course." },
+{ word: "court (n)", meaning: "tòa án/sân", example: "They play on the court." },
+{ word: "discuss (v)", meaning: "thảo luận", example: "We discuss the plan." },
+{ word: "effect (n)", meaning: "hiệu quả", example: "This method has a good effect." },
+{ word: "form (n)", meaning: "mẫu đơn", example: "Fill in the form." },
+{ word: "insect (n)", meaning: "côn trùng", example: "There is an insect." },
+{ word: "mean (v)", meaning: "có nghĩa", example: "What does this mean?" },
+{ word: "once (adv)", meaning: "một lần", example: "I tried it once." },
+{ word: "purpose (n)", meaning: "mục đích", example: "My purpose is to learn." },
+
+{ word: "ride (v)", meaning: "đi xe", example: "I ride a motorbike." },
+{ word: "situation (n)", meaning: "tình huống", example: "This is a difficult situation." },
+{ word: "though (conj)", meaning: "mặc dù", example: "I try though it is hard." },
+{ word: "upon (prep)", meaning: "trên", example: "The book is upon the table." },
+{ word: "detail (n)", meaning: "chi tiết", example: "Pay attention to detail." },
+{ word: "especially (adv)", meaning: "đặc biệt", example: "I like this job especially." },
+{ word: "finish (v)", meaning: "kết thúc", example: "I finish work at 10 PM." },
+{ word: "ground (n)", meaning: "mặt đất", example: "The bag is on the ground." },
+{ word: "holiday (n)", meaning: "kỳ nghỉ", example: "I go home on holiday." },
+{ word: "choice (n)", meaning: "lựa chọn", example: "This is a good choice." },
+
+{ word: "orange (n)", meaning: "quả cam", example: "I drink orange juice." },
+{ word: "perfect (adj)", meaning: "hoàn hảo", example: "This is perfect." },
+{ word: "request (n/v)", meaning: "yêu cầu", example: "I have a request." },
+{ word: "season (n)", meaning: "mùa", example: "This is busy season." },
+{ word: "sick (adj)", meaning: "ốm", example: "I feel sick today." },
+{ word: "tomorrow (adv)", meaning: "ngày mai", example: "I will work tomorrow." },
+{ word: "yesterday (adv)", meaning: "hôm qua", example: "I worked yesterday." },
+
+{ word: "bridge (n)", meaning: "cây cầu", example: "We crossed the bridge." },
+{ word: "cake (n)", meaning: "bánh", example: "I like cake." },
+{ word: "gentleman (n)", meaning: "quý ông", example: "He is a gentleman." },
+{ word: "hair (n)", meaning: "tóc", example: "Her hair is long." },
+{ word: "plane (n)", meaning: "máy bay", example: "I travel by plane." },
+{ word: "private (adj)", meaning: "riêng tư", example: "This is private information." },
+{ word: "restaurant (n)", meaning: "nhà hàng", example: "I work in a restaurant." },
+{ word: "smart (adj)", meaning: "thông minh/gọn gàng", example: "He looks smart." },
+{ word: "weather (n)", meaning: "thời tiết", example: "The weather is nice." },
+{ word: "actor (n)", meaning: "diễn viên", example: "He is an actor." },
+{ word: "bottle (n)", meaning: "chai", example: "Bring a bottle of water." },
+{ word: "cloth (n)", meaning: "vải", example: "This cloth is clean." },
+{ word: "coat (n)", meaning: "áo khoác", example: "Wear a coat." },
+{ word: "destroy (v)", meaning: "phá hủy", example: "The fire destroyed the building." }
+{ word: "finger (n)", meaning: "ngón tay", example: "I cut my finger while cooking." },
+{ word: "guide (n/v)", meaning: "hướng dẫn", example: "He will guide me at work." },
+{ word: "knife (n)", meaning: "con dao", example: "Be careful with the knife." },
+{ word: "mistake (n)", meaning: "lỗi", example: "I made a mistake." },
+{ word: "ocean (n)", meaning: "đại dương", example: "The ocean is very big." },
+{ word: "plant (n)", meaning: "cây", example: "This plant is green." },
+{ word: "salt (n)", meaning: "muối", example: "Add some salt to the food." },
+{ word: "special (adj)", meaning: "đặc biệt", example: "Today is a special day." },
+{ word: "teach (v)", meaning: "dạy", example: "He teaches English." },
+{ word: "uncle (n)", meaning: "chú/bác", example: "My uncle lives in Taiwan." },
+{ word: "winter (n)", meaning: "mùa đông", example: "Winter is very cold." },
+
+{ word: "angry (adj)", meaning: "tức giận", example: "He is angry." },
+{ word: "article (n)", meaning: "bài báo", example: "I read an article online." },
+{ word: "dirty (adj)", meaning: "bẩn", example: "The table is dirty." },
+{ word: "except (prep)", meaning: "ngoại trừ", example: "Everyone came except him." },
+{ word: "famous (adj)", meaning: "nổi tiếng", example: "This restaurant is famous." },
+{ word: "cheap (adj)", meaning: "rẻ", example: "The food is cheap." },
+{ word: "interview (n)", meaning: "phỏng vấn", example: "I have an interview tomorrow." },
+{ word: "prepare (v)", meaning: "chuẩn bị", example: "I prepare food every day." },
+{ word: "prison (n)", meaning: "nhà tù", example: "He went to prison." },
+{ word: "rice (n)", meaning: "cơm", example: "I eat rice every day." },
+
+{ word: "seem (v)", meaning: "có vẻ", example: "He seems tired." },
+{ word: "skirt (n)", meaning: "váy", example: "She wears a skirt." },
+{ word: "strange (adj)", meaning: "kỳ lạ", example: "That sounds strange." },
+{ word: "train (n/v)", meaning: "tàu/huấn luyện", example: "I take the train to work." },
+{ word: "warm (adj)", meaning: "ấm", example: "The weather is warm." },
+{ word: "comfortable (adj)", meaning: "thoải mái", example: "This chair is comfortable." },
+{ word: "damage (v/n)", meaning: "làm hỏng", example: "The box was damaged." },
+{ word: "dust (n)", meaning: "bụi", example: "There is dust on the table." },
+{ word: "exercise (n/v)", meaning: "tập thể dục", example: "I exercise every day." },
+{ word: "favourite (adj)", meaning: "yêu thích", example: "This is my favourite dish." },
+
+{ word: "pleasure (n)", meaning: "niềm vui", example: "It is my pleasure to help." },
+{ word: "science (n)", meaning: "khoa học", example: "He studies science." },
+{ word: "serious (adj)", meaning: "nghiêm trọng", example: "This is a serious problem." },
+{ word: "spend (v)", meaning: "tiêu/tốn thời gian", example: "I spend time learning English." },
+{ word: "wrong (adj)", meaning: "sai", example: "This answer is wrong." },
+{ word: "amount (n)", meaning: "số lượng", example: "A large amount of food." },
+{ word: "bank (n)", meaning: "ngân hàng", example: "I go to the bank." },
+{ word: "brown (adj)", meaning: "màu nâu", example: "The table is brown." },
+{ word: "crowd (n)", meaning: "đám đông", example: "There is a crowd." },
+{ word: "deal (v/n)", meaning: "giải quyết/thỏa thuận", example: "I deal with customers." },
+
+{ word: "engine (n)", meaning: "động cơ", example: "The engine is strong." },
+{ word: "individual (n)", meaning: "cá nhân", example: "Each individual is different." },
+{ word: "meal (n)", meaning: "bữa ăn", example: "I prepare meals." },
+{ word: "pain (n)", meaning: "đau", example: "I feel pain." },
+{ word: "probably (adv)", meaning: "có lẽ", example: "I will probably go." },
+{ word: "replace (v)", meaning: "thay thế", example: "I replace the broken plate." },
+{ word: "society (n)", meaning: "xã hội", example: "We live in society." },
+{ word: "square (n)", meaning: "quảng trường", example: "We meet at the square." },
+{ word: "temperature (n)", meaning: "nhiệt độ", example: "The temperature is high." },
+
+{ word: "advance (n/v)", meaning: "tiến bộ", example: "I want to advance my skills." },
+{ word: "bag (n)", meaning: "túi", example: "I carry a bag." },
+{ word: "centre (n)", meaning: "trung tâm", example: "The shop is in the centre." },
+{ word: "demand (n/v)", meaning: "nhu cầu", example: "There is high demand." },
+{ word: "enemy (n)", meaning: "kẻ thù", example: "He is not my enemy." },
+{ word: "factory (n)", meaning: "nhà máy", example: "I worked in a factory." },
+{ word: "hungry (adj)", meaning: "đói", example: "I feel hungry." },
+{ word: "illegal (adj)", meaning: "bất hợp pháp", example: "That is illegal." },
+{ word: "law (n)", meaning: "luật", example: "We follow the law." },
+
+{ word: "nose (n)", meaning: "mũi", example: "My nose is cold." },
+{ word: "petrol (n)", meaning: "xăng", example: "The car needs petrol." },
+{ word: "proud (adj)", meaning: "tự hào", example: "I am proud of myself." },
+{ word: "responsible (adj)", meaning: "có trách nhiệm", example: "I am responsible for my job." },
+{ word: "successful (adj)", meaning: "thành công", example: "He is successful." },
+{ word: "swim (v)", meaning: "bơi", example: "I can swim." },
+
+{ word: "available (adj)", meaning: "có sẵn", example: "I am available full-time." },
+{ word: "boat (n)", meaning: "thuyền", example: "They travel by boat." },
+{ word: "borrow (v)", meaning: "mượn", example: "I borrow money." },
+{ word: "coast (n)", meaning: "bờ biển", example: "The coast is beautiful." },
+{ word: "expression (n)", meaning: "biểu cảm", example: "His expression is serious." },
+{ word: "farm (n)", meaning: "trang trại", example: "He works on a farm." },
+{ word: "injure (v)", meaning: "bị thương", example: "He injured his leg." },
+{ word: "obtain (v)", meaning: "đạt được", example: "I want to obtain experience." },
+{ word: "peaceful (adj)", meaning: "yên bình", example: "It is a peaceful place." },
+{ word: "practise (v)", meaning: "luyện tập", example: "I practise English daily." },
+
+{ word: "recently (adv)", meaning: "gần đây", example: "I started recently." },
+{ word: "shape (n)", meaning: "hình dạng", example: "The plate has a round shape." },
+{ word: "silver (n/adj)", meaning: "bạc", example: "The spoon is silver." },
+
+{ word: "advantage (n)", meaning: "lợi thế", example: "English is an advantage." },
+{ word: "butter (n)", meaning: "bơ", example: "I eat bread with butter." },
+{ word: "college (n)", meaning: "cao đẳng", example: "He studies at college." },
+{ word: "degree (n)", meaning: "bằng cấp", example: "She has a degree." },
+{ word: "escape (v)", meaning: "trốn thoát", example: "He escaped quickly." },
+{ word: "gate (n)", meaning: "cổng", example: "Wait at the gate." },
+{ word: "independent (adj)", meaning: "độc lập", example: "I am independent." },
+        ];
+
+        // 20 level, thưởng tăng dần, mốc an toàn 5 / 10 / 15 / 20
+        const levelRewards = Array.from({ length: 20 }, (_, i) => {
+            const level = i + 1;
+            const reward = (100 * level).toLocaleString(); // 100, 200, 300...
+            const milestone = [5, 10, 15, 20].includes(level);
+            return { level, reward, milestone };
+        });
+
+        // ==================== GAME STATE ====================
+        let gameState = {
+            currentLevel: 1,
+            totalScore: 0,
+            bestScore: 0,
+            currentQuestion: null,
+            usedQuestions: [],
+            timer: null,
+            timeLeft: 30,
+            isWrong: false
+        };
+
+        // Kế hoạch câu hỏi cho 20 level (mỗi phần tử là 1 từ)
+        let questionPlan = [];
+
+        // Load saved game state
+        function loadGameState() {
+            const saved = localStorage.getItem('englishMillionaireSave');
+            if (saved) {
+                const data = JSON.parse(saved);
+                gameState.bestScore = data.bestScore || 0;
+            }
+        }
+
+        // Save game state
+        function saveGameState() {
+            const toSave = {
+                bestScore: gameState.bestScore
+            };
+            localStorage.setItem('englishMillionaireSave', JSON.stringify(toSave));
+        }
+
+        // ==================== INITIALIZE ====================
+        function init() {
+            createParticles();
+            loadGameState();
+            createLadder();
+            updateUI();
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Create level ladder
+        function createLadder() {
+            const container = document.getElementById('ladderItems');
+            container.innerHTML = '';
+            
+            // Reverse order (20 to 1)
+            for (let i = levelRewards.length - 1; i >= 0; i--) {
+                const item = levelRewards[i];
+                const div = document.createElement('div');
+                div.className = 'ladder-item';
+                if (item.milestone) div.classList.add('milestone');
+                div.id = `ladder-${item.level}`;
+                
+                div.innerHTML = `
+                    <span class="ladder-level">Câu ${item.level}</span>
+                    <span class="ladder-reward">${item.reward} điểm</span>
+                    <span class="ladder-icon"></span>
+                `;
+                
+                container.appendChild(div);
+            }
+        }
+
+        // Update ladder UI
+        function updateLadder() {
+            levelRewards.forEach(item => {
+                const element = document.getElementById(`ladder-${item.level}`);
+                element.classList.remove('current', 'completed');
+                
+                if (item.level < gameState.currentLevel) {
+                    element.classList.add('completed');
+                    element.querySelector('.ladder-icon').textContent = '✓';
+                } else if (item.level === gameState.currentLevel) {
+                    element.classList.add('current');
+                    element.querySelector('.ladder-icon').textContent = '👉';
+                } else {
+                    element.querySelector('.ladder-icon').textContent = '';
+                }
+            });
+        }
+
+        // Hàm xáo trộn mảng
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // Tạo kế hoạch 20 câu hỏi tăng dần độ khó
+        function buildQuestionPlan() {
+            const plan = [];
+            const usedWords = new Set();
+
+            for (let lvl = 1; lvl <= 20; lvl++) {
+                // Ưu tiên từ đúng level, chưa dùng
+                let pool = vocabulary.filter(v => v.level === lvl && !usedWords.has(v.word));
+
+                // Nếu level đó chưa có đủ từ, lấy từ level thấp hơn (<= lvl)
+                if (pool.length === 0) {
+                    pool = vocabulary.filter(v => v.level <= lvl && !usedWords.has(v.word));
+                }
+
+                // Nếu vẫn trống (quá ít từ), cho phép dùng lại bất kỳ từ nào
+                if (pool.length === 0) {
+                    pool = vocabulary;
+                }
+
+                const picked = pool[Math.floor(Math.random() * pool.length)];
+                usedWords.add(picked.word);
+                plan.push(picked);
+            }
+
+            return plan;
+        }
+
+        // ==================== GAME FLOW ====================
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            resetGame();
+            loadQuestion();
+        }
+
+        function resetGame() {
+            gameState.currentLevel = 1;
+            gameState.totalScore = 0;
+            gameState.usedQuestions = [];
+            gameState.isWrong = false;
+
+            // Mỗi lần reset: sinh lại 20 câu theo level
+            questionPlan = buildQuestionPlan();
+
+            updateUI();
+            updateLadder();
+        }
+
+        function loadQuestion() {
+            const question = questionPlan[gameState.currentLevel - 1];
+            gameState.currentQuestion = question;
+
+            // Pool đáp án sai: ưu tiên level gần với câu hỏi (chênh <= 1)
+            const wrongPool = vocabulary.filter(v =>
+                v.word !== question.word &&
+                Math.abs((v.level || 1) - (question.level || 1)) <= 1
+            );
+
+            const wrongCandidates = wrongPool.length ? wrongPool : vocabulary;
+
+            const wrongAnswers = shuffleArray(wrongCandidates)
+                .filter(v => v.word !== question.word)
+                .slice(0, 3)
+                .map(v => v.meaning);
+
+            const answers = shuffleArray([...wrongAnswers, question.meaning]);
+
+            document.getElementById('questionNumber').textContent = `Câu hỏi ${gameState.currentLevel} / 20`;
+            document.getElementById('questionText').textContent = question.word;
+            document.getElementById('questionExample').textContent = `"${question.example}"`;
+
+            const grid = document.getElementById('answersGrid');
+            grid.innerHTML = '';
+            answers.forEach(answer => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = answer;
+                btn.onclick = () => checkAnswer(answer);
+                grid.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            gameState.timeLeft = 30;
+            const timerFill = document.getElementById('timerFill');
+            
+            clearInterval(gameState.timer);
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft -= 0.1;
+                const percentage = (gameState.timeLeft / 30) * 100;
+                timerFill.style.width = percentage + '%';
+
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timer);
+                    checkAnswer(null); // Hết giờ
+                }
+            }, 100);
+        }
+
+        function checkAnswer(answer) {
+            clearInterval(gameState.timer);
+            
+            const buttons = document.querySelectorAll('.answer-btn');
+            buttons.forEach(btn => btn.onclick = null);
+
+            const correct = answer === gameState.currentQuestion.meaning;
+
+            if (correct) {
+                // Highlight correct button
+                buttons.forEach(btn => {
+                    if (btn.textContent === answer) {
+                        btn.classList.add('correct');
+                    }
+                });
+
+                // Add score
+                const reward = parseInt(levelRewards[gameState.currentLevel - 1].reward.replace(/,/g, ''));
+                gameState.totalScore += reward;
+
+                // Check if won (20 câu)
+                if (gameState.currentLevel === 20) {
+                    gameState.isWrong = false;
+                    setTimeout(() => {
+                        showFeedback(
+                            '🎉',
+                            'CHIẾN THẮNG!',
+                            `Chúc mừng! Bạn đã chinh phục 20 câu hỏi!\nTổng điểm: ${gameState.totalScore.toLocaleString()} điểm`
+                        );
+                    }, 800);
+                } else {
+                    setTimeout(() => {
+                        showFeedback(
+                            '✅',
+                            'Chính xác!',
+                            `+${reward.toLocaleString()} điểm\n"${gameState.currentQuestion.word}" nghĩa là "${gameState.currentQuestion.meaning}"`
+                        );
+                    }, 500);
+                }
+
+            } else {
+                // Highlight correct and wrong answers
+                buttons.forEach(btn => {
+                    if (btn.textContent === gameState.currentQuestion.meaning) {
+                        btn.classList.add('correct');
+                    } else if (btn.textContent === answer || answer === null) {
+                        btn.classList.add('wrong');
+                    }
+                });
+
+                gameState.isWrong = true;
+
+                // Tính điểm mốc an toàn gần nhất
+                let finalScore = 0;
+                for (let i = gameState.currentLevel - 1; i >= 0; i--) {
+                    if (levelRewards[i].milestone) {
+                        finalScore = parseInt(levelRewards[i].reward.replace(/,/g, ''));
+                        break;
+                    }
+                }
+
+                setTimeout(() => {
+                    showFeedback(
+                        '❌',
+                        'Trả lời sai!',
+                        `Đáp án đúng: "${gameState.currentQuestion.meaning}"\n\nBạn về mốc an toàn với ${finalScore.toLocaleString()} điểm\n\n"${gameState.currentQuestion.word}" - ${gameState.currentQuestion.meaning}\nVí dụ: ${gameState.currentQuestion.example}`
+                    );
+                }, 500);
+
+                gameState.totalScore = finalScore;
+            }
+
+            // Update best score
+            if (gameState.totalScore > gameState.bestScore) {
+                gameState.bestScore = gameState.totalScore;
+                saveGameState();
+            }
+
+            updateUI();
+        }
+
+        function showFeedback(icon, title, text) {
+            document.getElementById('feedbackIcon').textContent = icon;
+            document.getElementById('feedbackTitle').textContent = title;
+            document.getElementById('feedbackText').textContent = text;
+            document.getElementById('feedbackOverlay').style.display = 'flex';
+        }
+
+        function handleFeedbackAction() {
+            document.getElementById('feedbackOverlay').style.display = 'none';
+            
+            if (gameState.isWrong || gameState.currentLevel === 20) {
+                // Game over hoặc đã thắng – quay lại màn hình bắt đầu
+                document.getElementById('startScreen').style.display = 'flex';
+                resetGame();
+            } else {
+                // Sang câu tiếp theo
+                gameState.currentLevel++;
+                updateLadder();
+                loadQuestion();
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('currentLevel').textContent = gameState.currentLevel;
+            document.getElementById('totalScore').textContent = gameState.totalScore.toLocaleString();
+            document.getElementById('bestScore').textContent = gameState.bestScore.toLocaleString();
+        }
+
+        // ==================== START GAME ====================
+        init();
+    </script>
+</body>
+</html>
