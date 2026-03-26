@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Quest - Millionaire Edition</title>
+    <title>English Quest</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -42,7 +42,7 @@
         .stats-container {
             display: flex;
             justify-content: center;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             gap: 20px;
             flex-wrap: wrap;
@@ -50,115 +50,113 @@
 
         .stat-item {
             background: rgba(255,255,255,0.1);
-            padding: 15px 25px;
+            padding: 12px 25px;
             border-radius: 15px;
             border: 1px solid rgba(0,255,255,0.3);
             transition: all 0.3s ease;
+            text-align: center;
         }
 
         .stat-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 10px 30px rgba(0,255,255,0.3);
         }
 
-        .stat-label { font-size: 0.9em; color: #00f5ff; margin-bottom: 5px; }
+        .stat-label { font-size: 0.85em; color: #00f5ff; margin-bottom: 4px; }
         .stat-value { font-size: 1.5em; font-weight: bold; }
 
-        .main-container {
+        .streak-bar-wrap {
+            max-width: 700px;
+            margin: 14px auto 0;
             display: flex;
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
-            gap: 30px;
-        }
-
-        .level-ladder {
-            width: 280px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 2px solid rgba(0,255,255,0.2);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .ladder-title {
-            text-align: center;
-            font-size: 1.3em;
-            color: #00f5ff;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .ladder-item {
-            padding: 12px 15px;
-            margin: 8px 0;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
 
-        .ladder-item.current {
-            background: linear-gradient(90deg, rgba(168,85,247,0.3), rgba(0,245,255,0.3));
-            border-color: #00f5ff;
-            transform: scale(1.05);
-            animation: pulse 2s infinite;
+        .streak-label { font-size: 0.85em; color: #ffd700; white-space: nowrap; }
+
+        .streak-track {
+            flex: 1;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 20px rgba(0,245,255,0.5); }
-            50%      { box-shadow: 0 0 30px rgba(0,245,255,0.8); }
+        .streak-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9900, #ffd700);
+            border-radius: 10px;
+            transition: width 0.4s ease;
         }
 
-        .ladder-item.completed { background: rgba(34,197,94,0.2); border-color: #22c55e; }
-        .ladder-item.milestone { background: rgba(255,193,7,0.2); border-color: #ffc107; }
-        .ladder-item.milestone.completed { background: rgba(255,193,7,0.3); border-color: #ffc107; }
-
-        .ladder-level  { font-weight: bold; color: #00f5ff; }
-        .ladder-reward { color: #ffd700; font-size: 0.9em; }
-        .ladder-icon   { font-size: 1.2em; margin-left: 10px; }
-
-        .game-container { flex: 1; max-width: 900px; }
+        .main-container {
+            max-width: 780px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
 
         .question-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
+            padding: 35px 40px;
+            margin-bottom: 25px;
             border: 2px solid rgba(0,255,255,0.2);
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
         }
 
         .question-number { color: #a855f7; font-size: 0.9em; margin-bottom: 10px; }
-        .question-text   { font-size: 1.8em; margin-bottom: 15px; color: #00f5ff; font-weight: 600; }
-        .question-example{ font-size: 1em; color: #ccc; font-style: italic; margin-bottom: 20px; }
 
-        .timer-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 20px; }
-        .timer-fill { height: 100%; background: linear-gradient(90deg, #ff006e, #ffbe0b); transition: width 0.1s linear; }
+        .question-text {
+            font-size: 2em;
+            color: #00f5ff;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
 
-        .answers-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .question-example {
+            font-size: 0.95em;
+            color: #bbb;
+            font-style: italic;
+            min-height: 22px;
+        }
+
+        .timer-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 18px;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #ffbe0b);
+            transition: width 0.1s linear;
+        }
+
+        /* 6 answers — 2 columns × 3 rows */
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 28px;
+        }
 
         .answer-btn {
             background: rgba(255,255,255,0.08);
             border: 2px solid rgba(0,255,255,0.3);
             color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.1em;
+            padding: 18px 16px;
+            border-radius: 14px;
+            font-size: 1.05em;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             position: relative;
             overflow: hidden;
-            width: 100%;
             text-align: left;
+            line-height: 1.3;
         }
 
         .answer-btn::before {
@@ -167,48 +165,47 @@
             top: 50%; left: 50%;
             width: 0; height: 0;
             border-radius: 50%;
-            background: rgba(0,255,255,0.3);
+            background: rgba(0,255,255,0.2);
             transform: translate(-50%,-50%);
-            transition: width 0.6s, height 0.6s;
+            transition: width 0.5s, height 0.5s;
         }
 
         .answer-btn:hover {
             background: rgba(0,255,255,0.15);
             border-color: #00f5ff;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,255,255,0.3);
+            box-shadow: 0 8px 25px rgba(0,255,255,0.25);
         }
 
-        .answer-btn:hover::before { width: 300px; height: 300px; }
-        .answer-btn:active { transform: translateY(-1px); }
+        .answer-btn:hover::before { width: 280px; height: 280px; }
 
         .answer-btn.correct {
-            background: rgba(34,197,94,0.3);
+            background: rgba(34,197,94,0.35);
             border-color: #22c55e;
             animation: correct-flash 0.5s ease;
         }
 
         .answer-btn.wrong {
-            background: rgba(239,68,68,0.3);
+            background: rgba(239,68,68,0.35);
             border-color: #ef4444;
             animation: shake 0.5s ease;
         }
 
         @keyframes correct-flash {
             0%,100% { opacity: 1; }
-            50%      { opacity: 0.7; transform: scale(1.05); }
+            50%      { opacity: 0.7; transform: scale(1.04); }
         }
 
         @keyframes shake {
             0%,100% { transform: translateX(0); }
-            25%     { transform: translateX(-10px); }
-            75%     { transform: translateX(10px); }
+            25%     { transform: translateX(-8px); }
+            75%     { transform: translateX(8px); }
         }
 
         .feedback-overlay {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.75);
             display: none;
             justify-content: center;
             align-items: center;
@@ -216,28 +213,31 @@
         }
 
         .feedback-card {
-            background: rgba(255,255,255,0.1);
+            background: rgba(15,15,40,0.97);
             backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
+            padding: 40px 45px;
+            border-radius: 22px;
+            max-width: 480px;
+            width: 90%;
             text-align: center;
-            border: 2px solid rgba(0,255,255,0.3);
+            border: 2px solid rgba(0,255,255,0.35);
+            box-shadow: 0 0 60px rgba(0,255,255,0.12);
         }
 
-        .feedback-icon  { font-size: 4em; margin-bottom: 20px; }
-        .feedback-title { font-size: 2em; margin-bottom: 15px; color: #00f5ff; }
-        .feedback-text  { font-size: 1.1em; margin-bottom: 20px; line-height: 1.6; white-space: pre-line; }
+        .feedback-icon  { font-size: 4em; margin-bottom: 15px; }
+        .feedback-title { font-size: 2em; margin-bottom: 12px; color: #00f5ff; }
+        .feedback-text  { font-size: 1.05em; margin-bottom: 25px; line-height: 1.7; white-space: pre-line; color: #ddd; }
 
         .continue-btn {
             background: linear-gradient(90deg, #a855f7, #00f5ff);
             border: none; color: #fff;
-            padding: 15px 40px;
-            border-radius: 10px; font-size: 1.1em;
+            padding: 14px 40px;
+            border-radius: 12px; font-size: 1.1em;
             cursor: pointer; transition: all 0.3s ease;
+            font-weight: 700;
         }
 
-        .continue-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,255,255,0.5); }
+        .continue-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,255,255,0.4); }
 
         .start-screen {
             position: fixed; top: 0; left: 0;
@@ -252,21 +252,42 @@
         .start-content { text-align: center; padding: 40px; }
 
         .start-title {
-            font-size: 4em; margin-bottom: 20px;
+            font-size: 3.5em; margin-bottom: 15px;
             background: linear-gradient(90deg, #00f5ff, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
-        .start-subtitle { font-size: 1.5em; color: #ccc; margin-bottom: 40px; }
+        .start-subtitle { font-size: 1.3em; color: #aaa; margin-bottom: 35px; }
+
+        .start-info {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .start-info-item {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(0,255,255,0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 0.95em;
+            color: #ccc;
+        }
+
+        .start-info-item span { color: #00f5ff; font-weight: bold; }
 
         .start-btn {
             background: linear-gradient(90deg, #a855f7, #00f5ff);
             border: none; color: #fff;
-            padding: 20px 60px;
-            border-radius: 15px; font-size: 1.5em;
+            padding: 18px 60px;
+            border-radius: 15px; font-size: 1.4em;
             cursor: pointer; transition: all 0.3s ease;
             box-shadow: 0 10px 40px rgba(0,255,255,0.3);
+            font-weight: 700;
         }
 
         .start-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(0,255,255,0.5); }
@@ -274,25 +295,21 @@
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
 
         .particle {
-            position: absolute; width: 4px; height: 4px;
-            background: #00f5ff; border-radius: 50%; opacity: 0.5;
+            position: absolute; width: 3px; height: 3px;
+            background: #00f5ff; border-radius: 50%; opacity: 0.35;
             animation: float 6s infinite;
         }
 
         @keyframes float {
             0%,100% { transform: translateY(0) translateX(0); }
-            50%     { transform: translateY(-30px) translateX(20px); }
+            50%      { transform: translateY(-25px) translateX(15px); }
         }
 
-        @media (max-width: 1024px) {
-            .main-container { flex-direction: column-reverse; }
-            .level-ladder { width: 100%; position: relative; top: 0; }
-        }
-
-        @media (max-width: 768px) {
-            .game-title { font-size: 1.8em; }
-            .question-text { font-size: 1.3em; }
+        @media (max-width: 600px) {
+            .answers-grid { grid-template-columns: 1fr; }
+            .question-text { font-size: 1.5em; }
             .start-title { font-size: 2.5em; }
+            .question-card { padding: 25px 20px; }
         }
     </style>
 </head>
@@ -300,630 +317,560 @@
 
 <div class="particles" id="particles"></div>
 
+<!-- Start Screen -->
 <div class="start-screen" id="startScreen">
     <div class="start-content">
-        <h1 class="start-title">🎮 TEST</h1>
-        <p class="start-subtitle">Kiểm tra từ vựng</p>
+        <h1 class="start-title">🎮 ENGLISH QUEST</h1>
+        <p class="start-subtitle">Kiểm tra từ vựng tiếng Anh</p>
+        <div class="start-info">
+            <div class="start-info-item">📝 <span>Vô hạn</span> câu hỏi</div>
+            <div class="start-info-item">🔤 <span>6</span> đáp án mỗi câu</div>
+            <div class="start-info-item">⏱️ <span>30s</span> mỗi câu</div>
+            <div class="start-info-item">🔥 Bonus mỗi <span>5</span> chuỗi đúng</div>
+        </div>
         <button class="start-btn" onclick="startGame()">BẮT ĐẦU</button>
     </div>
 </div>
 
+<!-- Header -->
 <header class="header">
-    <h1 class="game-title">💰 TEST</h1>
+    <h1 class="game-title">🎮 ENGLISH QUEST</h1>
     <div class="stats-container">
         <div class="stat-item">
-            <div class="stat-label">Câu hỏi hiện tại</div>
-            <div class="stat-value" id="currentLevel">1</div>
+            <div class="stat-label">Câu hỏi</div>
+            <div class="stat-value" id="statQuestion">1</div>
         </div>
         <div class="stat-item">
-            <div class="stat-label">Tổng điểm</div>
-            <div class="stat-value" id="totalScore">0</div>
+            <div class="stat-label">Điểm</div>
+            <div class="stat-value" id="statScore">0</div>
         </div>
         <div class="stat-item">
-            <div class="stat-label">Lần chơi tốt nhất</div>
-            <div class="stat-value" id="bestScore">0</div>
+            <div class="stat-label">Chuỗi đúng</div>
+            <div class="stat-value" id="statStreak">0 🔥</div>
         </div>
+        <div class="stat-item">
+            <div class="stat-label">Kỷ lục</div>
+            <div class="stat-value" id="statBest">0</div>
+        </div>
+    </div>
+    <div class="streak-bar-wrap">
+        <span class="streak-label">🔥 Chuỗi thưởng:</span>
+        <div class="streak-track">
+            <div class="streak-fill" id="streakFill" style="width:0%"></div>
+        </div>
+        <span class="streak-label" id="streakCount">0 / 5</span>
     </div>
 </header>
 
+<!-- Main -->
 <div class="main-container">
-    <aside class="level-ladder">
-        <div class="ladder-title">🏆 THANG ĐIỂM</div>
-        <div id="ladderItems"></div>
-    </aside>
-
-    <main class="game-container">
-        <div class="question-card" id="questionCard">
-            <div class="question-number" id="questionNumber">Câu hỏi 1</div>
-            <div class="question-text" id="questionText">Loading...</div>
-            <div class="question-example" id="questionExample"></div>
-            <div class="timer-bar">
-                <div class="timer-fill" id="timerFill" style="width:100%"></div>
-            </div>
-            <div class="answers-grid" id="answersGrid"></div>
+    <div class="question-card">
+        <div class="question-number" id="questionNumber">Câu 1</div>
+        <div class="question-text" id="questionText">...</div>
+        <div class="question-example" id="questionExample"></div>
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill" style="width:100%"></div>
         </div>
-    </main>
+        <div class="answers-grid" id="answersGrid"></div>
+    </div>
 </div>
 
+<!-- Feedback Overlay -->
 <div class="feedback-overlay" id="feedbackOverlay">
     <div class="feedback-card">
         <div class="feedback-icon" id="feedbackIcon">✅</div>
         <div class="feedback-title" id="feedbackTitle">Chính xác!</div>
         <div class="feedback-text" id="feedbackText"></div>
-        <button class="continue-btn" onclick="handleFeedbackAction()">Tiếp tục</button>
+        <button class="continue-btn" onclick="nextQuestion()">Tiếp tục →</button>
     </div>
 </div>
 
 <script>
 // ==================== VOCABULARY DATA ====================
 const vocabulary = [
-    { word: "able (adj)",        meaning: "có thể",         example: "She is able to speak English well.", level: 1 },
-    { word: "than (conj)",       meaning: "hơn",            example: "This job is better than my old job.", level: 1 },
-    { word: "your (adj)",        meaning: "của bạn",        example: "What is your name?", level: 1 },
-    { word: "begin (v)",         meaning: "bắt đầu",        example: "I begin work at 9 AM.", level: 1 },
-    { word: "century (n)",       meaning: "thế kỷ",         example: "This building is over a century old.", level: 1 },
-    { word: "consider (v)",      meaning: "cân nhắc",       example: "I will consider your offer.", level: 1 },
-    { word: "dark (adj)",        meaning: "tối",            example: "It gets dark at night.", level: 1 },
-    { word: "exchange (v/n)",    meaning: "trao đổi",       example: "We exchange ideas at work.", level: 1 },
-    { word: "government (n)",    meaning: "chính phủ",      example: "The government has new rules.", level: 1 },
-    { word: "hear (v)",          meaning: "nghe",           example: "I can hear you clearly.", level: 1 },
-    { word: "jump (v)",          meaning: "nhảy",           example: "The child can jump high.", level: 1 },
-    { word: "material (n)",      meaning: "vật liệu",       example: "This table is made of strong material.", level: 1 },
-    { word: "near (prep/adj)",   meaning: "gần",            example: "I live near my workplace.", level: 1 },
-    { word: "past (n/adj)",      meaning: "quá khứ",        example: "In the past, I worked in a factory.", level: 1 },
-    { word: "produce (v)",       meaning: "sản xuất",       example: "This company produces food.", level: 1 },
-    { word: "remove (v)",        meaning: "loại bỏ",        example: "Please remove the trash.", level: 1 },
-    { word: "value (n)",         meaning: "giá trị",        example: "Hard work has great value.", level: 1 },
-    { word: "when (adv)",        meaning: "khi",            example: "Tell me when you are ready.", level: 1 },
-    { word: "behind (prep)",     meaning: "phía sau",       example: "The kitchen is behind the counter.", level: 1 },
-    { word: "draw (v)",          meaning: "vẽ",             example: "He can draw very well.", level: 1 },
-    { word: "examine (v)",       meaning: "kiểm tra",       example: "The manager will examine the work.", level: 1 },
-    { word: "fall (v)",          meaning: "rơi",            example: "Be careful not to fall.", level: 1 },
-    { word: "grow (v)",          meaning: "phát triển",     example: "I want to grow in my career.", level: 1 },
-    { word: "immediately (adv)", meaning: "ngay lập tức",   example: "I will do it immediately.", level: 1 },
-    { word: "low (adj)",         meaning: "thấp",           example: "The price is low.", level: 1 },
-    { word: "mind (n)",          meaning: "tâm trí",        example: "Keep an open mind.", level: 1 },
-    { word: "shoe (n)",          meaning: "giày",           example: "I bought new shoes.", level: 1 },
-    { word: "sure (adj)",        meaning: "chắc chắn",      example: "I am sure about this job.", level: 1 },
-    { word: "usual (adj)",       meaning: "thông thường",   example: "This is my usual schedule.", level: 1 },
-    { word: "while (conj)",      meaning: "trong khi",      example: "I listen while working.", level: 1 },
-
-    { word: "along (prep)",      meaning: "dọc theo",       example: "We walked along the street.", level: 2 },
-    { word: "bear (v)",          meaning: "chịu đựng",      example: "I can bear the pressure.", level: 2 },
-    { word: "condition (n)",     meaning: "điều kiện",      example: "The working condition is good.", level: 2 },
-    { word: "direct (adj/v)",    meaning: "trực tiếp",      example: "I talk directly to customers.", level: 2 },
-    { word: "edge (n)",          meaning: "cạnh",           example: "Be careful at the edge.", level: 2 },
-    { word: "half (n)",          meaning: "một nửa",        example: "I worked half a day.", level: 2 },
-    { word: "increase (v)",      meaning: "tăng",           example: "Sales increased this month.", level: 2 },
-    { word: "magazine (n)",      meaning: "tạp chí",        example: "I read a magazine.", level: 2 },
-    { word: "plate (n)",         meaning: "đĩa",            example: "I bring plates to customers.", level: 2 },
-    { word: "poor (adj)",        meaning: "nghèo/kém",      example: "The service was poor.", level: 2 },
-    { word: "respect (v/n)",     meaning: "tôn trọng",      example: "I respect my manager.", level: 2 },
-    { word: "sharp (adj)",       meaning: "sắc",            example: "Be careful, the knife is sharp.", level: 2 },
-    { word: "still (adv)",       meaning: "vẫn",            example: "I am still learning English.", level: 2 },
-    { word: "tall (adj)",        meaning: "cao",            example: "He is very tall.", level: 2 },
-    { word: "would (modal)",     meaning: "sẽ (lịch sự)",   example: "I would like this job.", level: 2 },
-
-    { word: "among (prep)",      meaning: "trong số",       example: "I work among many people.", level: 3 },
-    { word: "built (v)",         meaning: "đã xây dựng",    example: "The shop was built in 2020.", level: 3 },
-    { word: "common (adj)",      meaning: "phổ biến",       example: "This problem is common.", level: 3 },
-    { word: "depend (v)",        meaning: "phụ thuộc",      example: "It depends on the situation.", level: 3 },
-    { word: "happen (v)",        meaning: "xảy ra",         example: "Mistakes can happen.", level: 3 },
-    { word: "introduce (v)",     meaning: "giới thiệu",     example: "Let me introduce myself.", level: 3 },
-    { word: "less (adj)",        meaning: "ít hơn",         example: "I need less time.", level: 3 },
-    { word: "mark (n)",          meaning: "dấu",            example: "Make a mark here.", level: 3 },
-    { word: "patient (adj)",     meaning: "kiên nhẫn",      example: "I am very patient.", level: 3 },
-    { word: "perhaps (adv)",     meaning: "có lẽ",          example: "Perhaps I can try.", level: 3 },
-    { word: "rise (v)",          meaning: "tăng/lên",       example: "Prices rise quickly.", level: 3 },
-    { word: "sense (n)",         meaning: "cảm giác",       example: "I have a good sense of service.", level: 3 },
-    { word: "short (adj)",       meaning: "ngắn",           example: "I prefer a short shift.", level: 3 },
-    { word: "state (n)",         meaning: "trạng thái",     example: "He is in a good state.", level: 3 },
-    { word: "turn (v)",          meaning: "xoay/đến lượt",  example: "It's your turn.", level: 3 },
-
-    { word: "break (v)",         meaning: "nghỉ/đập vỡ",   example: "I take a break at noon.", level: 4 },
-    { word: "course (n)",        meaning: "khóa học",       example: "I joined an English course.", level: 4 },
-    { word: "court (n)",         meaning: "tòa án/sân",     example: "They play on the court.", level: 4 },
-    { word: "discuss (v)",       meaning: "thảo luận",      example: "We discuss the plan.", level: 4 },
-    { word: "effect (n)",        meaning: "hiệu quả",       example: "This method has a good effect.", level: 4 },
-    { word: "form (n)",          meaning: "mẫu đơn",        example: "Fill in the form.", level: 4 },
-    { word: "insect (n)",        meaning: "côn trùng",      example: "There is an insect.", level: 4 },
-    { word: "mean (v)",          meaning: "có nghĩa",       example: "What does this mean?", level: 4 },
-    { word: "once (adv)",        meaning: "một lần",        example: "I tried it once.", level: 4 },
-    { word: "purpose (n)",       meaning: "mục đích",       example: "My purpose is to learn.", level: 4 },
-    { word: "ride (v)",          meaning: "đi xe",          example: "I ride a motorbike.", level: 4 },
-    { word: "situation (n)",     meaning: "tình huống",     example: "This is a difficult situation.", level: 4 },
-    { word: "though (conj)",     meaning: "mặc dù",         example: "I try though it is hard.", level: 4 },
-    { word: "upon (prep)",       meaning: "trên",           example: "The book is upon the table.", level: 4 },
-
-    { word: "detail (n)",        meaning: "chi tiết",       example: "Pay attention to detail.", level: 5 },
-    { word: "especially (adv)",  meaning: "đặc biệt",       example: "I like this job especially.", level: 5 },
-    { word: "finish (v)",        meaning: "kết thúc",       example: "I finish work at 10 PM.", level: 5 },
-    { word: "ground (n)",        meaning: "mặt đất",        example: "The bag is on the ground.", level: 5 },
-    { word: "holiday (n)",       meaning: "kỳ nghỉ",        example: "I go home on holiday.", level: 5 },
-    { word: "choice (n)",        meaning: "lựa chọn",       example: "This is a good choice.", level: 5 },
-    { word: "orange (n)",        meaning: "quả cam",        example: "I drink orange juice.", level: 5 },
-    { word: "perfect (adj)",     meaning: "hoàn hảo",       example: "This is perfect.", level: 5 },
-    { word: "request (n/v)",     meaning: "yêu cầu",        example: "I have a request.", level: 5 },
-    { word: "season (n)",        meaning: "mùa",            example: "This is busy season.", level: 5 },
-    { word: "sick (adj)",        meaning: "ốm",             example: "I feel sick today.", level: 5 },
-    { word: "tomorrow (adv)",    meaning: "ngày mai",       example: "I will work tomorrow.", level: 5 },
-    { word: "yesterday (adv)",   meaning: "hôm qua",        example: "I worked yesterday.", level: 5 },
-
-    { word: "bridge (n)",        meaning: "cây cầu",        example: "We crossed the bridge.", level: 6 },
-    { word: "cake (n)",          meaning: "bánh",           example: "I like cake.", level: 6 },
-    { word: "gentleman (n)",     meaning: "quý ông",        example: "He is a gentleman.", level: 6 },
-    { word: "hair (n)",          meaning: "tóc",            example: "Her hair is long.", level: 6 },
-    { word: "plane (n)",         meaning: "máy bay",        example: "I travel by plane.", level: 6 },
-    { word: "private (adj)",     meaning: "riêng tư",       example: "This is private information.", level: 6 },
-    { word: "restaurant (n)",    meaning: "nhà hàng",       example: "I work in a restaurant.", level: 6 },
-    { word: "smart (adj)",       meaning: "thông minh",     example: "He looks smart.", level: 6 },
-    { word: "weather (n)",       meaning: "thời tiết",      example: "The weather is nice.", level: 6 },
-    { word: "actor (n)",         meaning: "diễn viên",      example: "He is an actor.", level: 6 },
-    { word: "bottle (n)",        meaning: "chai",           example: "Bring a bottle of water.", level: 6 },
-    { word: "cloth (n)",         meaning: "vải",            example: "This cloth is clean.", level: 6 },
-    { word: "coat (n)",          meaning: "áo khoác",       example: "Wear a coat.", level: 6 },
-    { word: "destroy (v)",       meaning: "phá hủy",        example: "The fire destroyed the building.", level: 6 },
-    { word: "finger (n)",        meaning: "ngón tay",       example: "I cut my finger while cooking.", level: 6 },
-    { word: "guide (n/v)",       meaning: "hướng dẫn",      example: "He will guide me at work.", level: 6 },
-    { word: "knife (n)",         meaning: "con dao",        example: "Be careful with the knife.", level: 6 },
-    { word: "mistake (n)",       meaning: "lỗi",            example: "I made a mistake.", level: 6 },
-    { word: "ocean (n)",         meaning: "đại dương",      example: "The ocean is very big.", level: 6 },
-    { word: "plant (n)",         meaning: "cây",            example: "This plant is green.", level: 6 },
-    { word: "salt (n)",          meaning: "muối",           example: "Add some salt to the food.", level: 6 },
-    { word: "special (adj)",     meaning: "đặc biệt",       example: "Today is a special day.", level: 6 },
-    { word: "teach (v)",         meaning: "dạy",            example: "He teaches English.", level: 6 },
-    { word: "uncle (n)",         meaning: "chú/bác",        example: "My uncle lives in Taiwan.", level: 6 },
-    { word: "winter (n)",        meaning: "mùa đông",       example: "Winter is very cold.", level: 6 },
-
-    { word: "angry (adj)",       meaning: "tức giận",       example: "He is angry.", level: 7 },
-    { word: "article (n)",       meaning: "bài báo",        example: "I read an article online.", level: 7 },
-    { word: "dirty (adj)",       meaning: "bẩn",            example: "The table is dirty.", level: 7 },
-    { word: "except (prep)",     meaning: "ngoại trừ",      example: "Everyone came except him.", level: 7 },
-    { word: "famous (adj)",      meaning: "nổi tiếng",      example: "This restaurant is famous.", level: 7 },
-    { word: "cheap (adj)",       meaning: "rẻ",             example: "The food is cheap.", level: 7 },
-    { word: "interview (n)",     meaning: "phỏng vấn",      example: "I have an interview tomorrow.", level: 7 },
-    { word: "prepare (v)",       meaning: "chuẩn bị",       example: "I prepare food every day.", level: 7 },
-    { word: "prison (n)",        meaning: "nhà tù",         example: "He went to prison.", level: 7 },
-    { word: "rice (n)",          meaning: "cơm",            example: "I eat rice every day.", level: 7 },
-    { word: "seem (v)",          meaning: "có vẻ",          example: "He seems tired.", level: 7 },
-    { word: "skirt (n)",         meaning: "váy",            example: "She wears a skirt.", level: 7 },
-    { word: "strange (adj)",     meaning: "kỳ lạ",          example: "That sounds strange.", level: 7 },
-    { word: "train (n/v)",       meaning: "tàu/huấn luyện", example: "I take the train to work.", level: 7 },
-    { word: "warm (adj)",        meaning: "ấm",             example: "The weather is warm.", level: 7 },
-
-    { word: "comfortable (adj)", meaning: "thoải mái",      example: "This chair is comfortable.", level: 8 },
-    { word: "damage (v/n)",      meaning: "làm hỏng",       example: "The box was damaged.", level: 8 },
-    { word: "dust (n)",          meaning: "bụi",            example: "There is dust on the table.", level: 8 },
-    { word: "exercise (n/v)",    meaning: "tập thể dục",    example: "I exercise every day.", level: 8 },
-    { word: "favourite (adj)",   meaning: "yêu thích",      example: "This is my favourite dish.", level: 8 },
-    { word: "pleasure (n)",      meaning: "niềm vui",       example: "It is my pleasure to help.", level: 8 },
-    { word: "science (n)",       meaning: "khoa học",       example: "He studies science.", level: 8 },
-    { word: "serious (adj)",     meaning: "nghiêm trọng",   example: "This is a serious problem.", level: 8 },
+    { word: "able (adj)",        meaning: "có thể",             example: "She is able to speak English well.", level: 1 },
+    { word: "than (conj)",       meaning: "hơn",                example: "This job is better than my old job.", level: 1 },
+    { word: "your (adj)",        meaning: "của bạn",            example: "What is your name?", level: 1 },
+    { word: "begin (v)",         meaning: "bắt đầu",            example: "I begin work at 9 AM.", level: 1 },
+    { word: "century (n)",       meaning: "thế kỷ",             example: "This building is over a century old.", level: 1 },
+    { word: "consider (v)",      meaning: "cân nhắc",           example: "I will consider your offer.", level: 1 },
+    { word: "dark (adj)",        meaning: "tối",                example: "It gets dark at night.", level: 1 },
+    { word: "exchange (v/n)",    meaning: "trao đổi",           example: "We exchange ideas at work.", level: 1 },
+    { word: "government (n)",    meaning: "chính phủ",          example: "The government has new rules.", level: 1 },
+    { word: "hear (v)",          meaning: "nghe",               example: "I can hear you clearly.", level: 1 },
+    { word: "jump (v)",          meaning: "nhảy",               example: "The child can jump high.", level: 1 },
+    { word: "material (n)",      meaning: "vật liệu",           example: "This table is made of strong material.", level: 1 },
+    { word: "near (prep/adj)",   meaning: "gần",                example: "I live near my workplace.", level: 1 },
+    { word: "past (n/adj)",      meaning: "quá khứ",            example: "In the past, I worked in a factory.", level: 1 },
+    { word: "produce (v)",       meaning: "sản xuất",           example: "This company produces food.", level: 1 },
+    { word: "remove (v)",        meaning: "loại bỏ",            example: "Please remove the trash.", level: 1 },
+    { word: "value (n)",         meaning: "giá trị",            example: "Hard work has great value.", level: 1 },
+    { word: "when (adv)",        meaning: "khi",                example: "Tell me when you are ready.", level: 1 },
+    { word: "behind (prep)",     meaning: "phía sau",           example: "The kitchen is behind the counter.", level: 1 },
+    { word: "draw (v)",          meaning: "vẽ",                 example: "He can draw very well.", level: 1 },
+    { word: "examine (v)",       meaning: "kiểm tra",           example: "The manager will examine the work.", level: 1 },
+    { word: "fall (v)",          meaning: "rơi",                example: "Be careful not to fall.", level: 1 },
+    { word: "grow (v)",          meaning: "phát triển",         example: "I want to grow in my career.", level: 1 },
+    { word: "immediately (adv)", meaning: "ngay lập tức",       example: "I will do it immediately.", level: 1 },
+    { word: "low (adj)",         meaning: "thấp",               example: "The price is low.", level: 1 },
+    { word: "mind (n)",          meaning: "tâm trí",            example: "Keep an open mind.", level: 1 },
+    { word: "shoe (n)",          meaning: "giày",               example: "I bought new shoes.", level: 1 },
+    { word: "sure (adj)",        meaning: "chắc chắn",          example: "I am sure about this job.", level: 1 },
+    { word: "usual (adj)",       meaning: "thông thường",       example: "This is my usual schedule.", level: 1 },
+    { word: "while (conj)",      meaning: "trong khi",          example: "I listen while working.", level: 1 },
+    { word: "along (prep)",      meaning: "dọc theo",           example: "We walked along the street.", level: 2 },
+    { word: "bear (v)",          meaning: "chịu đựng",          example: "I can bear the pressure.", level: 2 },
+    { word: "condition (n)",     meaning: "điều kiện",          example: "The working condition is good.", level: 2 },
+    { word: "direct (adj/v)",    meaning: "trực tiếp",          example: "I talk directly to customers.", level: 2 },
+    { word: "edge (n)",          meaning: "cạnh",               example: "Be careful at the edge.", level: 2 },
+    { word: "half (n)",          meaning: "một nửa",            example: "I worked half a day.", level: 2 },
+    { word: "increase (v)",      meaning: "tăng",               example: "Sales increased this month.", level: 2 },
+    { word: "magazine (n)",      meaning: "tạp chí",            example: "I read a magazine.", level: 2 },
+    { word: "plate (n)",         meaning: "đĩa",                example: "I bring plates to customers.", level: 2 },
+    { word: "poor (adj)",        meaning: "nghèo/kém",          example: "The service was poor.", level: 2 },
+    { word: "respect (v/n)",     meaning: "tôn trọng",          example: "I respect my manager.", level: 2 },
+    { word: "sharp (adj)",       meaning: "sắc/bén",            example: "Be careful, the knife is sharp.", level: 2 },
+    { word: "still (adv)",       meaning: "vẫn",                example: "I am still learning English.", level: 2 },
+    { word: "tall (adj)",        meaning: "cao",                example: "He is very tall.", level: 2 },
+    { word: "would (modal)",     meaning: "sẽ (lịch sự)",       example: "I would like this job.", level: 2 },
+    { word: "among (prep)",      meaning: "trong số",           example: "I work among many people.", level: 3 },
+    { word: "common (adj)",      meaning: "phổ biến",           example: "This problem is common.", level: 3 },
+    { word: "depend (v)",        meaning: "phụ thuộc",          example: "It depends on the situation.", level: 3 },
+    { word: "happen (v)",        meaning: "xảy ra",             example: "Mistakes can happen.", level: 3 },
+    { word: "introduce (v)",     meaning: "giới thiệu",         example: "Let me introduce myself.", level: 3 },
+    { word: "less (adj)",        meaning: "ít hơn",             example: "I need less time.", level: 3 },
+    { word: "mark (n)",          meaning: "dấu",                example: "Make a mark here.", level: 3 },
+    { word: "patient (adj)",     meaning: "kiên nhẫn",          example: "I am very patient.", level: 3 },
+    { word: "perhaps (adv)",     meaning: "có lẽ",              example: "Perhaps I can try.", level: 3 },
+    { word: "rise (v)",          meaning: "tăng/lên",           example: "Prices rise quickly.", level: 3 },
+    { word: "sense (n)",         meaning: "cảm giác",           example: "I have a good sense of service.", level: 3 },
+    { word: "short (adj)",       meaning: "ngắn",               example: "I prefer a short shift.", level: 3 },
+    { word: "state (n)",         meaning: "trạng thái",         example: "He is in a good state.", level: 3 },
+    { word: "turn (v)",          meaning: "xoay/đến lượt",      example: "It's your turn.", level: 3 },
+    { word: "break (v)",         meaning: "nghỉ/đập vỡ",       example: "I take a break at noon.", level: 4 },
+    { word: "course (n)",        meaning: "khóa học",           example: "I joined an English course.", level: 4 },
+    { word: "court (n)",         meaning: "tòa án/sân",         example: "They play on the court.", level: 4 },
+    { word: "discuss (v)",       meaning: "thảo luận",          example: "We discuss the plan.", level: 4 },
+    { word: "effect (n)",        meaning: "hiệu quả",           example: "This method has a good effect.", level: 4 },
+    { word: "form (n)",          meaning: "mẫu đơn",            example: "Fill in the form.", level: 4 },
+    { word: "insect (n)",        meaning: "côn trùng",          example: "There is an insect.", level: 4 },
+    { word: "mean (v)",          meaning: "có nghĩa",           example: "What does this mean?", level: 4 },
+    { word: "once (adv)",        meaning: "một lần",            example: "I tried it once.", level: 4 },
+    { word: "purpose (n)",       meaning: "mục đích",           example: "My purpose is to learn.", level: 4 },
+    { word: "ride (v)",          meaning: "đi xe",              example: "I ride a motorbike.", level: 4 },
+    { word: "situation (n)",     meaning: "tình huống",         example: "This is a difficult situation.", level: 4 },
+    { word: "though (conj)",     meaning: "mặc dù",             example: "I try though it is hard.", level: 4 },
+    { word: "upon (prep)",       meaning: "trên",               example: "The book is upon the table.", level: 4 },
+    { word: "detail (n)",        meaning: "chi tiết",           example: "Pay attention to detail.", level: 5 },
+    { word: "especially (adv)",  meaning: "đặc biệt là",        example: "I like this job especially.", level: 5 },
+    { word: "finish (v)",        meaning: "kết thúc",           example: "I finish work at 10 PM.", level: 5 },
+    { word: "ground (n)",        meaning: "mặt đất",            example: "The bag is on the ground.", level: 5 },
+    { word: "holiday (n)",       meaning: "kỳ nghỉ",            example: "I go home on holiday.", level: 5 },
+    { word: "choice (n)",        meaning: "lựa chọn",           example: "This is a good choice.", level: 5 },
+    { word: "orange (n)",        meaning: "quả cam",            example: "I drink orange juice.", level: 5 },
+    { word: "perfect (adj)",     meaning: "hoàn hảo",           example: "This is perfect.", level: 5 },
+    { word: "request (n/v)",     meaning: "yêu cầu",            example: "I have a request.", level: 5 },
+    { word: "season (n)",        meaning: "mùa",                example: "This is busy season.", level: 5 },
+    { word: "sick (adj)",        meaning: "ốm",                 example: "I feel sick today.", level: 5 },
+    { word: "tomorrow (adv)",    meaning: "ngày mai",           example: "I will work tomorrow.", level: 5 },
+    { word: "yesterday (adv)",   meaning: "hôm qua",            example: "I worked yesterday.", level: 5 },
+    { word: "bridge (n)",        meaning: "cây cầu",            example: "We crossed the bridge.", level: 6 },
+    { word: "cake (n)",          meaning: "bánh",               example: "I like cake.", level: 6 },
+    { word: "gentleman (n)",     meaning: "quý ông",            example: "He is a gentleman.", level: 6 },
+    { word: "hair (n)",          meaning: "tóc",                example: "Her hair is long.", level: 6 },
+    { word: "plane (n)",         meaning: "máy bay",            example: "I travel by plane.", level: 6 },
+    { word: "private (adj)",     meaning: "riêng tư",           example: "This is private information.", level: 6 },
+    { word: "restaurant (n)",    meaning: "nhà hàng",           example: "I work in a restaurant.", level: 6 },
+    { word: "smart (adj)",       meaning: "thông minh",         example: "He looks smart.", level: 6 },
+    { word: "weather (n)",       meaning: "thời tiết",          example: "The weather is nice.", level: 6 },
+    { word: "actor (n)",         meaning: "diễn viên",          example: "He is an actor.", level: 6 },
+    { word: "bottle (n)",        meaning: "chai",               example: "Bring a bottle of water.", level: 6 },
+    { word: "cloth (n)",         meaning: "vải",                example: "This cloth is clean.", level: 6 },
+    { word: "coat (n)",          meaning: "áo khoác",           example: "Wear a coat.", level: 6 },
+    { word: "destroy (v)",       meaning: "phá hủy",            example: "The fire destroyed the building.", level: 6 },
+    { word: "finger (n)",        meaning: "ngón tay",           example: "I cut my finger while cooking.", level: 6 },
+    { word: "guide (n/v)",       meaning: "hướng dẫn",          example: "He will guide me at work.", level: 6 },
+    { word: "knife (n)",         meaning: "con dao",            example: "Be careful with the knife.", level: 6 },
+    { word: "mistake (n)",       meaning: "lỗi",                example: "I made a mistake.", level: 6 },
+    { word: "ocean (n)",         meaning: "đại dương",          example: "The ocean is very big.", level: 6 },
+    { word: "plant (n)",         meaning: "cây",                example: "This plant is green.", level: 6 },
+    { word: "salt (n)",          meaning: "muối",               example: "Add some salt to the food.", level: 6 },
+    { word: "special (adj)",     meaning: "đặc biệt",           example: "Today is a special day.", level: 6 },
+    { word: "teach (v)",         meaning: "dạy",                example: "He teaches English.", level: 6 },
+    { word: "uncle (n)",         meaning: "chú/bác",            example: "My uncle lives in Taiwan.", level: 6 },
+    { word: "winter (n)",        meaning: "mùa đông",           example: "Winter is very cold.", level: 6 },
+    { word: "angry (adj)",       meaning: "tức giận",           example: "He is angry.", level: 7 },
+    { word: "article (n)",       meaning: "bài báo",            example: "I read an article online.", level: 7 },
+    { word: "dirty (adj)",       meaning: "bẩn",                example: "The table is dirty.", level: 7 },
+    { word: "except (prep)",     meaning: "ngoại trừ",          example: "Everyone came except him.", level: 7 },
+    { word: "famous (adj)",      meaning: "nổi tiếng",          example: "This restaurant is famous.", level: 7 },
+    { word: "cheap (adj)",       meaning: "rẻ",                 example: "The food is cheap.", level: 7 },
+    { word: "interview (n)",     meaning: "phỏng vấn",          example: "I have an interview tomorrow.", level: 7 },
+    { word: "prepare (v)",       meaning: "chuẩn bị",           example: "I prepare food every day.", level: 7 },
+    { word: "prison (n)",        meaning: "nhà tù",             example: "He went to prison.", level: 7 },
+    { word: "rice (n)",          meaning: "cơm",                example: "I eat rice every day.", level: 7 },
+    { word: "seem (v)",          meaning: "có vẻ",              example: "He seems tired.", level: 7 },
+    { word: "skirt (n)",         meaning: "váy",                example: "She wears a skirt.", level: 7 },
+    { word: "strange (adj)",     meaning: "kỳ lạ",              example: "That sounds strange.", level: 7 },
+    { word: "train (n/v)",       meaning: "tàu/huấn luyện",     example: "I take the train to work.", level: 7 },
+    { word: "warm (adj)",        meaning: "ấm",                 example: "The weather is warm.", level: 7 },
+    { word: "comfortable (adj)", meaning: "thoải mái",          example: "This chair is comfortable.", level: 8 },
+    { word: "damage (v/n)",      meaning: "làm hỏng",           example: "The box was damaged.", level: 8 },
+    { word: "dust (n)",          meaning: "bụi",                example: "There is dust on the table.", level: 8 },
+    { word: "exercise (n/v)",    meaning: "tập thể dục",        example: "I exercise every day.", level: 8 },
+    { word: "favourite (adj)",   meaning: "yêu thích",          example: "This is my favourite dish.", level: 8 },
+    { word: "pleasure (n)",      meaning: "niềm vui",           example: "It is my pleasure to help.", level: 8 },
+    { word: "science (n)",       meaning: "khoa học",           example: "He studies science.", level: 8 },
+    { word: "serious (adj)",     meaning: "nghiêm trọng",       example: "This is a serious problem.", level: 8 },
     { word: "spend (v)",         meaning: "tiêu/tốn thời gian", example: "I spend time learning English.", level: 8 },
-    { word: "wrong (adj)",       meaning: "sai",            example: "This answer is wrong.", level: 8 },
-
-    { word: "amount (n)",        meaning: "số lượng",       example: "A large amount of food.", level: 9 },
-    { word: "bank (n)",          meaning: "ngân hàng",      example: "I go to the bank.", level: 9 },
-    { word: "brown (adj)",       meaning: "màu nâu",        example: "The table is brown.", level: 9 },
-    { word: "crowd (n)",         meaning: "đám đông",       example: "There is a crowd.", level: 9 },
-    { word: "deal (v/n)",        meaning: "giải quyết",     example: "I deal with customers.", level: 9 },
-    { word: "engine (n)",        meaning: "động cơ",        example: "The engine is strong.", level: 9 },
-    { word: "individual (n)",    meaning: "cá nhân",        example: "Each individual is different.", level: 9 },
-    { word: "meal (n)",          meaning: "bữa ăn",         example: "I prepare meals.", level: 9 },
-    { word: "pain (n)",          meaning: "đau",            example: "I feel pain.", level: 9 },
-    { word: "probably (adv)",    meaning: "có lẽ",          example: "I will probably go.", level: 9 },
-    { word: "replace (v)",       meaning: "thay thế",       example: "I replace the broken plate.", level: 9 },
-    { word: "society (n)",       meaning: "xã hội",         example: "We live in society.", level: 9 },
-    { word: "square (n)",        meaning: "quảng trường",   example: "We meet at the square.", level: 9 },
-    { word: "temperature (n)",   meaning: "nhiệt độ",       example: "The temperature is high.", level: 9 },
-
-    { word: "advance (n/v)",     meaning: "tiến bộ",        example: "I want to advance my skills.", level: 10 },
-    { word: "bag (n)",           meaning: "túi",            example: "I carry a bag.", level: 10 },
-    { word: "centre (n)",        meaning: "trung tâm",      example: "The shop is in the centre.", level: 10 },
-    { word: "demand (n/v)",      meaning: "nhu cầu",        example: "There is high demand.", level: 10 },
-    { word: "enemy (n)",         meaning: "kẻ thù",         example: "He is not my enemy.", level: 10 },
-    { word: "factory (n)",       meaning: "nhà máy",        example: "I worked in a factory.", level: 10 },
-    { word: "hungry (adj)",      meaning: "đói",            example: "I feel hungry.", level: 10 },
-    { word: "illegal (adj)",     meaning: "bất hợp pháp",   example: "That is illegal.", level: 10 },
-    { word: "law (n)",           meaning: "luật",           example: "We follow the law.", level: 10 },
-    { word: "nose (n)",          meaning: "mũi",            example: "My nose is cold.", level: 10 },
-    { word: "petrol (n)",        meaning: "xăng",           example: "The car needs petrol.", level: 10 },
-    { word: "proud (adj)",       meaning: "tự hào",         example: "I am proud of myself.", level: 10 },
-    { word: "responsible (adj)", meaning: "có trách nhiệm", example: "I am responsible for my job.", level: 10 },
-    { word: "successful (adj)",  meaning: "thành công",     example: "He is successful.", level: 10 },
-    { word: "swim (v)",          meaning: "bơi",            example: "I can swim.", level: 10 },
-
-    { word: "available (adj)",   meaning: "có sẵn",         example: "I am available full-time.", level: 11 },
-    { word: "boat (n)",          meaning: "thuyền",         example: "They travel by boat.", level: 11 },
-    { word: "borrow (v)",        meaning: "mượn",           example: "I borrow money.", level: 11 },
-    { word: "coast (n)",         meaning: "bờ biển",        example: "The coast is beautiful.", level: 11 },
-    { word: "expression (n)",    meaning: "biểu cảm",       example: "His expression is serious.", level: 11 },
-    { word: "farm (n)",          meaning: "trang trại",     example: "He works on a farm.", level: 11 },
-    { word: "injure (v)",        meaning: "bị thương",      example: "He injured his leg.", level: 11 },
-    { word: "obtain (v)",        meaning: "đạt được",       example: "I want to obtain experience.", level: 11 },
-    { word: "peaceful (adj)",    meaning: "yên bình",       example: "It is a peaceful place.", level: 11 },
-    { word: "practise (v)",      meaning: "luyện tập",      example: "I practise English daily.", level: 11 },
-    { word: "recently (adv)",    meaning: "gần đây",        example: "I started recently.", level: 11 },
-    { word: "shape (n)",         meaning: "hình dạng",      example: "The plate has a round shape.", level: 11 },
-    { word: "silver (n/adj)",    meaning: "bạc",            example: "The spoon is silver.", level: 11 },
-
-    { word: "advantage (n)",     meaning: "lợi thế",        example: "English is an advantage.", level: 12 },
-    { word: "butter (n)",        meaning: "bơ",             example: "I eat bread with butter.", level: 12 },
-    { word: "college (n)",       meaning: "cao đẳng",       example: "He studies at college.", level: 12 },
-    { word: "degree (n)",        meaning: "bằng cấp",       example: "She has a degree.", level: 12 },
-    { word: "escape (v)",        meaning: "trốn thoát",     example: "He escaped quickly.", level: 12 },
-    { word: "gate (n)",          meaning: "cổng",           example: "Wait at the gate.", level: 12 },
-    { word: "independent (adj)", meaning: "độc lập",        example: "I am independent.", level: 12 },
-
-    // Từ từ danh sách gốc (advice trở đi)
-    { word: "advice (n)",        meaning: "lời khuyên",     example: "She gave me good advice.", level: 1 },
-    { word: "son (n)",           meaning: "con trai",       example: "My son is very tall.", level: 1 },
-    { word: "they (pron)",       meaning: "họ",             example: "They are my friends.", level: 1 },
-    { word: "careful (adj)",     meaning: "cẩn thận",       example: "Be careful on the road.", level: 1 },
-    { word: "everything (pron)", meaning: "mọi thứ",        example: "Everything is ready.", level: 1 },
-    { word: "many (det)",        meaning: "nhiều",          example: "There are many books on the shelf.", level: 1 },
-    { word: "place (n)",         meaning: "nơi chốn",       example: "This is a beautiful place.", level: 1 },
-    { word: "road (n)",          meaning: "con đường",      example: "The road is very long.", level: 1 },
-    { word: "where (adv)",       meaning: "ở đâu",          example: "Where do you live?", level: 1 },
-    { word: "country (n)",       meaning: "đất nước",       example: "Vietnam is a beautiful country.", level: 1 },
-    { word: "each (det)",        meaning: "mỗi",            example: "Each student has a book.", level: 1 },
-    { word: "his (pron)",        meaning: "của anh ấy",     example: "This is his car.", level: 1 },
-    { word: "soon (adv)",        meaning: "sớm",            example: "She will arrive soon.", level: 1 },
-    { word: "clean (adj)",       meaning: "sạch sẽ",        example: "The room is very clean.", level: 1 },
-    { word: "river (n)",         meaning: "con sông",       example: "We swam in the river.", level: 1 },
-    { word: "sit (v)",           meaning: "ngồi",           example: "Please sit down.", level: 1 },
-    { word: "cinema (n)",        meaning: "rạp chiếu phim", example: "We went to the cinema last night.", level: 2 },
-    { word: "daughter (n)",      meaning: "con gái",        example: "Her daughter is very smart.", level: 1 },
-    { word: "cheese (n)",        meaning: "phô mai",        example: "I like cheese on my sandwich.", level: 2 },
-    { word: "land (n)",          meaning: "vùng đất",       example: "The land here is very fertile.", level: 2 },
-    { word: "kind (adj)",        meaning: "tốt bụng",       example: "She is a very kind person.", level: 1 },
-    { word: "peace (n)",         meaning: "hòa bình",       example: "We all want peace in the world.", level: 2 },
-    { word: "popular (adj)",     meaning: "phổ biến",       example: "This song is very popular.", level: 2 },
-    { word: "some (det)",        meaning: "một số",         example: "I need some help.", level: 1 },
-    { word: "there (adv)",       meaning: "ở đó",           example: "The book is over there.", level: 1 },
-    { word: "could (modal)",     meaning: "có thể",         example: "Could you help me, please?", level: 1 },
-    { word: "egg (n)",           meaning: "quả trứng",      example: "I eat an egg every morning.", level: 1 },
-    { word: "chance (n)",        meaning: "cơ hội",         example: "This is a great chance to learn.", level: 2 },
-    { word: "may (modal)",       meaning: "có thể",         example: "It may rain today.", level: 1 },
-    { word: "often (adv)",       meaning: "thường xuyên",   example: "She often reads before bed.", level: 1 },
-    { word: "prefer (v)",        meaning: "thích hơn",      example: "I prefer tea to coffee.", level: 2 },
-    { word: "put (v)",           meaning: "đặt",            example: "Please put the bag on the table.", level: 1 },
-    { word: "stone (n)",         meaning: "hòn đá",         example: "He threw a stone into the lake.", level: 2 },
-    { word: "such (det)",        meaning: "như vậy",        example: "I have never seen such a beautiful view.", level: 2 },
-    { word: "visit (v)",         meaning: "thăm",           example: "We will visit our grandparents this weekend.", level: 1 },
-    { word: "dinner (n)",        meaning: "bữa tối",        example: "We had dinner at a restaurant.", level: 1 },
-    { word: "explain (v)",       meaning: "giải thích",     example: "Can you explain this to me?", level: 2 },
-    { word: "get (v)",           meaning: "lấy/nhận",       example: "I need to get some water.", level: 1 },
-    { word: "interesting (adj)", meaning: "thú vị",         example: "This book is very interesting.", level: 1 },
-    { word: "move (v)",          meaning: "di chuyển",      example: "Please move your car.", level: 1 },
-    { word: "reach (v)",         meaning: "đến nơi",        example: "We reached the top of the mountain.", level: 2 },
-    { word: "set (v)",           meaning: "đặt/thiết lập",  example: "She set the table for dinner.", level: 2 },
-    { word: "should (modal)",    meaning: "nên",            example: "You should drink more water.", level: 1 },
-    { word: "dress (n)",         meaning: "váy đầm",        example: "She wore a beautiful dress.", level: 2 },
-    { word: "evening (n)",       meaning: "buổi tối",       example: "We went for a walk in the evening.", level: 1 },
-    { word: "have (v)",          meaning: "có",             example: "I have two brothers.", level: 1 },
-    { word: "ill (adj)",         meaning: "ốm",             example: "She stayed home because she was ill.", level: 2 },
-    { word: "drive (v)",         meaning: "lái xe",         example: "He drives to work every day.", level: 2 },
-    { word: "juice (n)",         meaning: "nước ép",        example: "I drink orange juice every morning.", level: 1 },
-    { word: "pretty (adj)",      meaning: "xinh đẹp",       example: "She has a pretty smile.", level: 2 },
-    { word: "quite (adv)",       meaning: "khá",            example: "The movie was quite good.", level: 2 },
-    { word: "spring (n)",        meaning: "mùa xuân",       example: "Flowers bloom in spring.", level: 2 },
-    { word: "star (n)",          meaning: "ngôi sao",       example: "The stars shine brightly at night.", level: 1 },
-    { word: "action (n)",        meaning: "hành động",      example: "We need to take action now.", level: 2 },
-    { word: "alone (adj)",       meaning: "một mình",       example: "She lives alone in the city.", level: 2 },
-    { word: "breakfast (n)",     meaning: "bữa sáng",       example: "I always eat breakfast at 7 a.m.", level: 1 },
-    { word: "dead (adj)",        meaning: "đã chết",        example: "The plant is dead.", level: 2 },
-    { word: "full (adj)",        meaning: "no/đầy",         example: "I am full after that big meal.", level: 1 },
-    { word: "garden (n)",        meaning: "khu vườn",       example: "She grows roses in her garden.", level: 1 },
-    { word: "house (n)",         meaning: "ngôi nhà",       example: "They bought a new house last year.", level: 1 },
-    { word: "nothing (pron)",    meaning: "không có gì",    example: "There is nothing in the box.", level: 1 },
-    { word: "price (n)",         meaning: "giá cả",         example: "The price of this phone is high.", level: 1 },
-    { word: "result (n)",        meaning: "kết quả",        example: "The exam results come out tomorrow.", level: 2 },
-    { word: "sister (n)",        meaning: "chị/em gái",     example: "My sister is a doctor.", level: 1 },
-    { word: "desert (n)",        meaning: "sa mạc",         example: "The Sahara is the largest desert in the world.", level: 3 },
-    { word: "expensive (adj)",   meaning: "đắt tiền",       example: "This bag is too expensive for me.", level: 2 },
-    { word: "flower (n)",        meaning: "bông hoa",       example: "She gave me a beautiful flower.", level: 1 },
-    { word: "church (n)",        meaning: "nhà thờ",        example: "They got married in a church.", level: 2 },
-    { word: "impossible (adj)",  meaning: "không thể",      example: "Nothing is impossible if you try hard.", level: 3 },
-    { word: "month (n)",         meaning: "tháng",          example: "She visits her parents every month.", level: 1 },
-    { word: "on (prep)",         meaning: "trên",           example: "The book is on the table.", level: 1 },
-    { word: "plan (n)",          meaning: "kế hoạch",       example: "We have a plan for the weekend.", level: 1 },
-    { word: "possible (adj)",    meaning: "có thể",         example: "Is it possible to finish by Friday?", level: 2 },
-    { word: "return (v)",        meaning: "trở về",         example: "He will return home next week.", level: 2 },
-    { word: "something (pron)",  meaning: "điều gì đó",     example: "There is something in my bag.", level: 1 },
-    { word: "together (adv)",    meaning: "cùng nhau",      example: "Let's work together.", level: 1 },
-    { word: "cover (v)",         meaning: "che phủ",        example: "Snow covered the ground.", level: 2 },
-    { word: "decision (n)",      meaning: "quyết định",     example: "Making a decision is not always easy.", level: 2 },
-    { word: "how (adv)",         meaning: "như thế nào",    example: "How do you feel today?", level: 1 },
-    { word: "position (n)",      meaning: "vị trí",         example: "He has a high position in the company.", level: 3 },
-    { word: "present (adj)",     meaning: "hiện tại",       example: "Let's focus on the present moment.", level: 3 },
-    { word: "record (n)",        meaning: "kỷ lục/hồ sơ",  example: "She broke the world record.", level: 3 },
-    { word: "under (prep)",      meaning: "dưới",           example: "The cat is under the table.", level: 1 },
-    { word: "catch (v)",         meaning: "bắt",            example: "He tried to catch the ball.", level: 2 },
-    { word: "cornet (n)",        meaning: "kèn cornet",     example: "He plays the cornet in a jazz band.", level: 4 },
-    { word: "distance (n)",      meaning: "khoảng cách",    example: "The distance between the two cities is 200 km.", level: 3 },
-    { word: "education (n)",     meaning: "giáo dục",       example: "Education is very important for children.", level: 3 },
-    { word: "fast (adj)",        meaning: "nhanh",          example: "He is a fast runner.", level: 1 },
-    { word: "interest (n)",      meaning: "sự quan tâm",    example: "She has an interest in music.", level: 2 },
-    { word: "letter (n)",        meaning: "bức thư",        example: "I received a letter from my friend.", level: 1 },
-    { word: "never (adv)",       meaning: "không bao giờ",  example: "I have never been to Paris.", level: 1 },
-    { word: "part (n)",          meaning: "phần",           example: "This is the best part of the movie.", level: 1 },
-    { word: "president (n)",     meaning: "tổng thống",     example: "The president gave a speech.", level: 3 },
-    { word: "round (adj)",       meaning: "tròn",           example: "The table has a round shape.", level: 2 },
-    { word: "several (det)",     meaning: "vài",            example: "I have visited this place several times.", level: 2 },
-    { word: "bread (n)",         meaning: "bánh mì",        example: "She bought a loaf of bread.", level: 1 },
-    { word: "control (v)",       meaning: "kiểm soát",      example: "Try to control your emotions.", level: 3 },
-    { word: "dear (adj)",        meaning: "thân mến",       example: "She is a dear friend of mine.", level: 2 },
-    { word: "every (det)",       meaning: "mỗi",            example: "He goes jogging every morning.", level: 1 },
-    { word: "chief (n)",         meaning: "thủ lĩnh/trưởng",example: "He is the chief of the village.", level: 3 },
-    { word: "invite (v)",        meaning: "mời",            example: "She invited me to her birthday party.", level: 2 },
-    { word: "late (adj)",        meaning: "muộn",           example: "He arrived late to the meeting.", level: 1 },
-    { word: "most (det)",        meaning: "hầu hết",        example: "Most students passed the exam.", level: 1 },
-    { word: "product (n)",       meaning: "sản phẩm",       example: "This product is very popular.", level: 2 },
-    { word: "receive (v)",       meaning: "nhận",           example: "She received a gift from her mother.", level: 2 },
-    { word: "then (adv)",        meaning: "sau đó",         example: "We had lunch and then went for a walk.", level: 1 },
-    { word: "bring (v)",         meaning: "mang",           example: "Please bring your notebook to class.", level: 1 },
-    { word: "carry (v)",         meaning: "mang/vác",       example: "Can you carry this box for me?", level: 1 },
-    { word: "confirm (v)",       meaning: "xác nhận",       example: "Please confirm your reservation.", level: 3 },
-    { word: "east (n)",          meaning: "phía đông",      example: "The sun rises in the east.", level: 2 },
-    { word: "industry (n)",      meaning: "công nghiệp",    example: "The car industry is very important.", level: 3 },
-    { word: "must (modal)",      meaning: "phải",           example: "You must wear a seatbelt.", level: 1 },
-    { word: "own (adj)",         meaning: "của chính mình", example: "She has her own business.", level: 1 },
-    { word: "service (n)",       meaning: "dịch vụ",        example: "The service at this hotel is excellent.", level: 2 },
-    { word: "shall (modal)",     meaning: "sẽ",             example: "Shall we go for a walk?", level: 2 },
-    { word: "stay (v)",          meaning: "ở lại",          example: "We decided to stay home tonight.", level: 1 },
-    { word: "their (pron)",      meaning: "của họ",         example: "This is their house.", level: 1 },
-    { word: "wife (n)",          meaning: "vợ",             example: "His wife is a teacher.", level: 1 },
-    { word: "cost (n)",          meaning: "chi phí",        example: "The cost of living is high in the city.", level: 2 },
-    { word: "deep (adj)",        meaning: "sâu",            example: "The lake is very deep.", level: 2 },
-    { word: "enough (det)",      meaning: "đủ",             example: "Do we have enough food?", level: 1 },
-    { word: "fight (v)",         meaning: "chiến đấu",      example: "They fought for their freedom.", level: 3 },
-    { word: "garage (n)",        meaning: "gara",           example: "He parked his car in the garage.", level: 3 },
-    { word: "into (prep)",       meaning: "vào trong",      example: "She walked into the room.", level: 1 },
-    { word: "other (det)",       meaning: "khác",           example: "Do you have any other questions?", level: 1 },
-    { word: "rather (adv)",      meaning: "khá/hơn là",     example: "I would rather stay home tonight.", level: 2 },
-    { word: "remain (v)",        meaning: "ở lại/còn lại",  example: "Only a few students remain in the class.", level: 3 },
-    { word: "side (n)",          meaning: "phía/cạnh",      example: "She sat on the other side of the table.", level: 2 },
-    { word: "south (n)",         meaning: "phía nam",       example: "They drove south for three hours.", level: 2 },
-    { word: "who (pron)",        meaning: "ai",             example: "Who is that man?", level: 1 },
-    { word: "already (adv)",     meaning: "đã rồi",         example: "I have already finished my homework.", level: 1 },
-    { word: "become (v)",        meaning: "trở thành",      example: "She wants to become a doctor.", level: 2 },
-    { word: "cause (n)",         meaning: "nguyên nhân",    example: "What was the cause of the accident?", level: 3 },
-    { word: "certain (adj)",     meaning: "chắc chắn",      example: "I am certain that he will come.", level: 2 },
-    { word: "describe (v)",      meaning: "mô tả",          example: "Can you describe what you saw?", level: 3 },
-    { word: "dry (adj)",         meaning: "khô",            example: "The weather is dry in summer.", level: 2 },
-    { word: "expect (v)",        meaning: "mong đợi",       example: "I expect to hear from her soon.", level: 3 },
-    { word: "fact (n)",          meaning: "sự thật",        example: "It is a fact that the earth is round.", level: 2 },
-    { word: "hard (adj)",        meaning: "khó/chăm chỉ",   example: "This exercise is very hard.", level: 1 },
-    { word: "include (v)",       meaning: "bao gồm",        example: "The price includes breakfast.", level: 3 },
-    { word: "let (v)",           meaning: "cho phép",       example: "Let me help you with that.", level: 1 },
-    { word: "moment (n)",        meaning: "khoảnh khắc",    example: "Wait a moment, please.", level: 2 },
-    { word: "power (n)",         meaning: "sức mạnh",       example: "Knowledge is power.", level: 3 },
-    { word: "provide (v)",       meaning: "cung cấp",       example: "The company provides free meals.", level: 3 },
-    { word: "system (n)",        meaning: "hệ thống",       example: "The new system works very well.", level: 3 },
-    { word: "through (prep)",    meaning: "qua",            example: "We walked through the forest.", level: 2 },
-    { word: "which (pron)",      meaning: "cái nào",        example: "Which book do you prefer?", level: 1 },
-    { word: "colour (n)",        meaning: "màu sắc",        example: "What is your favourite colour?", level: 1 },
-    { word: "earth (n)",         meaning: "trái đất",       example: "The earth moves around the sun.", level: 2 },
-    { word: "glad (adj)",        meaning: "vui mừng",       example: "I am glad to see you again.", level: 2 },
-    { word: "hour (n)",          meaning: "tiếng đồng hồ",  example: "The meeting lasted one hour.", level: 1 },
-    { word: "rain (n)",          meaning: "mưa",            example: "The rain fell heavily last night.", level: 1 },
-    { word: "summer (n)",        meaning: "mùa hè",         example: "We go to the beach every summer.", level: 1 },
-    { word: "desk (n)",          meaning: "bàn làm việc",   example: "My laptop is on my desk.", level: 1 },
-    { word: "ear (n)",           meaning: "tai",            example: "He whispered in her ear.", level: 1 },
-    { word: "fish (n)",          meaning: "cá",             example: "We had fish for dinner.", level: 1 },
-    { word: "ice (n)",           meaning: "nước đá",        example: "She put ice in her drink.", level: 1 },
-    { word: "office (n)",        meaning: "văn phòng",      example: "He works in an office downtown.", level: 2 },
-    { word: "parent (n)",        meaning: "phụ huynh",      example: "Her parents are very supportive.", level: 1 },
-    { word: "post (n)",          meaning: "bưu điện/bài đăng",example: "I sent the letter by post.", level: 2 },
-    { word: "rock (n)",          meaning: "đá/tảng đá",     example: "They sat on a rock by the sea.", level: 2 },
-    { word: "valley (n)",        meaning: "thung lũng",     example: "The village is in a quiet valley.", level: 3 },
-    { word: "walk (v)",          meaning: "đi bộ",          example: "I walk to school every day.", level: 1 },
-    { word: "central (adj)",     meaning: "trung tâm",      example: "The hotel is in a central location.", level: 3 },
-    { word: "direction (n)",     meaning: "hướng/chỉ đường",example: "Can you give me directions to the station?", level: 3 },
-    { word: "gift (n)",          meaning: "món quà",        example: "She received a gift for her birthday.", level: 1 },
-    { word: "high (adj)",        meaning: "cao",            example: "The mountain is very high.", level: 1 },
-    { word: "illness (n)",       meaning: "bệnh tật",       example: "He missed school due to illness.", level: 3 },
-    { word: "not (adv)",         meaning: "không",          example: "I do not like spicy food.", level: 1 },
-    { word: "piece (n)",         meaning: "mảnh/miếng",     example: "Can I have a piece of cake?", level: 1 },
-    { word: "protect (v)",       meaning: "bảo vệ",         example: "We must protect the environment.", level: 3 },
-    { word: "race (n)",          meaning: "cuộc đua",       example: "She won the race easily.", level: 3 },
-    { word: "slow (adj)",        meaning: "chậm",           example: "The traffic is very slow today.", level: 1 },
-    { word: "well (adv)",        meaning: "tốt",            example: "She speaks English very well.", level: 1 },
-    { word: "accident (n)",      meaning: "tai nạn",        example: "There was a bad accident on the highway.", level: 3 },
-    { word: "blood (n)",         meaning: "máu",            example: "He donated blood at the hospital.", level: 3 },
-    { word: "business (n)",      meaning: "kinh doanh",     example: "She runs her own business.", level: 3 },
-    { word: "during (prep)",     meaning: "trong suốt",     example: "I fell asleep during the movie.", level: 2 },
-    { word: "even (adv)",        meaning: "thậm chí",       example: "Even children can understand this.", level: 2 },
-    { word: "floor (n)",         meaning: "sàn nhà/tầng",   example: "The ball rolled across the floor.", level: 1 },
-    { word: "general (adj)",     meaning: "chung/tổng quát",example: "In general, the weather is nice here.", level: 3 },
-    { word: "choose (v)",        meaning: "chọn",           example: "You can choose any colour you like.", level: 2 },
-    { word: "inform (v)",        meaning: "thông báo",      example: "Please inform me when you arrive.", level: 3 },
-    { word: "pink (adj)",        meaning: "màu hồng",       example: "She wore a pink dress to the party.", level: 1 },
-    { word: "snow (n)",          meaning: "tuyết",          example: "The children played in the snow.", level: 2 },
-    { word: "both (det)",        meaning: "cả hai",         example: "Both students passed the exam.", level: 1 },
-    { word: "decide (v)",        meaning: "quyết định",     example: "We decided to go on a trip.", level: 2 },
-    { word: "ever (adv)",        meaning: "từng",           example: "Have you ever been to Japan?", level: 1 },
-    { word: "field (n)",         meaning: "cánh đồng",      example: "The children played in the field.", level: 2 },
-    { word: "heart (n)",         meaning: "trái tim",       example: "She has a kind heart.", level: 1 },
-    { word: "imagine (v)",       meaning: "tưởng tượng",    example: "Imagine living on a tropical island.", level: 3 },
-    { word: "meat (n)",          meaning: "thịt",           example: "He doesn't eat meat.", level: 1 },
-    { word: "over (prep)",       meaning: "trên/qua",       example: "The plane flew over the mountains.", level: 1 },
-    { word: "pull (v)",          meaning: "kéo",            example: "Pull the door to open it.", level: 2 },
-    { word: "ring (n)",          meaning: "chiếc nhẫn",     example: "She wore a gold ring on her finger.", level: 2 },
-    { word: "similar (adj)",     meaning: "tương tự",       example: "Our opinions are very similar.", level: 3 }
+    { word: "wrong (adj)",       meaning: "sai",                example: "This answer is wrong.", level: 8 },
+    { word: "amount (n)",        meaning: "số lượng",           example: "A large amount of food.", level: 9 },
+    { word: "bank (n)",          meaning: "ngân hàng",          example: "I go to the bank.", level: 9 },
+    { word: "brown (adj)",       meaning: "màu nâu",            example: "The table is brown.", level: 9 },
+    { word: "crowd (n)",         meaning: "đám đông",           example: "There is a crowd.", level: 9 },
+    { word: "deal (v/n)",        meaning: "giải quyết",         example: "I deal with customers.", level: 9 },
+    { word: "engine (n)",        meaning: "động cơ",            example: "The engine is strong.", level: 9 },
+    { word: "individual (n)",    meaning: "cá nhân",            example: "Each individual is different.", level: 9 },
+    { word: "meal (n)",          meaning: "bữa ăn",             example: "I prepare meals.", level: 9 },
+    { word: "pain (n)",          meaning: "đau",                example: "I feel pain.", level: 9 },
+    { word: "probably (adv)",    meaning: "có lẽ",              example: "I will probably go.", level: 9 },
+    { word: "replace (v)",       meaning: "thay thế",           example: "I replace the broken plate.", level: 9 },
+    { word: "society (n)",       meaning: "xã hội",             example: "We live in society.", level: 9 },
+    { word: "square (n)",        meaning: "quảng trường",       example: "We meet at the square.", level: 9 },
+    { word: "temperature (n)",   meaning: "nhiệt độ",           example: "The temperature is high.", level: 9 },
+    { word: "advance (n/v)",     meaning: "tiến bộ",            example: "I want to advance my skills.", level: 10 },
+    { word: "bag (n)",           meaning: "túi",                example: "I carry a bag.", level: 10 },
+    { word: "centre (n)",        meaning: "trung tâm",          example: "The shop is in the centre.", level: 10 },
+    { word: "demand (n/v)",      meaning: "nhu cầu",            example: "There is high demand.", level: 10 },
+    { word: "enemy (n)",         meaning: "kẻ thù",             example: "He is not my enemy.", level: 10 },
+    { word: "factory (n)",       meaning: "nhà máy",            example: "I worked in a factory.", level: 10 },
+    { word: "hungry (adj)",      meaning: "đói",                example: "I feel hungry.", level: 10 },
+    { word: "illegal (adj)",     meaning: "bất hợp pháp",       example: "That is illegal.", level: 10 },
+    { word: "law (n)",           meaning: "luật",               example: "We follow the law.", level: 10 },
+    { word: "nose (n)",          meaning: "mũi",                example: "My nose is cold.", level: 10 },
+    { word: "petrol (n)",        meaning: "xăng",               example: "The car needs petrol.", level: 10 },
+    { word: "proud (adj)",       meaning: "tự hào",             example: "I am proud of myself.", level: 10 },
+    { word: "responsible (adj)", meaning: "có trách nhiệm",     example: "I am responsible for my job.", level: 10 },
+    { word: "successful (adj)",  meaning: "thành công",         example: "He is successful.", level: 10 },
+    { word: "swim (v)",          meaning: "bơi",                example: "I can swim.", level: 10 },
+    { word: "available (adj)",   meaning: "có sẵn",             example: "I am available full-time.", level: 11 },
+    { word: "boat (n)",          meaning: "thuyền",             example: "They travel by boat.", level: 11 },
+    { word: "borrow (v)",        meaning: "mượn",               example: "I borrow money.", level: 11 },
+    { word: "coast (n)",         meaning: "bờ biển",            example: "The coast is beautiful.", level: 11 },
+    { word: "expression (n)",    meaning: "biểu cảm",           example: "His expression is serious.", level: 11 },
+    { word: "farm (n)",          meaning: "trang trại",         example: "He works on a farm.", level: 11 },
+    { word: "injure (v)",        meaning: "bị thương",          example: "He injured his leg.", level: 11 },
+    { word: "obtain (v)",        meaning: "đạt được",           example: "I want to obtain experience.", level: 11 },
+    { word: "peaceful (adj)",    meaning: "yên bình",           example: "It is a peaceful place.", level: 11 },
+    { word: "practise (v)",      meaning: "luyện tập",          example: "I practise English daily.", level: 11 },
+    { word: "recently (adv)",    meaning: "gần đây",            example: "I started recently.", level: 11 },
+    { word: "shape (n)",         meaning: "hình dạng",          example: "The plate has a round shape.", level: 11 },
+    { word: "silver (n/adj)",    meaning: "bạc",                example: "The spoon is silver.", level: 11 },
+    { word: "advantage (n)",     meaning: "lợi thế",            example: "English is an advantage.", level: 12 },
+    { word: "butter (n)",        meaning: "bơ",                 example: "I eat bread with butter.", level: 12 },
+    { word: "college (n)",       meaning: "cao đẳng",           example: "He studies at college.", level: 12 },
+    { word: "degree (n)",        meaning: "bằng cấp",           example: "She has a degree.", level: 12 },
+    { word: "escape (v)",        meaning: "trốn thoát",         example: "He escaped quickly.", level: 12 },
+    { word: "gate (n)",          meaning: "cổng",               example: "Wait at the gate.", level: 12 },
+    { word: "independent (adj)", meaning: "độc lập",            example: "I am independent.", level: 12 },
+    { word: "advice (n)",        meaning: "lời khuyên",         example: "She gave me good advice.", level: 1 },
+    { word: "son (n)",           meaning: "con trai",           example: "My son is very tall.", level: 1 },
+    { word: "they (pron)",       meaning: "họ",                 example: "They are my friends.", level: 1 },
+    { word: "careful (adj)",     meaning: "cẩn thận",           example: "Be careful on the road.", level: 1 },
+    { word: "everything (pron)", meaning: "mọi thứ",            example: "Everything is ready.", level: 1 },
+    { word: "many (det)",        meaning: "nhiều",              example: "There are many books on the shelf.", level: 1 },
+    { word: "place (n)",         meaning: "nơi chốn",           example: "This is a beautiful place.", level: 1 },
+    { word: "road (n)",          meaning: "con đường",          example: "The road is very long.", level: 1 },
+    { word: "where (adv)",       meaning: "ở đâu",              example: "Where do you live?", level: 1 },
+    { word: "country (n)",       meaning: "đất nước",           example: "Vietnam is a beautiful country.", level: 1 },
+    { word: "each (det)",        meaning: "mỗi",                example: "Each student has a book.", level: 1 },
+    { word: "his (pron)",        meaning: "của anh ấy",         example: "This is his car.", level: 1 },
+    { word: "soon (adv)",        meaning: "sớm",                example: "She will arrive soon.", level: 1 },
+    { word: "clean (adj)",       meaning: "sạch sẽ",            example: "The room is very clean.", level: 1 },
+    { word: "river (n)",         meaning: "con sông",           example: "We swam in the river.", level: 1 },
+    { word: "sit (v)",           meaning: "ngồi",               example: "Please sit down.", level: 1 },
+    { word: "cinema (n)",        meaning: "rạp chiếu phim",     example: "We went to the cinema last night.", level: 2 },
+    { word: "daughter (n)",      meaning: "con gái",            example: "Her daughter is very smart.", level: 1 },
+    { word: "cheese (n)",        meaning: "phô mai",            example: "I like cheese on my sandwich.", level: 2 },
+    { word: "land (n)",          meaning: "vùng đất",           example: "The land here is very fertile.", level: 2 },
+    { word: "kind (adj)",        meaning: "tốt bụng",           example: "She is a very kind person.", level: 1 },
+    { word: "peace (n)",         meaning: "hòa bình",           example: "We all want peace in the world.", level: 2 },
+    { word: "popular (adj)",     meaning: "phổ biến",           example: "This song is very popular.", level: 2 },
+    { word: "some (det)",        meaning: "một số",             example: "I need some help.", level: 1 },
+    { word: "there (adv)",       meaning: "ở đó",               example: "The book is over there.", level: 1 },
+    { word: "could (modal)",     meaning: "có thể (quá khứ)",   example: "Could you help me, please?", level: 1 },
+    { word: "egg (n)",           meaning: "quả trứng",          example: "I eat an egg every morning.", level: 1 },
+    { word: "chance (n)",        meaning: "cơ hội",             example: "This is a great chance to learn.", level: 2 },
+    { word: "may (modal)",       meaning: "có thể (hiện tại)",  example: "It may rain today.", level: 1 },
+    { word: "often (adv)",       meaning: "thường xuyên",       example: "She often reads before bed.", level: 1 },
+    { word: "prefer (v)",        meaning: "thích hơn",          example: "I prefer tea to coffee.", level: 2 },
+    { word: "put (v)",           meaning: "đặt",                example: "Please put the bag on the table.", level: 1 },
+    { word: "stone (n)",         meaning: "hòn đá",             example: "He threw a stone into the lake.", level: 2 },
+    { word: "such (det)",        meaning: "như vậy",            example: "I have never seen such a beautiful view.", level: 2 },
+    { word: "visit (v)",         meaning: "thăm",               example: "We will visit our grandparents.", level: 1 },
+    { word: "dinner (n)",        meaning: "bữa tối",            example: "We had dinner at a restaurant.", level: 1 },
+    { word: "explain (v)",       meaning: "giải thích",         example: "Can you explain this to me?", level: 2 },
+    { word: "get (v)",           meaning: "lấy/nhận",           example: "I need to get some water.", level: 1 },
+    { word: "interesting (adj)", meaning: "thú vị",             example: "This book is very interesting.", level: 1 },
+    { word: "move (v)",          meaning: "di chuyển",          example: "Please move your car.", level: 1 },
+    { word: "reach (v)",         meaning: "đến nơi",            example: "We reached the top of the mountain.", level: 2 },
+    { word: "set (v)",           meaning: "đặt/thiết lập",      example: "She set the table for dinner.", level: 2 },
+    { word: "should (modal)",    meaning: "nên",                example: "You should drink more water.", level: 1 },
+    { word: "dress (n)",         meaning: "váy đầm",            example: "She wore a beautiful dress.", level: 2 },
+    { word: "evening (n)",       meaning: "buổi tối",           example: "We went for a walk in the evening.", level: 1 },
+    { word: "have (v)",          meaning: "có",                 example: "I have two brothers.", level: 1 },
+    { word: "ill (adj)",         meaning: "ốm",                 example: "She stayed home because she was ill.", level: 2 },
+    { word: "drive (v)",         meaning: "lái xe",             example: "He drives to work every day.", level: 2 },
+    { word: "juice (n)",         meaning: "nước ép",            example: "I drink orange juice every morning.", level: 1 },
+    { word: "pretty (adj)",      meaning: "xinh đẹp",           example: "She has a pretty smile.", level: 2 },
+    { word: "quite (adv)",       meaning: "khá",                example: "The movie was quite good.", level: 2 },
+    { word: "spring (n)",        meaning: "mùa xuân",           example: "Flowers bloom in spring.", level: 2 },
+    { word: "star (n)",          meaning: "ngôi sao",           example: "The stars shine brightly at night.", level: 1 },
+    { word: "action (n)",        meaning: "hành động",          example: "We need to take action now.", level: 2 },
+    { word: "alone (adj)",       meaning: "một mình",           example: "She lives alone in the city.", level: 2 },
+    { word: "breakfast (n)",     meaning: "bữa sáng",           example: "I always eat breakfast at 7 a.m.", level: 1 },
+    { word: "dead (adj)",        meaning: "đã chết",            example: "The plant is dead.", level: 2 },
+    { word: "full (adj)",        meaning: "no/đầy",             example: "I am full after that big meal.", level: 1 },
+    { word: "garden (n)",        meaning: "khu vườn",           example: "She grows roses in her garden.", level: 1 },
+    { word: "house (n)",         meaning: "ngôi nhà",           example: "They bought a new house last year.", level: 1 },
+    { word: "nothing (pron)",    meaning: "không có gì",        example: "There is nothing in the box.", level: 1 },
+    { word: "price (n)",         meaning: "giá cả",             example: "The price of this phone is high.", level: 1 },
+    { word: "result (n)",        meaning: "kết quả",            example: "The exam results come out tomorrow.", level: 2 },
+    { word: "sister (n)",        meaning: "chị/em gái",         example: "My sister is a doctor.", level: 1 },
+    { word: "desert (n)",        meaning: "sa mạc",             example: "The Sahara is the largest desert.", level: 3 },
+    { word: "expensive (adj)",   meaning: "đắt tiền",           example: "This bag is too expensive for me.", level: 2 },
+    { word: "flower (n)",        meaning: "bông hoa",           example: "She gave me a beautiful flower.", level: 1 },
+    { word: "church (n)",        meaning: "nhà thờ",            example: "They got married in a church.", level: 2 },
+    { word: "impossible (adj)",  meaning: "không thể",          example: "Nothing is impossible if you try.", level: 3 },
+    { word: "month (n)",         meaning: "tháng",              example: "She visits her parents every month.", level: 1 },
+    { word: "on (prep)",         meaning: "trên",               example: "The book is on the table.", level: 1 },
+    { word: "plan (n)",          meaning: "kế hoạch",           example: "We have a plan for the weekend.", level: 1 },
+    { word: "possible (adj)",    meaning: "có thể",             example: "Is it possible to finish by Friday?", level: 2 },
+    { word: "return (v)",        meaning: "trở về",             example: "He will return home next week.", level: 2 },
+    { word: "something (pron)",  meaning: "điều gì đó",         example: "There is something in my bag.", level: 1 },
+    { word: "together (adv)",    meaning: "cùng nhau",          example: "Let's work together.", level: 1 },
+    { word: "cover (v)",         meaning: "che phủ",            example: "Snow covered the ground.", level: 2 },
+    { word: "decision (n)",      meaning: "quyết định",         example: "Making a decision is not always easy.", level: 2 },
+    { word: "how (adv)",         meaning: "như thế nào",        example: "How do you feel today?", level: 1 },
+    { word: "position (n)",      meaning: "vị trí",             example: "He has a high position in the company.", level: 3 },
+    { word: "present (adj)",     meaning: "hiện tại",           example: "Let's focus on the present moment.", level: 3 },
+    { word: "record (n)",        meaning: "kỷ lục/hồ sơ",      example: "She broke the world record.", level: 3 },
+    { word: "under (prep)",      meaning: "dưới",               example: "The cat is under the table.", level: 1 },
+    { word: "catch (v)",         meaning: "bắt",                example: "He tried to catch the ball.", level: 2 },
+    { word: "distance (n)",      meaning: "khoảng cách",        example: "The distance between two cities is 200 km.", level: 3 },
+    { word: "education (n)",     meaning: "giáo dục",           example: "Education is very important for children.", level: 3 },
+    { word: "fast (adj)",        meaning: "nhanh",              example: "He is a fast runner.", level: 1 },
+    { word: "interest (n)",      meaning: "sự quan tâm",        example: "She has an interest in music.", level: 2 },
+    { word: "letter (n)",        meaning: "bức thư",            example: "I received a letter from my friend.", level: 1 },
+    { word: "never (adv)",       meaning: "không bao giờ",      example: "I have never been to Paris.", level: 1 },
+    { word: "part (n)",          meaning: "phần",               example: "This is the best part of the movie.", level: 1 },
+    { word: "president (n)",     meaning: "tổng thống",         example: "The president gave a speech.", level: 3 },
+    { word: "round (adj)",       meaning: "tròn",               example: "The table has a round shape.", level: 2 },
+    { word: "several (det)",     meaning: "vài",                example: "I have visited this place several times.", level: 2 },
+    { word: "bread (n)",         meaning: "bánh mì",            example: "She bought a loaf of bread.", level: 1 },
+    { word: "control (v)",       meaning: "kiểm soát",          example: "Try to control your emotions.", level: 3 },
+    { word: "dear (adj)",        meaning: "thân mến",           example: "She is a dear friend of mine.", level: 2 },
+    { word: "every (det)",       meaning: "mỗi (tất cả)",       example: "He goes jogging every morning.", level: 1 },
+    { word: "chief (n)",         meaning: "thủ lĩnh/trưởng",    example: "He is the chief of the village.", level: 3 },
+    { word: "invite (v)",        meaning: "mời",                example: "She invited me to her birthday party.", level: 2 },
+    { word: "late (adj)",        meaning: "muộn",               example: "He arrived late to the meeting.", level: 1 },
+    { word: "most (det)",        meaning: "hầu hết",            example: "Most students passed the exam.", level: 1 },
+    { word: "product (n)",       meaning: "sản phẩm",           example: "This product is very popular.", level: 2 },
+    { word: "receive (v)",       meaning: "nhận",               example: "She received a gift from her mother.", level: 2 },
+    { word: "then (adv)",        meaning: "sau đó",             example: "We had lunch and then went for a walk.", level: 1 },
+    { word: "bring (v)",         meaning: "mang đến",           example: "Please bring your notebook to class.", level: 1 },
+    { word: "carry (v)",         meaning: "mang/vác",           example: "Can you carry this box for me?", level: 1 },
+    { word: "confirm (v)",       meaning: "xác nhận",           example: "Please confirm your reservation.", level: 3 },
+    { word: "east (n)",          meaning: "phía đông",          example: "The sun rises in the east.", level: 2 },
+    { word: "industry (n)",      meaning: "công nghiệp",        example: "The car industry is very important.", level: 3 },
+    { word: "must (modal)",      meaning: "phải",               example: "You must wear a seatbelt.", level: 1 },
+    { word: "own (adj)",         meaning: "của chính mình",     example: "She has her own business.", level: 1 },
+    { word: "service (n)",       meaning: "dịch vụ",            example: "The service at this hotel is excellent.", level: 2 },
+    { word: "shall (modal)",     meaning: "sẽ",                 example: "Shall we go for a walk?", level: 2 },
+    { word: "stay (v)",          meaning: "ở lại",              example: "We decided to stay home tonight.", level: 1 },
+    { word: "their (pron)",      meaning: "của họ",             example: "This is their house.", level: 1 },
+    { word: "wife (n)",          meaning: "vợ",                 example: "His wife is a teacher.", level: 1 },
+    { word: "cost (n)",          meaning: "chi phí",            example: "The cost of living is high in the city.", level: 2 },
+    { word: "deep (adj)",        meaning: "sâu",                example: "The lake is very deep.", level: 2 },
+    { word: "enough (det)",      meaning: "đủ",                 example: "Do we have enough food?", level: 1 },
+    { word: "fight (v)",         meaning: "chiến đấu",          example: "They fought for their freedom.", level: 3 },
+    { word: "garage (n)",        meaning: "gara",               example: "He parked his car in the garage.", level: 3 },
+    { word: "into (prep)",       meaning: "vào trong",          example: "She walked into the room.", level: 1 },
+    { word: "other (det)",       meaning: "khác",               example: "Do you have any other questions?", level: 1 },
+    { word: "rather (adv)",      meaning: "khá/hơn là",         example: "I would rather stay home tonight.", level: 2 },
+    { word: "remain (v)",        meaning: "ở lại/còn lại",      example: "Only a few students remain in the class.", level: 3 },
+    { word: "side (n)",          meaning: "phía/cạnh",          example: "She sat on the other side of the table.", level: 2 },
+    { word: "south (n)",         meaning: "phía nam",           example: "They drove south for three hours.", level: 2 },
+    { word: "who (pron)",        meaning: "ai",                 example: "Who is that man?", level: 1 },
+    { word: "already (adv)",     meaning: "đã rồi",             example: "I have already finished my homework.", level: 1 },
+    { word: "become (v)",        meaning: "trở thành",          example: "She wants to become a doctor.", level: 2 },
+    { word: "cause (n)",         meaning: "nguyên nhân",        example: "What was the cause of the accident?", level: 3 },
+    { word: "certain (adj)",     meaning: "chắc chắn",          example: "I am certain that he will come.", level: 2 },
+    { word: "describe (v)",      meaning: "mô tả",              example: "Can you describe what you saw?", level: 3 },
+    { word: "dry (adj)",         meaning: "khô",                example: "The weather is dry in summer.", level: 2 },
+    { word: "expect (v)",        meaning: "mong đợi",           example: "I expect to hear from her soon.", level: 3 },
+    { word: "fact (n)",          meaning: "sự thật",            example: "It is a fact that the earth is round.", level: 2 },
+    { word: "hard (adj)",        meaning: "khó/chăm chỉ",       example: "This exercise is very hard.", level: 1 },
+    { word: "include (v)",       meaning: "bao gồm",            example: "The price includes breakfast.", level: 3 },
+    { word: "let (v)",           meaning: "cho phép",           example: "Let me help you with that.", level: 1 },
+    { word: "moment (n)",        meaning: "khoảnh khắc",        example: "Wait a moment, please.", level: 2 },
+    { word: "power (n)",         meaning: "sức mạnh",           example: "Knowledge is power.", level: 3 },
+    { word: "provide (v)",       meaning: "cung cấp",           example: "The company provides free meals.", level: 3 },
+    { word: "system (n)",        meaning: "hệ thống",           example: "The new system works very well.", level: 3 },
+    { word: "through (prep)",    meaning: "qua",                example: "We walked through the forest.", level: 2 },
+    { word: "which (pron)",      meaning: "cái nào",            example: "Which book do you prefer?", level: 1 },
+    { word: "colour (n)",        meaning: "màu sắc",            example: "What is your favourite colour?", level: 1 },
+    { word: "earth (n)",         meaning: "trái đất",           example: "The earth moves around the sun.", level: 2 },
+    { word: "glad (adj)",        meaning: "vui mừng",           example: "I am glad to see you again.", level: 2 },
+    { word: "hour (n)",          meaning: "tiếng đồng hồ",      example: "The meeting lasted one hour.", level: 1 },
+    { word: "rain (n)",          meaning: "mưa",                example: "The rain fell heavily last night.", level: 1 },
+    { word: "summer (n)",        meaning: "mùa hè",             example: "We go to the beach every summer.", level: 1 },
+    { word: "desk (n)",          meaning: "bàn làm việc",       example: "My laptop is on my desk.", level: 1 },
+    { word: "ear (n)",           meaning: "tai",                example: "He whispered in her ear.", level: 1 },
+    { word: "fish (n)",          meaning: "cá",                 example: "We had fish for dinner.", level: 1 },
+    { word: "ice (n)",           meaning: "nước đá",            example: "She put ice in her drink.", level: 1 },
+    { word: "office (n)",        meaning: "văn phòng",          example: "He works in an office downtown.", level: 2 },
+    { word: "parent (n)",        meaning: "phụ huynh",          example: "Her parents are very supportive.", level: 1 },
+    { word: "post (n)",          meaning: "bưu điện/bài đăng",  example: "I sent the letter by post.", level: 2 },
+    { word: "rock (n)",          meaning: "đá/tảng đá",         example: "They sat on a rock by the sea.", level: 2 },
+    { word: "valley (n)",        meaning: "thung lũng",         example: "The village is in a quiet valley.", level: 3 },
+    { word: "walk (v)",          meaning: "đi bộ",              example: "I walk to school every day.", level: 1 },
+    { word: "central (adj)",     meaning: "trung tâm",          example: "The hotel is in a central location.", level: 3 },
+    { word: "direction (n)",     meaning: "hướng/chỉ đường",    example: "Can you give me directions to the station?", level: 3 },
+    { word: "gift (n)",          meaning: "món quà",            example: "She received a gift for her birthday.", level: 1 },
+    { word: "high (adj)",        meaning: "cao",                example: "The mountain is very high.", level: 1 },
+    { word: "illness (n)",       meaning: "bệnh tật",           example: "He missed school due to illness.", level: 3 },
+    { word: "not (adv)",         meaning: "không",              example: "I do not like spicy food.", level: 1 },
+    { word: "piece (n)",         meaning: "mảnh/miếng",         example: "Can I have a piece of cake?", level: 1 },
+    { word: "protect (v)",       meaning: "bảo vệ",             example: "We must protect the environment.", level: 3 },
+    { word: "race (n)",          meaning: "cuộc đua",           example: "She won the race easily.", level: 3 },
+    { word: "slow (adj)",        meaning: "chậm",               example: "The traffic is very slow today.", level: 1 },
+    { word: "well (adv)",        meaning: "tốt",                example: "She speaks English very well.", level: 1 },
+    { word: "accident (n)",      meaning: "tai nạn",            example: "There was a bad accident on the highway.", level: 3 },
+    { word: "blood (n)",         meaning: "máu",                example: "He donated blood at the hospital.", level: 3 },
+    { word: "business (n)",      meaning: "kinh doanh",         example: "She runs her own business.", level: 3 },
+    { word: "during (prep)",     meaning: "trong suốt",         example: "I fell asleep during the movie.", level: 2 },
+    { word: "even (adv)",        meaning: "thậm chí",           example: "Even children can understand this.", level: 2 },
+    { word: "floor (n)",         meaning: "sàn nhà/tầng",       example: "The ball rolled across the floor.", level: 1 },
+    { word: "general (adj)",     meaning: "chung/tổng quát",    example: "In general, the weather is nice here.", level: 3 },
+    { word: "choose (v)",        meaning: "chọn",               example: "You can choose any colour you like.", level: 2 },
+    { word: "inform (v)",        meaning: "thông báo",          example: "Please inform me when you arrive.", level: 3 },
+    { word: "pink (adj)",        meaning: "màu hồng",           example: "She wore a pink dress to the party.", level: 1 },
+    { word: "snow (n)",          meaning: "tuyết",              example: "The children played in the snow.", level: 2 },
+    { word: "both (det)",        meaning: "cả hai",             example: "Both students passed the exam.", level: 1 },
+    { word: "decide (v)",        meaning: "quyết định",         example: "We decided to go on a trip.", level: 2 },
+    { word: "ever (adv)",        meaning: "từng",               example: "Have you ever been to Japan?", level: 1 },
+    { word: "field (n)",         meaning: "cánh đồng",          example: "The children played in the field.", level: 2 },
+    { word: "heart (n)",         meaning: "trái tim",           example: "She has a kind heart.", level: 1 },
+    { word: "imagine (v)",       meaning: "tưởng tượng",        example: "Imagine living on a tropical island.", level: 3 },
+    { word: "meat (n)",          meaning: "thịt",               example: "He doesn't eat meat.", level: 1 },
+    { word: "over (prep)",       meaning: "trên/qua",           example: "The plane flew over the mountains.", level: 1 },
+    { word: "pull (v)",          meaning: "kéo",                example: "Pull the door to open it.", level: 2 },
+    { word: "ring (n)",          meaning: "chiếc nhẫn",         example: "She wore a gold ring on her finger.", level: 2 },
+    { word: "similar (adj)",     meaning: "tương tự",           example: "Our opinions are very similar.", level: 3 },
+    { word: "cornet (n)",        meaning: "kèn cornet",         example: "He plays the cornet in a jazz band.", level: 4 },
+    { word: "built (v)",         meaning: "đã xây dựng",        example: "The shop was built in 2020.", level: 3 }
 ];
 
-// ==================== GAME CONFIG ====================
-const levelRewards = Array.from({ length: 20 }, (_, i) => {
-    const level = i + 1;
-    const reward = (100 * level).toLocaleString();
-    const milestone = [5, 10, 15, 20].includes(level);
-    return { level, reward, milestone };
-});
-
 // ==================== GAME STATE ====================
-let gameState = {
-    currentLevel: 1,
-    totalScore: 0,
-    bestScore: 0,
-    currentQuestion: null,
-    usedQuestions: [],
-    timer: null,
-    timeLeft: 30,
-    isWrong: false
+let gs = {
+    qNum:       1,
+    score:      0,
+    best:       0,
+    streak:     0,
+    question:   null,
+    pool:       [],
+    poolIdx:    0,
+    timer:      null,
+    timeLeft:   30
 };
 
-let questionPlan = [];
-
 // ==================== STORAGE ====================
-function loadGameState() {
-    try {
-        const saved = localStorage.getItem('englishMillionaireSave');
-        if (saved) {
-            const data = JSON.parse(saved);
-            gameState.bestScore = data.bestScore || 0;
-        }
-    } catch(e) { gameState.bestScore = 0; }
+function loadState() {
+    try { const d = JSON.parse(localStorage.getItem('eq3')||'{}'); gs.best = d.best || 0; } catch(e) {}
+}
+function saveState() {
+    try { localStorage.setItem('eq3', JSON.stringify({ best: gs.best })); } catch(e) {}
 }
 
-function saveGameState() {
-    try {
-        localStorage.setItem('englishMillionaireSave', JSON.stringify({ bestScore: gameState.bestScore }));
-    } catch(e) {}
+// ==================== HELPERS ====================
+function shuffle(a) {
+    const b = [...a];
+    for (let i = b.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [b[i], b[j]] = [b[j], b[i]];
+    }
+    return b;
+}
+
+function nextWord() {
+    if (gs.poolIdx >= gs.pool.length) { gs.pool = shuffle(vocabulary); gs.poolIdx = 0; }
+    return gs.pool[gs.poolIdx++];
 }
 
 // ==================== INIT ====================
 function init() {
     createParticles();
-    loadGameState();
-    createLadder();
+    loadState();
     updateUI();
 }
 
 function createParticles() {
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 30; i++) {
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.top  = Math.random() * 100 + '%';
-        p.style.animationDelay    = Math.random() * 6 + 's';
-        p.style.animationDuration = (Math.random() * 4 + 4) + 's';
-        container.appendChild(p);
+        p.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${Math.random()*4+4}s`;
+        c.appendChild(p);
     }
 }
 
-function createLadder() {
-    const container = document.getElementById('ladderItems');
-    container.innerHTML = '';
-    for (let i = levelRewards.length - 1; i >= 0; i--) {
-        const item = levelRewards[i];
-        const div  = document.createElement('div');
-        div.className = 'ladder-item' + (item.milestone ? ' milestone' : '');
-        div.id = `ladder-${item.level}`;
-        div.innerHTML = `
-            <span class="ladder-level">Câu ${item.level}</span>
-            <span class="ladder-reward">${item.reward} điểm</span>
-            <span class="ladder-icon"></span>
-        `;
-        container.appendChild(div);
-    }
-}
-
-function updateLadder() {
-    levelRewards.forEach(item => {
-        const el = document.getElementById(`ladder-${item.level}`);
-        if (!el) return;
-        el.classList.remove('current', 'completed');
-        const icon = el.querySelector('.ladder-icon');
-        if (item.level < gameState.currentLevel) {
-            el.classList.add('completed');
-            icon.textContent = '✓';
-        } else if (item.level === gameState.currentLevel) {
-            el.classList.add('current');
-            icon.textContent = '👉';
-        } else {
-            icon.textContent = '';
-        }
-    });
-}
-
-// ==================== HELPERS ====================
-function shuffleArray(arr) {
-    const copy = [...arr];
-    for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-}
-
-function buildQuestionPlan() {
-    const plan = [];
-    const usedWords = new Set();
-
-    for (let lvl = 1; lvl <= 20; lvl++) {
-        let pool = vocabulary.filter(v => v.level === lvl && !usedWords.has(v.word));
-        if (!pool.length) pool = vocabulary.filter(v => v.level <= lvl && !usedWords.has(v.word));
-        if (!pool.length) pool = vocabulary;
-
-        const picked = pool[Math.floor(Math.random() * pool.length)];
-        usedWords.add(picked.word);
-        plan.push(picked);
-    }
-    return plan;
-}
-
-// ==================== GAME FLOW ====================
+// ==================== GAME ====================
 function startGame() {
     document.getElementById('startScreen').style.display = 'none';
-    resetGame();
+    gs.qNum   = 1;
+    gs.score  = 0;
+    gs.streak = 0;
+    gs.pool   = shuffle(vocabulary);
+    gs.poolIdx = 0;
+    updateUI();
     loadQuestion();
 }
 
-function resetGame() {
-    gameState.currentLevel  = 1;
-    gameState.totalScore    = 0;
-    gameState.usedQuestions = [];
-    gameState.isWrong       = false;
-    questionPlan = buildQuestionPlan();
-    updateUI();
-    updateLadder();
-}
-
 function loadQuestion() {
-    const question = questionPlan[gameState.currentLevel - 1];
-    gameState.currentQuestion = question;
+    const q = nextWord();
+    gs.question = q;
 
-    const wrongPool = vocabulary.filter(v =>
-        v.word !== question.word &&
-        Math.abs((v.level || 1) - (question.level || 1)) <= 2
-    );
-    const candidates = wrongPool.length ? wrongPool : vocabulary.filter(v => v.word !== question.word);
-    const wrongAnswers = shuffleArray(candidates).slice(0, 3).map(v => v.meaning);
-
-    // Make sure no duplicate meanings
-    const uniqueWrong = [...new Set(wrongAnswers)].filter(m => m !== question.meaning).slice(0, 3);
-    while (uniqueWrong.length < 3) {
-        const fallback = vocabulary.filter(v => v.word !== question.word && !uniqueWrong.includes(v.meaning) && v.meaning !== question.meaning);
-        if (!fallback.length) break;
-        uniqueWrong.push(fallback[Math.floor(Math.random() * fallback.length)].meaning);
+    // Build 5 unique wrong answers
+    const others = vocabulary.filter(v => v.word !== q.word && v.meaning !== q.meaning);
+    const close  = others.filter(v => Math.abs((v.level||1) - (q.level||1)) <= 2);
+    const src    = close.length >= 5 ? close : others;
+    const wrongSet = new Set();
+    for (const v of shuffle(src)) {
+        wrongSet.add(v.meaning);
+        if (wrongSet.size === 5) break;
+    }
+    // fill if needed
+    if (wrongSet.size < 5) {
+        for (const v of shuffle(vocabulary)) {
+            if (v.meaning !== q.meaning && !wrongSet.has(v.meaning)) wrongSet.add(v.meaning);
+            if (wrongSet.size === 5) break;
+        }
     }
 
-    const answers = shuffleArray([...uniqueWrong, question.meaning]);
+    const answers = shuffle([...wrongSet, q.meaning]);
 
-    document.getElementById('questionNumber').textContent  = `Câu hỏi ${gameState.currentLevel} / 20`;
-    document.getElementById('questionText').textContent    = question.word;
-    document.getElementById('questionExample').textContent = question.example ? `"${question.example}"` : '';
+    document.getElementById('questionNumber').textContent  = `Câu ${gs.qNum}`;
+    document.getElementById('questionText').textContent    = q.word;
+    document.getElementById('questionExample').textContent = q.example ? `"${q.example}"` : '';
 
     const grid = document.getElementById('answersGrid');
     grid.innerHTML = '';
-    answers.forEach(answer => {
+    answers.forEach(ans => {
         const btn = document.createElement('button');
         btn.className = 'answer-btn';
-        btn.textContent = answer;
-        btn.onclick = () => checkAnswer(answer);
+        btn.textContent = ans;
+        btn.onclick = () => checkAnswer(ans);
         grid.appendChild(btn);
     });
 
@@ -931,74 +878,45 @@ function loadQuestion() {
 }
 
 function startTimer() {
-    gameState.timeLeft = 30;
+    gs.timeLeft = 30;
     const fill = document.getElementById('timerFill');
-    clearInterval(gameState.timer);
-    gameState.timer = setInterval(() => {
-        gameState.timeLeft -= 0.1;
-        fill.style.width = Math.max(0, (gameState.timeLeft / 30) * 100) + '%';
-        if (gameState.timeLeft <= 0) {
-            clearInterval(gameState.timer);
-            checkAnswer(null);
-        }
+    clearInterval(gs.timer);
+    gs.timer = setInterval(() => {
+        gs.timeLeft -= 0.1;
+        fill.style.width = Math.max(0, (gs.timeLeft / 30) * 100) + '%';
+        if (gs.timeLeft <= 0) { clearInterval(gs.timer); checkAnswer(null); }
     }, 100);
 }
 
 function checkAnswer(answer) {
-    clearInterval(gameState.timer);
-    const buttons = document.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => { btn.onclick = null; });
+    clearInterval(gs.timer);
+    document.querySelectorAll('.answer-btn').forEach(b => { b.onclick = null; });
 
-    const correct = answer === gameState.currentQuestion.meaning;
+    const q = gs.question;
+    const ok = answer === q.meaning;
 
-    if (correct) {
-        buttons.forEach(btn => {
-            if (btn.textContent === answer) btn.classList.add('correct');
-        });
+    document.querySelectorAll('.answer-btn').forEach(b => {
+        if (b.textContent === q.meaning) b.classList.add('correct');
+        else if (!answer || b.textContent === answer) b.classList.add('wrong');
+    });
 
-        const reward = parseInt(levelRewards[gameState.currentLevel - 1].reward.replace(/,/g, ''));
-        gameState.totalScore += reward;
-
-        if (gameState.currentLevel === 20) {
-            gameState.isWrong = false;
-            setTimeout(() => showFeedback('🎉', 'CHIẾN THẮNG!',
-                `Chúc mừng! Bạn đã chinh phục 20 câu hỏi!\nTổng điểm: ${gameState.totalScore.toLocaleString()} điểm`), 800);
-        } else {
-            setTimeout(() => showFeedback('✅', 'Chính xác!',
-                `+${reward.toLocaleString()} điểm\n"${gameState.currentQuestion.word}" nghĩa là "${gameState.currentQuestion.meaning}"`), 500);
-        }
-
+    if (ok) {
+        gs.streak++;
+        const bonus  = Math.floor(gs.streak / 5) * 50;
+        const pts    = 100 + bonus;
+        gs.score    += pts;
+        if (gs.score > gs.best) { gs.best = gs.score; saveState(); }
+        updateUI();
+        const bonusMsg = bonus > 0 ? `\n🔥 Chuỗi ${gs.streak}! +${bonus} thưởng!` : '';
+        setTimeout(() => showFeedback('✅', 'Chính xác!',
+            `+${pts} điểm${bonusMsg}\n\n"${q.word}" = "${q.meaning}"`), 400);
     } else {
-        buttons.forEach(btn => {
-            if (btn.textContent === gameState.currentQuestion.meaning) {
-                btn.classList.add('correct');
-            } else if (answer === null || btn.textContent === answer) {
-                btn.classList.add('wrong');
-            }
-        });
-
-        gameState.isWrong = true;
-
-        let finalScore = 0;
-        for (let i = gameState.currentLevel - 1; i >= 0; i--) {
-            if (levelRewards[i].milestone) {
-                finalScore = parseInt(levelRewards[i].reward.replace(/,/g, ''));
-                break;
-            }
-        }
-
-        gameState.totalScore = finalScore;
-
-        setTimeout(() => showFeedback('❌', 'Trả lời sai!',
-            `Đáp án đúng: "${gameState.currentQuestion.meaning}"\n\nBạn về mốc an toàn với ${finalScore.toLocaleString()} điểm\n\n"${gameState.currentQuestion.word}" - ${gameState.currentQuestion.meaning}\nVí dụ: ${gameState.currentQuestion.example}`), 500);
+        gs.streak = 0;
+        updateUI();
+        const timeMsg = !answer ? '\n⏰ Hết thời gian!' : '';
+        setTimeout(() => showFeedback('❌', 'Sai rồi!',
+            `${timeMsg}Đáp án đúng: "${q.meaning}"\n\nVí dụ: ${q.example}`), 400);
     }
-
-    if (gameState.totalScore > gameState.bestScore) {
-        gameState.bestScore = gameState.totalScore;
-        saveGameState();
-    }
-
-    updateUI();
 }
 
 function showFeedback(icon, title, text) {
@@ -1008,22 +926,22 @@ function showFeedback(icon, title, text) {
     document.getElementById('feedbackOverlay').style.display = 'flex';
 }
 
-function handleFeedbackAction() {
+function nextQuestion() {
     document.getElementById('feedbackOverlay').style.display = 'none';
-    if (gameState.isWrong || gameState.currentLevel === 20) {
-        document.getElementById('startScreen').style.display = 'flex';
-        resetGame();
-    } else {
-        gameState.currentLevel++;
-        updateLadder();
-        loadQuestion();
-    }
+    gs.qNum++;
+    loadQuestion();
+    updateUI();
 }
 
 function updateUI() {
-    document.getElementById('currentLevel').textContent = gameState.currentLevel;
-    document.getElementById('totalScore').textContent   = gameState.totalScore.toLocaleString();
-    document.getElementById('bestScore').textContent    = gameState.bestScore.toLocaleString();
+    document.getElementById('statQuestion').textContent = gs.qNum;
+    document.getElementById('statScore').textContent    = gs.score.toLocaleString();
+    document.getElementById('statStreak').textContent   = `${gs.streak} 🔥`;
+    document.getElementById('statBest').textContent     = gs.best.toLocaleString();
+
+    const pct = Math.min((gs.streak % 5) / 5 * 100, 100);
+    document.getElementById('streakFill').style.width  = pct + '%';
+    document.getElementById('streakCount').textContent = `${gs.streak % 5} / 5`;
 }
 
 init();
