@@ -21,6 +21,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .streak-badge{display:flex;align-items:center;gap:5px;background:rgba(224,255,79,.1);border:1px solid rgba(224,255,79,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent);}
 .mode-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;}
 .mode-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+.list-btn{background:rgba(79,195,247,.1);border:1px solid rgba(79,195,247,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent3);cursor:pointer;transition:all .2s;}
+.list-btn:hover{background:rgba(79,195,247,.2);}
 .autoplay-btn{display:flex;align-items:center;gap:5px;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;border:1px solid;}
 .autoplay-btn.off{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.45);}
 .autoplay-btn.on{background:rgba(224,255,79,.13);border-color:rgba(224,255,79,.4);color:var(--accent);}
@@ -58,18 +60,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge-review{background:rgba(251,191,36,.15);color:#fbbf24;}
 .badge-known{background:rgba(74,222,128,.15);color:var(--green);}
 
-/* WORD: single line, never wraps, font-size set by JS */
 .card-word-wrap{width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
 .card-word{
-  font-family:'Syne',sans-serif;
-  font-weight:800;
-  line-height:1;
+  font-family:'Syne',sans-serif;font-weight:800;line-height:1;
   background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  white-space:nowrap;
-  display:block;
-  font-size:72px;
-  letter-spacing:-2px;
+  white-space:nowrap;display:block;font-size:72px;letter-spacing:-2px;
 }
 
 .card-ipa{font-size:clamp(18px,7vw,42px);font-weight:700;color:var(--accent3);font-style:italic;margin-bottom:18px;letter-spacing:.5px;text-shadow:0 0 24px rgba(79,195,247,.35);line-height:1.1;}
@@ -98,6 +94,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 .swipe-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.18);padding-bottom:2px;flex-shrink:0;}
 
+/* ── MODE PANEL ── */
 .mode-panel{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
 .mode-panel.open{opacity:1;pointer-events:all;}
 .mode-sheet{background:#13131a;border-radius:24px 24px 0 0;padding:20px 20px 36px;border-top:1px solid rgba(255,255,255,.08);transform:translateY(40px);transition:transform .3s cubic-bezier(.34,1.3,.64,1);max-height:90dvh;overflow-y:auto;}
@@ -118,6 +115,40 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .speed-pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;font-family:inherit;}
 .speed-pill.active{background:rgba(224,255,79,.2);border-color:rgba(224,255,79,.5);color:var(--accent);}
 
+/* ── VOCAB LIST PANEL ── */
+.list-panel{position:fixed;inset:0;z-index:160;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s cubic-bezier(.34,1.2,.64,1);max-width:480px;margin:0 auto;}
+.list-panel.open{transform:translateX(0);}
+.list-header{display:flex;align-items:center;gap:12px;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
+.list-back{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;}
+.list-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;flex:1;}
+.list-word-count{font-size:12px;color:var(--muted);}
+.list-toolbar{display:flex;gap:8px;padding:10px 18px;flex-shrink:0;flex-wrap:wrap;}
+.list-search{flex:1;min-width:140px;height:36px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);padding:0 14px;font-size:13px;font-family:inherit;outline:none;}
+.list-search:focus{border-color:rgba(79,195,247,.5);}
+.list-search::placeholder{color:rgba(255,255,255,.3);}
+.list-filter{height:34px;padding:0 12px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:12px;font-family:inherit;cursor:pointer;outline:none;}
+.list-filter:focus{border-color:rgba(79,195,247,.4);}
+.list-filter option{background:#1a1a2e;color:#fff;}
+.list-count-bar{padding:0 18px 6px;font-size:11px;color:var(--muted);flex-shrink:0;}
+.list-scroll{flex:1;overflow-y:auto;padding:0 14px 20px;}
+.list-scroll::-webkit-scrollbar{width:3px;}
+.list-scroll::-webkit-scrollbar-track{background:transparent;}
+.list-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px;}
+.vl-table{width:100%;border-collapse:collapse;}
+.vl-table thead th{position:sticky;top:0;background:var(--bg);z-index:2;font-size:10px;font-weight:700;color:var(--muted);padding:8px 8px 6px;text-align:left;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid rgba(255,255,255,.07);}
+.vl-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;cursor:pointer;}
+.vl-table tbody tr:hover{background:rgba(255,255,255,.04);}
+.vl-table tbody tr:last-child{border-bottom:none;}
+.vl-table td{padding:10px 8px;vertical-align:middle;}
+.td-num{font-size:11px;color:rgba(255,255,255,.2);width:28px;}
+.td-word{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;}
+.td-ipa{font-size:12px;color:var(--accent3);font-style:italic;}
+.td-vn{font-size:13px;color:rgba(255,255,255,.75);}
+.td-badge{display:inline-block;background:rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;font-size:10px;color:rgba(255,255,255,.45);font-weight:600;}
+.td-topic{font-size:10px;color:rgba(255,255,255,.3);}
+.vl-empty{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px;}
+
+/* ── DONE / START ── */
 .done-screen{display:none;position:absolute;inset:0;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px;z-index:100;}
 .done-screen.show{display:flex;}
 .done-emoji{font-size:64px;margin-bottom:20px;}
@@ -146,6 +177,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="logo">/<span>/</span></div>
   <div class="header-right">
     <div class="streak-badge">🔥 <span id="streak-num">1</span> ngày</div>
+    <button class="list-btn" onclick="openListPanel()">📋 Từ vựng</button>
     <button class="autoplay-btn off" id="autoplay-btn" onclick="toggleAutoplay()">
       <span class="autoplay-icon">⏵</span><span id="autoplay-label">Tự động</span>
     </button>
@@ -197,6 +229,41 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <button class="btn-remember btn-knew" onclick="rateCard(true)">✅ Nhớ rồi</button>
 </div>
 
+<!-- ── VOCAB LIST PANEL ── -->
+<div class="list-panel" id="list-panel">
+  <div class="list-header">
+    <button class="list-back" onclick="closeListPanel()">←</button>
+    <div class="list-title">📋 Danh sách từ vựng</div>
+    <div class="list-word-count" id="list-total"></div>
+  </div>
+  <div class="list-toolbar">
+    <input class="list-search" id="list-search" type="text" placeholder="🔍 Tìm từ, nghĩa, IPA..." oninput="filterVocabList()">
+    <select class="list-filter" id="list-topic-filter" onchange="filterVocabList()">
+      <option value="">Tất cả chủ đề</option>
+    </select>
+    <select class="list-filter" id="list-type-filter" onchange="filterVocabList()">
+      <option value="">Tất cả loại từ</option>
+    </select>
+  </div>
+  <div class="list-count-bar" id="list-count-bar"></div>
+  <div class="list-scroll">
+    <table class="vl-table">
+      <thead>
+        <tr>
+          <th class="td-num">#</th>
+          <th>Từ vựng</th>
+          <th>IPA</th>
+          <th>Nghĩa tiếng Việt</th>
+          <th>Loại</th>
+          <th>Chủ đề</th>
+        </tr>
+      </thead>
+      <tbody id="list-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── MODE PANEL ── -->
 <div class="mode-panel" id="mode-panel" onclick="closeModeOnBg(event)">
   <div class="mode-sheet">
     <div class="mode-title">Chọn chế độ học</div>
@@ -578,7 +645,7 @@ function updateAutoplayUI(){
 }
 function startProgressBar(){
   const track=document.getElementById('progress-track'),label=document.getElementById('progress-label');
-  track.style.transition='none';track.classList.remove('running','full');track.style.transform='scaleX(0)';
+  track.style.transition='none';track.style.transform='scaleX(0)';
   void track.offsetWidth;
   track.style.transition='transform '+autoplaySeconds+'s linear';track.style.transform='scaleX(1)';
   let remaining=autoplaySeconds;label.textContent='⏱ '+remaining+'s';
@@ -600,24 +667,17 @@ const GRADS=['linear-gradient(135deg,#1a1a2e,#0f1b35)','linear-gradient(135deg,#
 const card=document.getElementById('main-card');
 const indUp=document.getElementById('ind-up'),indDown=document.getElementById('ind-down');
 
-// ── FONT SCALING ENGINE ────────────────────────────────────────────────────
-// Strategy: use Canvas 2D measureText (accurate, off-DOM) with binary search.
-// Falls back to DOM-based shrink loop if canvas not available.
 const _cvs=document.createElement('canvas');
 const _ctx2d=_cvs.getContext('2d');
-
 function scaleWordFont(){
   const el=document.getElementById('c-word');
   if(!el||!card)return;
   const text=el.textContent||'';
   if(!text)return;
-  // Card horizontal padding = 20px each side = 40px total
   const available=card.offsetWidth-40;
   if(available<=0)return;
-
   let bestSize=20;
   if(_ctx2d){
-    // Binary search: find largest size where text fits
     let lo=20,hi=96;
     while(lo<=hi){
       const mid=(lo+hi)>>1;
@@ -626,17 +686,14 @@ function scaleWordFont(){
       else hi=mid-1;
     }
   }else{
-    // DOM fallback: start big, shrink
     el.style.fontSize='96px';
     let size=96;
     while(el.scrollWidth>available&&size>20){size-=2;el.style.fontSize=size+'px';}
     bestSize=size;
   }
-
   el.style.fontSize=bestSize+'px';
   el.style.letterSpacing=bestSize<36?'0px':bestSize<56?'-1px':'-2px';
 }
-
 window.addEventListener('resize',()=>{if(currentWordId!==null)scaleWordFont();});
 
 function renderWord(word,dir){
@@ -644,28 +701,20 @@ function renderWord(word,dir){
   currentWordId=word.id;
   const el=document.getElementById('c-word');
   el.textContent=word.w;
-  // Scale immediately (canvas is synchronous, no layout needed)
   scaleWordFont();
-  // Also scale after fonts load in case Syne wasn't ready
-  if(document.fonts&&document.fonts.ready){
-    document.fonts.ready.then(()=>scaleWordFont());
-  }
-
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>scaleWordFont());}
   document.getElementById('c-ipa').textContent=word.ipa;
   document.getElementById('c-meaning').textContent=word.vn;
   document.getElementById('c-example').innerHTML=word.ex;
   document.getElementById('c-type').textContent=word.t;
-
   const st=getState(word.id),sb=document.getElementById('c-srs');
   if(st==='new'){sb.textContent='Mới';sb.className='card-srs-badge badge-new';}
   else if(st==='review'){sb.textContent='Ôn tập';sb.className='card-srs-badge badge-review';}
   else{sb.textContent='Đã nhớ';sb.className='card-srs-badge badge-known';}
-
   card.style.background=GRADS[word.id%GRADS.length];
   const fav=document.getElementById('btn-fav');
   fav.textContent=favorites.has(word.id)?'❤️':'♡';
   fav.classList.toggle('active',favorites.has(word.id));
-
   card.style.transition='none';
   if(dir==='next'){card.style.transform='translateY(60px) scale(.97)';card.style.opacity='0';}
   else if(dir==='prev'){card.style.transform='translateY(-60px) scale(.97)';card.style.opacity='0';}
@@ -770,6 +819,75 @@ function buildTopics(){
   document.head.appendChild(s);
 }
 
+// ── VOCAB LIST ──────────────────────────────────────────────────────────────
+function buildListFilters(){
+  const topics=[...new Set(WORDS.map(w=>w.topic))].sort();
+  const types=[...new Set(WORDS.map(w=>w.t))].sort();
+  const topicSel=document.getElementById('list-topic-filter');
+  const typeSel=document.getElementById('list-type-filter');
+  topics.forEach(tp=>{const o=document.createElement('option');o.value=tp;o.textContent=(TOPIC_LABELS[tp]||tp);topicSel.appendChild(o);});
+  types.forEach(tp=>{const o=document.createElement('option');o.value=tp;o.textContent=tp;typeSel.appendChild(o);});
+  document.getElementById('list-total').textContent=WORDS.length+' từ';
+}
+
+function filterVocabList(){
+  const q=document.getElementById('list-search').value.toLowerCase().trim();
+  const tp=document.getElementById('list-topic-filter').value;
+  const ty=document.getElementById('list-type-filter').value;
+  const filtered=WORDS.filter(w=>{
+    if(tp&&w.topic!==tp)return false;
+    if(ty&&w.t!==ty)return false;
+    if(q&&!w.w.toLowerCase().includes(q)&&!w.vn.toLowerCase().includes(q)&&!w.ipa.toLowerCase().includes(q))return false;
+    return true;
+  });
+  renderVocabRows(filtered);
+}
+
+function renderVocabRows(list){
+  const tbody=document.getElementById('list-tbody');
+  document.getElementById('list-count-bar').textContent='Hiển thị '+list.length+' / '+WORDS.length+' từ';
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="6" class="vl-empty">Không tìm thấy từ nào 🔍</td></tr>';
+    return;
+  }
+  const stateColor={new:'rgba(79,195,247,.7)',review:'rgba(251,191,36,.7)',known:'rgba(74,222,128,.7)'};
+  const stateLabel={new:'Mới',review:'Ôn tập',known:'Đã nhớ'};
+  tbody.innerHTML=list.map((w,i)=>{
+    const st=getState(w.id);
+    return`<tr onclick="jumpToWord(${w.id})">
+      <td class="td-num">${i+1}</td>
+      <td>
+        <div class="td-word">${w.w}</div>
+        <div style="font-size:10px;color:${stateColor[st]};margin-top:2px;">${stateLabel[st]}</div>
+      </td>
+      <td class="td-ipa">${w.ipa}</td>
+      <td class="td-vn">${w.vn}</td>
+      <td><span class="td-badge">${w.t}</span></td>
+      <td class="td-topic">${TOPIC_LABELS[w.topic]||w.topic}</td>
+    </tr>`;
+  }).join('');
+}
+
+function openListPanel(){
+  clearAutoplayTimer();
+  filterVocabList();
+  document.getElementById('list-panel').classList.add('open');
+}
+function closeListPanel(){
+  document.getElementById('list-panel').classList.remove('open');
+  if(autoplayOn)resetAutoplayTimer();
+}
+function jumpToWord(id){
+  closeListPanel();
+  stopSpeak();
+  const w=WORDS.find(x=>x.id===id);
+  if(!w)return;
+  history.push(w.id);historyPos=history.length-1;
+  sessionSeen.push(w.id);
+  setTimeout(()=>renderWord(w,'next'),350);
+}
+// ────────────────────────────────────────────────────────────────────────────
+
 let startX=0,startY=0,currentY=0,isDragging=false;
 card.addEventListener('mousedown',onS);card.addEventListener('touchstart',onS,{passive:true});
 document.addEventListener('mousemove',onM);document.addEventListener('touchmove',onM,{passive:true});
@@ -798,11 +916,13 @@ document.addEventListener('keydown',e=>{
   if(e.key==='f'||e.key==='F')toggleFav();
   if(e.key==='1')rateCard(false);if(e.key==='2')rateCard(true);
   if(e.key==='a'||e.key==='A')toggleAutoplay();
+  if(e.key==='l'||e.key==='L')openListPanel();
+  if(e.key==='Escape')closeListPanel();
   if(e.key===' '){e.preventDefault();if(currentWordId!==null)startSpeakLoop(WORDS.find(w=>w.id===currentWordId).w);}
 });
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
-loadData();buildTopics();
+loadData();buildTopics();buildListFilters();
 document.getElementById('streak-num').textContent=localStorage.getItem(STREAK_KEY)||'1';
 updateStats();
 
