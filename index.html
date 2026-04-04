@@ -21,8 +21,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .streak-badge{display:flex;align-items:center;gap:5px;background:rgba(224,255,79,.1);border:1px solid rgba(224,255,79,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent);}
 .mode-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;}
 .mode-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
-
-/* ── AUTOPLAY BUTTON ── */
 .autoplay-btn{display:flex;align-items:center;gap:5px;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;border:1px solid;}
 .autoplay-btn.off{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.45);}
 .autoplay-btn.on{background:rgba(224,255,79,.13);border-color:rgba(224,255,79,.4);color:var(--accent);}
@@ -35,26 +33,19 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .stat-pill .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:1px;}
 .val-new{color:var(--accent3);}.val-review{color:#fbbf24;}.val-known{color:var(--green);}.val-today{color:var(--accent);}
 
-/* ── PROGRESS BAR ── */
 .progress-wrap{position:relative;height:3px;margin:0 18px 6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:visible;flex-shrink:0;}
 .progress-track{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent3),var(--accent));transform-origin:left;transform:scaleX(0);transition:none;}
-.progress-track.running{transition:transform var(--auto-duration) linear;}
-.progress-track.full{transform:scaleX(1);}
-/* glow dot at end */
 .progress-dot{position:absolute;top:50%;right:0;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translate(50%,-50%) scale(0);transition:transform .2s;box-shadow:0 0 6px var(--accent);}
 .progress-wrap.active .progress-dot{transform:translate(50%,-50%) scale(1);}
-/* countdown text */
 .progress-label{position:absolute;right:0;top:-18px;font-size:10px;font-weight:700;color:rgba(224,255,79,.6);opacity:0;transition:opacity .3s;white-space:nowrap;}
 .progress-wrap.active .progress-label{opacity:1;}
 
 .card-area{flex:1;position:relative;overflow:hidden;padding:0 14px;}
-.vocab-card{position:absolute;inset:0;margin:0 0 8px;border-radius:var(--radius);padding:24px 24px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:grab;border:1px solid rgba(255,255,255,.06);will-change:transform;overflow:hidden;touch-action:none;}
+.vocab-card{position:absolute;inset:0;margin:0 0 8px;border-radius:var(--radius);padding:24px 20px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:grab;border:1px solid rgba(255,255,255,.06);will-change:transform;overflow:hidden;touch-action:none;}
 .vocab-card:active{cursor:grabbing;}
 .card-deco{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;opacity:.06;background:var(--accent);pointer-events:none;}
 .card-deco2{position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;opacity:.04;background:var(--accent3);pointer-events:none;}
 .card-shine{position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none;}
-
-/* pulse ring when autoplay active */
 .autoplay-ring{position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;opacity:0;border:2px solid rgba(224,255,79,.0);transition:opacity .4s;}
 .autoplay-ring.pulse{animation:ringPulse 2s ease-in-out infinite;opacity:1;}
 @keyframes ringPulse{0%,100%{border-color:rgba(224,255,79,.0);}50%{border-color:rgba(224,255,79,.18);}}
@@ -67,7 +58,20 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge-review{background:rgba(251,191,36,.15);color:#fbbf24;}
 .badge-known{background:rgba(74,222,128,.15);color:var(--green);}
 
-.card-word{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:10px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;width:100%;text-align:center;white-space:nowrap;display:block;}
+/* WORD: single line, never wraps, font-size set by JS */
+.card-word-wrap{width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.card-word{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  line-height:1;
+  background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;
+  display:block;
+  font-size:72px;
+  letter-spacing:-2px;
+}
+
 .card-ipa{font-size:clamp(18px,7vw,42px);font-weight:700;color:var(--accent3);font-style:italic;margin-bottom:18px;letter-spacing:.5px;text-shadow:0 0 24px rgba(79,195,247,.35);line-height:1.1;}
 .card-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:14px;width:56px;}
 .card-meaning-label{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
@@ -106,8 +110,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mode-card .mc-name{font-size:13px;font-weight:700;margin-bottom:2px;}
 .mode-card .mc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
 .mode-close{width:100%;margin-top:14px;height:46px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
-
-/* autoplay setting inside mode panel */
 .autoplay-setting{margin-top:18px;background:rgba(224,255,79,.05);border:1px solid rgba(224,255,79,.15);border-radius:16px;padding:14px;}
 .autoplay-setting .as-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .as-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
@@ -144,7 +146,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="logo">/<span>/</span></div>
   <div class="header-right">
     <div class="streak-badge">🔥 <span id="streak-num">1</span> ngày</div>
-    <!-- AUTOPLAY TOGGLE -->
     <button class="autoplay-btn off" id="autoplay-btn" onclick="toggleAutoplay()">
       <span class="autoplay-icon">⏵</span><span id="autoplay-label">Tự động</span>
     </button>
@@ -159,7 +160,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="stat-pill"><div class="val val-today" id="s-today">0</div><div class="lbl">Hôm nay</div></div>
 </div>
 
-<!-- PROGRESS BAR -->
 <div class="progress-wrap" id="progress-wrap">
   <div class="progress-track" id="progress-track"></div>
   <div class="progress-dot"></div>
@@ -177,7 +177,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="card-type-badge" id="c-type">n</div>
         <div class="card-srs-badge badge-new" id="c-srs">Mới</div>
       </div>
-      <div class="card-word" id="c-word">daughter</div>
+      <div class="card-word-wrap">
+        <span class="card-word" id="c-word">daughter</span>
+      </div>
       <div class="card-ipa" id="c-ipa">/ˈdɔːtər/</div>
       <div class="card-divider"></div>
       <div class="card-meaning-label">Nghĩa tiếng Việt</div>
@@ -195,34 +197,23 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <button class="btn-remember btn-knew" onclick="rateCard(true)">✅ Nhớ rồi</button>
 </div>
 
-<!-- Mode Panel -->
 <div class="mode-panel" id="mode-panel" onclick="closeModeOnBg(event)">
   <div class="mode-sheet">
     <div class="mode-title">Chọn chế độ học</div>
     <div class="mode-grid">
       <div class="mode-card active" id="mode-smart" onclick="setMode('smart')">
-        <div class="mc-icon">🧠</div>
-        <div class="mc-name">Thông minh</div>
-        <div class="mc-desc">SRS + random có kiểm soát 50/30/20</div>
+        <div class="mc-icon">🧠</div><div class="mc-name">Thông minh</div><div class="mc-desc">SRS + random có kiểm soát 50/30/20</div>
       </div>
       <div class="mode-card" id="mode-new" onclick="setMode('new')">
-        <div class="mc-icon">✨</div>
-        <div class="mc-name">Từ mới</div>
-        <div class="mc-desc">Chỉ học các từ chưa gặp bao giờ</div>
+        <div class="mc-icon">✨</div><div class="mc-name">Từ mới</div><div class="mc-desc">Chỉ học các từ chưa gặp bao giờ</div>
       </div>
       <div class="mode-card" id="mode-review" onclick="setMode('review')">
-        <div class="mc-icon">🔄</div>
-        <div class="mc-name">Ôn tập</div>
-        <div class="mc-desc">Chỉ từ đã học nhưng chưa nhớ chắc</div>
+        <div class="mc-icon">🔄</div><div class="mc-name">Ôn tập</div><div class="mc-desc">Chỉ từ đã học nhưng chưa nhớ chắc</div>
       </div>
       <div class="mode-card" id="mode-explore" onclick="setMode('explore')">
-        <div class="mc-icon">🗺️</div>
-        <div class="mc-name">Khám phá</div>
-        <div class="mc-desc">Random tự do, không theo thứ tự</div>
+        <div class="mc-icon">🗺️</div><div class="mc-name">Khám phá</div><div class="mc-desc">Random tự do, không theo thứ tự</div>
       </div>
     </div>
-
-    <!-- AUTOPLAY SETTINGS inside panel -->
     <div class="autoplay-setting">
       <div class="as-title">⏱ Tự động chuyển từ</div>
       <div class="as-row">
@@ -241,7 +232,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         </button>
       </div>
     </div>
-
     <div style="margin-top:16px;">
       <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Học theo chủ đề</div>
       <div id="topic-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
@@ -250,7 +240,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<!-- Done Screen -->
 <div class="done-screen" id="done-screen">
   <div class="done-emoji">🎉</div>
   <div class="done-title">Xuất sắc!</div>
@@ -263,7 +252,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <button class="restart-btn" onclick="continueSession()">▶ Tiếp tục học</button>
 </div>
 
-<!-- Start Overlay -->
 <div class="start-overlay" id="start-overlay">
   <div class="so-icon">###</div>
   <div class="so-title">TriQuan</div>
@@ -274,7 +262,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="toast" id="toast"></div>
 
 <script>
-// ── WORD DATA ──────────────────────────────────────────────────────────────
 const WORDS=[
 {id:0,w:"daughter",ipa:"/ˈdɔːtər/",vn:"con gái",ex:'She loves her <em>daughter</em> very much.',t:"n",topic:"family"},
 {id:1,w:"bond",ipa:"/bɒnd/",vn:"mối liên kết / trái phiếu",ex:'A strong <em>bond</em> keeps them together.',t:"n",topic:"general"},
@@ -480,12 +467,10 @@ const WORDS=[
 
 const TOPIC_LABELS={general:"Tổng quát",family:"Gia đình",business:"Kinh doanh",nature:"Thiên nhiên",place:"Địa điểm",health:"Sức khỏe",work:"Công việc",education:"Giáo dục",social:"Xã hội",food:"Ẩm thực",science:"Khoa học",society:"Xã hội-PL",travel:"Du lịch",home:"Nhà cửa",body:"Cơ thể"};
 
-// ── SRS ENGINE ──────────────────────────────────────────────────────────────
-const SRS_KEY='wf_srs_v2', STREAK_KEY='wf_streak', TODAY_KEY='wf_today';
+const SRS_KEY='wf_srs_v2',STREAK_KEY='wf_streak',TODAY_KEY='wf_today';
 const IVLS=[5*60000,10*60000,864e5,3*864e5,7*864e5,21*864e5];
-let srsData={}, todayCount=0, favorites=new Set();
-let sessionKnew=0, sessionForgot=0;
-let sessionSeen=[];
+let srsData={},todayCount=0,favorites=new Set();
+let sessionKnew=0,sessionForgot=0,sessionSeen=[];
 const RECENT=8;
 
 function loadData(){
@@ -499,59 +484,32 @@ function saveData(){
   localStorage.setItem(TODAY_KEY,JSON.stringify({date:new Date().toDateString(),count:todayCount}));
   localStorage.setItem('wf_favs',JSON.stringify([...favorites]));
 }
-function getState(id){
-  const d=srsData[id];
-  if(!d||!d.seen)return'new';
-  if((d.ease||1)<=1)return'review';
-  if((d.interval||0)>=IVLS[4])return'known';
-  return'review';
-}
-function isDue(id){
-  const d=srsData[id];
-  if(!d||!d.seen)return true;
-  return Date.now()>=(d.nextReview||0);
-}
+function getState(id){const d=srsData[id];if(!d||!d.seen)return'new';if((d.ease||1)<=1)return'review';if((d.interval||0)>=IVLS[4])return'known';return'review';}
+function isDue(id){const d=srsData[id];if(!d||!d.seen)return true;return Date.now()>=(d.nextReview||0);}
 function recordRating(id,knew){
   let d=srsData[id]||{interval:0,ease:1,seen:false,nextReview:0};
   d.seen=true;
   if(knew){d.ease=Math.min((d.ease||1)+1,5);d.interval=IVLS[Math.min(d.ease,IVLS.length-1)];}
   else{d.ease=Math.max((d.ease||1)-1,0);d.interval=IVLS[0];}
-  d.nextReview=Date.now()+d.interval;
-  srsData[id]=d;
-  todayCount++;
-  saveData();
+  d.nextReview=Date.now()+d.interval;srsData[id]=d;todayCount++;saveData();
 }
 
-// ── SMART QUEUE ─────────────────────────────────────────────────────────────
-let currentMode='smart', currentTopic=null, currentWordId=null;
-let history=[], historyPos=-1;
+let currentMode='smart',currentTopic=null,currentWordId=null;
+let history=[],historyPos=-1;
 
 function getPool(){
   let pool=currentTopic?WORDS.filter(w=>w.topic===currentTopic):WORDS;
-  return{
-    all:pool,
-    newW:pool.filter(w=>getState(w.id)==='new'),
-    reviewW:pool.filter(w=>getState(w.id)==='review'&&isDue(w.id)),
-    knownW:pool.filter(w=>getState(w.id)==='known'&&isDue(w.id)),
-  };
+  return{all:pool,newW:pool.filter(w=>getState(w.id)==='new'),reviewW:pool.filter(w=>getState(w.id)==='review'&&isDue(w.id)),knownW:pool.filter(w=>getState(w.id)==='known'&&isDue(w.id))};
 }
 function pick(){
   const{all,newW,reviewW,knownW}=getPool();
   const recent=new Set(sessionSeen.slice(-RECENT));
-  const fN=newW.filter(w=>!recent.has(w.id));
-  const fR=reviewW.filter(w=>!recent.has(w.id));
-  const fK=knownW.filter(w=>!recent.has(w.id));
+  const fN=newW.filter(w=>!recent.has(w.id)),fR=reviewW.filter(w=>!recent.has(w.id)),fK=knownW.filter(w=>!recent.has(w.id));
   let pool;
-  if(currentMode==='new') pool=fN.length?fN:newW;
-  else if(currentMode==='review') pool=fR.length?fR:(reviewW.length?reviewW:(fN.length?fN:all));
+  if(currentMode==='new')pool=fN.length?fN:newW;
+  else if(currentMode==='review')pool=fR.length?fR:(reviewW.length?reviewW:(fN.length?fN:all));
   else if(currentMode==='explore'){const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}
-  else{
-    const r=Math.random();
-    if(r<.5&&fN.length)pool=fN;
-    else if(r<.8&&fR.length)pool=fR;
-    else if(fK.length)pool=fK;
-    else{const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}
-  }
+  else{const r=Math.random();if(r<.5&&fN.length)pool=fN;else if(r<.8&&fR.length)pool=fR;else if(fK.length)pool=fK;else{const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}}
   if(!pool||!pool.length)return null;
   return pool[Math.floor(Math.random()*pool.length)];
 }
@@ -562,31 +520,23 @@ function nextWord(){
   sessionSeen.push(w.id);if(sessionSeen.length>50)sessionSeen.shift();
   return w;
 }
-function prevWord(){
-  if(historyPos>0){historyPos--;return WORDS.find(w=>w.id===history[historyPos]);}
-  return null;
-}
+function prevWord(){if(historyPos>0){historyPos--;return WORDS.find(w=>w.id===history[historyPos]);}return null;}
 
-// ── AUDIO ───────────────────────────────────────────────────────────────────
 let speakLoop=null,speakActive=false,audioUnlocked=false,pendingWord=null;
 function unlockAudio(){
-  if(audioUnlocked)return; audioUnlocked=true;
+  if(audioUnlocked)return;audioUnlocked=true;
   if(!('speechSynthesis'in window))return;
   const u=new SpeechSynthesisUtterance(' ');u.volume=0;
   u.onend=()=>{if(pendingWord){const w=pendingWord;pendingWord=null;startSpeakLoop(w);}};
   window.speechSynthesis.speak(u);
 }
-function stopSpeak(){
-  speakActive=false;if(speakLoop){clearTimeout(speakLoop);speakLoop=null;}
-  try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}
-}
+function stopSpeak(){speakActive=false;if(speakLoop){clearTimeout(speakLoop);speakLoop=null;}try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}}
 function startSpeakLoop(word){
   stopSpeak();if(!('speechSynthesis'in window))return;
   if(!audioUnlocked){pendingWord=word;return;}
   speakActive=true;
   function go(){
-    if(!speakActive)return;
-    try{window.speechSynthesis.cancel();}catch(e){}
+    if(!speakActive)return;try{window.speechSynthesis.cancel();}catch(e){}
     const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=0.88;u.volume=1;
     let wd=setTimeout(()=>{if(!speakActive)return;try{window.speechSynthesis.cancel();}catch(e){}speakLoop=setTimeout(go,200);},7000);
     u.onend=()=>{clearTimeout(wd);if(!speakActive)return;speakLoop=setTimeout(go,900);};
@@ -596,149 +546,126 @@ function startSpeakLoop(word){
   go();
 }
 
-// ── AUTOPLAY ─────────────────────────────────────────────────────────────────
-let autoplayOn = false;
-let autoplaySeconds = 20;
-let autoplayTimer = null;
-let autoplayCountdownInterval = null;
-let autoplayStartTime = null;
+let autoplayOn=false,autoplaySeconds=20,autoplayTimer=null,autoplayCountdownInterval=null;
 
-function setAutoSpeed(sec) {
-  autoplaySeconds = sec;
-  document.querySelectorAll('.speed-pill').forEach(p => {
-    p.classList.toggle('active', parseInt(p.dataset.sec) === sec);
-  });
-  document.documentElement.style.setProperty('--auto-duration', sec + 's');
-  if (autoplayOn) {
-    resetAutoplayTimer();
-  }
-  showToast('⏱ Tự động chuyển sau ' + sec + 's');
+function setAutoSpeed(sec){
+  autoplaySeconds=sec;
+  document.querySelectorAll('.speed-pill').forEach(p=>p.classList.toggle('active',parseInt(p.dataset.sec)===sec));
+  document.documentElement.style.setProperty('--auto-duration',sec+'s');
+  if(autoplayOn)resetAutoplayTimer();
+  showToast('⏱ Tự động chuyển sau '+sec+'s');
 }
-
-function toggleAutoplay() {
-  autoplayOn = !autoplayOn;
-  updateAutoplayUI();
-  if (autoplayOn) {
-    resetAutoplayTimer();
-    showToast('⏵ Tự động bật – ' + autoplaySeconds + 's/từ');
-  } else {
-    clearAutoplayTimer();
-    showToast('⏸ Tự động đã tắt');
-  }
+function toggleAutoplay(){
+  autoplayOn=!autoplayOn;updateAutoplayUI();
+  if(autoplayOn){resetAutoplayTimer();showToast('⏵ Tự động bật – '+autoplaySeconds+'s/từ');}
+  else{clearAutoplayTimer();showToast('⏸ Tự động đã tắt');}
 }
-
-function updateAutoplayUI() {
-  const btn1 = document.getElementById('autoplay-btn');
-  const btn2 = document.getElementById('autoplay-btn2');
-  const label1 = document.getElementById('autoplay-label');
-  const label2 = document.getElementById('autoplay-label2');
-  const ring = document.getElementById('autoplay-ring');
-  const wrap = document.getElementById('progress-wrap');
-
-  if (autoplayOn) {
-    btn1.className = 'autoplay-btn on';
-    btn1.querySelector('.autoplay-icon').textContent = '⏸';
-    label1.textContent = autoplaySeconds + 's';
-    if (btn2) { btn2.className = 'autoplay-btn on'; label2.textContent = 'Đang bật'; }
-    ring.classList.add('pulse');
-    wrap.classList.add('active');
-  } else {
-    btn1.className = 'autoplay-btn off';
-    btn1.querySelector('.autoplay-icon').textContent = '⏵';
-    label1.textContent = 'Tự động';
-    if (btn2) { btn2.className = 'autoplay-btn off'; label2.textContent = 'Đang tắt'; }
-    ring.classList.remove('pulse');
-    wrap.classList.remove('active');
-    // reset track
-    const track = document.getElementById('progress-track');
-    track.classList.remove('running', 'full');
-    track.style.transform = 'scaleX(0)';
-    document.getElementById('progress-label').textContent = '⏱ ' + autoplaySeconds + 's';
+function updateAutoplayUI(){
+  const btn1=document.getElementById('autoplay-btn'),btn2=document.getElementById('autoplay-btn2');
+  const label1=document.getElementById('autoplay-label'),label2=document.getElementById('autoplay-label2');
+  const ring=document.getElementById('autoplay-ring'),wrap=document.getElementById('progress-wrap');
+  if(autoplayOn){
+    btn1.className='autoplay-btn on';btn1.querySelector('.autoplay-icon').textContent='⏸';label1.textContent=autoplaySeconds+'s';
+    if(btn2){btn2.className='autoplay-btn on';label2.textContent='Đang bật';}
+    ring.classList.add('pulse');wrap.classList.add('active');
+  }else{
+    btn1.className='autoplay-btn off';btn1.querySelector('.autoplay-icon').textContent='⏵';label1.textContent='Tự động';
+    if(btn2){btn2.className='autoplay-btn off';label2.textContent='Đang tắt';}
+    ring.classList.remove('pulse');wrap.classList.remove('active');
+    const track=document.getElementById('progress-track');track.style.transition='none';track.style.transform='scaleX(0)';
+    document.getElementById('progress-label').textContent='⏱ '+autoplaySeconds+'s';
   }
 }
-
-function startProgressBar() {
-  const track = document.getElementById('progress-track');
-  const label = document.getElementById('progress-label');
-  // reset first
-  track.style.transition = 'none';
-  track.classList.remove('running', 'full');
-  track.style.transform = 'scaleX(0)';
+function startProgressBar(){
+  const track=document.getElementById('progress-track'),label=document.getElementById('progress-label');
+  track.style.transition='none';track.classList.remove('running','full');track.style.transform='scaleX(0)';
   void track.offsetWidth;
-  // animate
-  track.style.transition = 'transform ' + autoplaySeconds + 's linear';
-  track.style.transform = 'scaleX(1)';
-  // countdown label
-  let remaining = autoplaySeconds;
-  label.textContent = '⏱ ' + remaining + 's';
-  if (autoplayCountdownInterval) clearInterval(autoplayCountdownInterval);
-  autoplayCountdownInterval = setInterval(() => {
-    remaining--;
-    if (remaining <= 0) {
-      label.textContent = '⏱ 0s';
-      clearInterval(autoplayCountdownInterval);
-    } else {
-      label.textContent = '⏱ ' + remaining + 's';
-    }
-  }, 1000);
+  track.style.transition='transform '+autoplaySeconds+'s linear';track.style.transform='scaleX(1)';
+  let remaining=autoplaySeconds;label.textContent='⏱ '+remaining+'s';
+  if(autoplayCountdownInterval)clearInterval(autoplayCountdownInterval);
+  autoplayCountdownInterval=setInterval(()=>{remaining--;if(remaining<=0){label.textContent='⏱ 0s';clearInterval(autoplayCountdownInterval);}else{label.textContent='⏱ '+remaining+'s';}},1000);
 }
-
-function clearAutoplayTimer() {
-  if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
-  if (autoplayCountdownInterval) { clearInterval(autoplayCountdownInterval); autoplayCountdownInterval = null; }
-  const track = document.getElementById('progress-track');
-  track.style.transition = 'none';
-  track.style.transform = 'scaleX(0)';
+function clearAutoplayTimer(){
+  if(autoplayTimer){clearTimeout(autoplayTimer);autoplayTimer=null;}
+  if(autoplayCountdownInterval){clearInterval(autoplayCountdownInterval);autoplayCountdownInterval=null;}
+  const track=document.getElementById('progress-track');track.style.transition='none';track.style.transform='scaleX(0)';
 }
-
-function resetAutoplayTimer() {
-  clearAutoplayTimer();
-  if (!autoplayOn) return;
+function resetAutoplayTimer(){
+  clearAutoplayTimer();if(!autoplayOn)return;
   startProgressBar();
-  autoplayTimer = setTimeout(() => {
-    if (autoplayOn) {
-      doNext();
-    }
-  }, autoplaySeconds * 1000);
+  autoplayTimer=setTimeout(()=>{if(autoplayOn)doNext();},autoplaySeconds*1000);
 }
 
-// ── UI ───────────────────────────────────────────────────────────────────────
 const GRADS=['linear-gradient(135deg,#1a1a2e,#0f1b35)','linear-gradient(135deg,#0f3460,#1a1a2e)','linear-gradient(135deg,#1a2a1a,#0d1f0d)','linear-gradient(135deg,#2a1a0a,#1a0e00)','linear-gradient(135deg,#2a0a2a,#16001f)','linear-gradient(135deg,#0a2a2a,#001a1a)'];
 const card=document.getElementById('main-card');
 const indUp=document.getElementById('ind-up'),indDown=document.getElementById('ind-down');
 
+// ── FONT SCALING ENGINE ────────────────────────────────────────────────────
+// Strategy: use Canvas 2D measureText (accurate, off-DOM) with binary search.
+// Falls back to DOM-based shrink loop if canvas not available.
+const _cvs=document.createElement('canvas');
+const _ctx2d=_cvs.getContext('2d');
+
 function scaleWordFont(){
   const el=document.getElementById('c-word');
-  el.style.fontSize='72px';
-  el.style.letterSpacing='-2px';
-  // shrink font-size until text fits in one line, no wrapping, no clipping
-  const card=document.getElementById('main-card');
-  const available=card.offsetWidth - 56;
-  let size=72;
-  while(el.scrollWidth>available && size>20){
-    size-=2;
-    el.style.fontSize=size+'px';
+  if(!el||!card)return;
+  const text=el.textContent||'';
+  if(!text)return;
+  // Card horizontal padding = 20px each side = 40px total
+  const available=card.offsetWidth-40;
+  if(available<=0)return;
+
+  let bestSize=20;
+  if(_ctx2d){
+    // Binary search: find largest size where text fits
+    let lo=20,hi=96;
+    while(lo<=hi){
+      const mid=(lo+hi)>>1;
+      _ctx2d.font='800 '+mid+'px Syne, sans-serif';
+      if(_ctx2d.measureText(text).width<=available){bestSize=mid;lo=mid+1;}
+      else hi=mid-1;
+    }
+  }else{
+    // DOM fallback: start big, shrink
+    el.style.fontSize='96px';
+    let size=96;
+    while(el.scrollWidth>available&&size>20){size-=2;el.style.fontSize=size+'px';}
+    bestSize=size;
   }
-  el.style.letterSpacing=size<40?'-1px':'-2px';
+
+  el.style.fontSize=bestSize+'px';
+  el.style.letterSpacing=bestSize<36?'0px':bestSize<56?'-1px':'-2px';
 }
+
+window.addEventListener('resize',()=>{if(currentWordId!==null)scaleWordFont();});
 
 function renderWord(word,dir){
   if(!word)return;
   currentWordId=word.id;
-  document.getElementById('c-word').textContent=word.w;
+  const el=document.getElementById('c-word');
+  el.textContent=word.w;
+  // Scale immediately (canvas is synchronous, no layout needed)
+  scaleWordFont();
+  // Also scale after fonts load in case Syne wasn't ready
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(()=>scaleWordFont());
+  }
+
   document.getElementById('c-ipa').textContent=word.ipa;
   document.getElementById('c-meaning').textContent=word.vn;
   document.getElementById('c-example').innerHTML=word.ex;
   document.getElementById('c-type').textContent=word.t;
-  scaleWordFont();
+
   const st=getState(word.id),sb=document.getElementById('c-srs');
   if(st==='new'){sb.textContent='Mới';sb.className='card-srs-badge badge-new';}
   else if(st==='review'){sb.textContent='Ôn tập';sb.className='card-srs-badge badge-review';}
   else{sb.textContent='Đã nhớ';sb.className='card-srs-badge badge-known';}
+
   card.style.background=GRADS[word.id%GRADS.length];
   const fav=document.getElementById('btn-fav');
   fav.textContent=favorites.has(word.id)?'❤️':'♡';
   fav.classList.toggle('active',favorites.has(word.id));
+
   card.style.transition='none';
   if(dir==='next'){card.style.transform='translateY(60px) scale(.97)';card.style.opacity='0';}
   else if(dir==='prev'){card.style.transform='translateY(-60px) scale(.97)';card.style.opacity='0';}
@@ -748,9 +675,9 @@ function renderWord(word,dir){
   card.style.transform='translateY(0) scale(1)';card.style.opacity='1';
   updateStats();resetInds();isSwiping=false;
   setTimeout(()=>startSpeakLoop(word.w),450);
-  // restart autoplay timer on new card
-  if(autoplayOn) resetAutoplayTimer();
+  if(autoplayOn)resetAutoplayTimer();
 }
+
 function updateStats(){
   const{newW,reviewW,knownW}=getPool();
   document.getElementById('s-new').textContent=newW.length;
@@ -770,8 +697,7 @@ function rateCard(knew){
 
 let isSwiping=false;
 function doNext(){
-  if(isSwiping)return;isSwiping=true;stopSpeak();
-  clearAutoplayTimer();
+  if(isSwiping)return;isSwiping=true;stopSpeak();clearAutoplayTimer();
   card.style.transition='transform .25s ease-in,opacity .25s ease';
   card.style.transform='translateY(-80px) scale(.96)';card.style.opacity='0';
   setTimeout(()=>{const w=nextWord();if(!w){showDone();isSwiping=false;}else renderWord(w,'next');},240);
@@ -779,8 +705,7 @@ function doNext(){
 function doPrev(){
   if(isSwiping)return;
   const p=prevWord();if(!p){showToast('Đây là từ đầu tiên');return;}
-  isSwiping=true;stopSpeak();
-  clearAutoplayTimer();
+  isSwiping=true;stopSpeak();clearAutoplayTimer();
   card.style.transition='transform .25s ease-in,opacity .25s ease';
   card.style.transform='translateY(80px) scale(.96)';card.style.opacity='0';
   setTimeout(()=>renderWord(p,'prev'),240);
@@ -794,18 +719,16 @@ function toggleFav(){
   fav.textContent=favorites.has(currentWordId)?'❤️':'♡';
   fav.classList.toggle('active',favorites.has(currentWordId));
 }
-
 function showDone(){
   clearAutoplayTimer();
   document.getElementById('d-knew').textContent=sessionKnew;
   document.getElementById('d-forgot').textContent=sessionForgot;
   document.getElementById('d-fav').textContent=favorites.size;
   const{newW}=getPool();
-  document.getElementById('done-sub').textContent=`Bạn đã học ${todayCount} từ hôm nay · Còn ${newW.length} từ mới chưa học`;
+  document.getElementById('done-sub').textContent='Bạn đã học '+todayCount+' từ hôm nay · Còn '+newW.length+' từ mới chưa học';
   document.getElementById('done-screen').classList.add('show');
   let s=parseInt(localStorage.getItem(STREAK_KEY)||'1')+1;
-  localStorage.setItem(STREAK_KEY,s);
-  document.getElementById('streak-num').textContent=s;
+  localStorage.setItem(STREAK_KEY,s);document.getElementById('streak-num').textContent=s;
 }
 function continueSession(){
   document.getElementById('done-screen').classList.remove('show');
@@ -813,15 +736,8 @@ function continueSession(){
   const w=nextWord();if(w)renderWord(w,'next');
 }
 
-// Mode panel
-function openModePanel(){
-  clearAutoplayTimer();
-  document.getElementById('mode-panel').classList.add('open');
-}
-function closeModePanel(){
-  document.getElementById('mode-panel').classList.remove('open');
-  if(autoplayOn) resetAutoplayTimer();
-}
+function openModePanel(){clearAutoplayTimer();document.getElementById('mode-panel').classList.add('open');}
+function closeModePanel(){document.getElementById('mode-panel').classList.remove('open');if(autoplayOn)resetAutoplayTimer();}
 function closeModeOnBg(e){if(e.target===document.getElementById('mode-panel'))closeModePanel();}
 function setMode(m){
   currentMode=m;currentTopic=null;
@@ -854,21 +770,17 @@ function buildTopics(){
   document.head.appendChild(s);
 }
 
-// Drag — pause autoplay while dragging
 let startX=0,startY=0,currentY=0,isDragging=false;
 card.addEventListener('mousedown',onS);card.addEventListener('touchstart',onS,{passive:true});
 document.addEventListener('mousemove',onM);document.addEventListener('touchmove',onM,{passive:true});
 document.addEventListener('mouseup',onE);document.addEventListener('touchend',onE);
 function gp(e){return{x:e.touches?e.touches[0].clientX:e.clientX,y:e.touches?e.touches[0].clientY:e.clientY};}
-function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';
-  // pause bar while dragging
-  if(autoplayOn){ clearAutoplayTimer(); }
-}
+function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';if(autoplayOn)clearAutoplayTimer();}
 function onM(e){
   if(!isDragging||isSwiping)return;
   const p=gp(e),dy=p.y-startY,dx=p.x-startX;
   if(Math.abs(dx)>Math.abs(dy)*1.5)return;
-  currentY=dy;card.style.transform=`translateY(${dy}px) rotate(${dy*.01}deg)`;
+  currentY=dy;card.style.transform='translateY('+dy+'px) rotate('+(dy*.01)+'deg)';
   const r=Math.min(Math.abs(dy)/100,1);
   if(dy<-15){indUp.style.opacity=r;indDown.style.opacity='0';}
   else if(dy>15){indDown.style.opacity=r;indUp.style.opacity='0';}
@@ -878,13 +790,7 @@ function onE(){
   if(!isDragging)return;isDragging=false;
   if(currentY<-70)doNext();
   else if(currentY>70)doPrev();
-  else{
-    card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';
-    card.style.transform='translateY(0)';
-    resetInds();
-    // resume autoplay if not swiped
-    if(autoplayOn) resetAutoplayTimer();
-  }
+  else{card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';card.style.transform='translateY(0)';resetInds();if(autoplayOn)resetAutoplayTimer();}
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowDown'||e.key==='ArrowRight')doNext();
@@ -896,7 +802,6 @@ document.addEventListener('keydown',e=>{
 });
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
 loadData();buildTopics();
 document.getElementById('streak-num').textContent=localStorage.getItem(STREAK_KEY)||'1';
 updateStats();
