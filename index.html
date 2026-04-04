@@ -9,6 +9,7 @@
 :root {
   --bg:#0a0a0f;--surface:#13131a;--accent:#e0ff4f;--accent2:#ff6b6b;--accent3:#4fc3f7;
   --green:#4ade80;--red:#f87171;--text:#f0f0f0;--muted:#888;--radius:24px;
+  --auto-duration:20s;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;max-width:480px;margin:0 auto;user-select:none;}
@@ -21,11 +22,30 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mode-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;}
 .mode-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
 
+/* ── AUTOPLAY BUTTON ── */
+.autoplay-btn{display:flex;align-items:center;gap:5px;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;border:1px solid;}
+.autoplay-btn.off{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.45);}
+.autoplay-btn.on{background:rgba(224,255,79,.13);border-color:rgba(224,255,79,.4);color:var(--accent);}
+.autoplay-btn:active{transform:scale(.93);}
+.autoplay-icon{font-size:13px;line-height:1;}
+
 .stats-bar{display:flex;gap:6px;padding:4px 18px 8px;flex-shrink:0;}
 .stat-pill{flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:6px 4px;text-align:center;border:1px solid rgba(255,255,255,.06);}
 .stat-pill .val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
 .stat-pill .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:1px;}
 .val-new{color:var(--accent3);}.val-review{color:#fbbf24;}.val-known{color:var(--green);}.val-today{color:var(--accent);}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{position:relative;height:3px;margin:0 18px 6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:visible;flex-shrink:0;}
+.progress-track{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent3),var(--accent));transform-origin:left;transform:scaleX(0);transition:none;}
+.progress-track.running{transition:transform var(--auto-duration) linear;}
+.progress-track.full{transform:scaleX(1);}
+/* glow dot at end */
+.progress-dot{position:absolute;top:50%;right:0;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translate(50%,-50%) scale(0);transition:transform .2s;box-shadow:0 0 6px var(--accent);}
+.progress-wrap.active .progress-dot{transform:translate(50%,-50%) scale(1);}
+/* countdown text */
+.progress-label{position:absolute;right:0;top:-18px;font-size:10px;font-weight:700;color:rgba(224,255,79,.6);opacity:0;transition:opacity .3s;white-space:nowrap;}
+.progress-wrap.active .progress-label{opacity:1;}
 
 .card-area{flex:1;position:relative;overflow:hidden;padding:0 14px;}
 .vocab-card{position:absolute;inset:0;margin:0 0 8px;border-radius:var(--radius);padding:24px 24px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:grab;border:1px solid rgba(255,255,255,.06);will-change:transform;overflow:hidden;touch-action:none;}
@@ -33,6 +53,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .card-deco{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;opacity:.06;background:var(--accent);pointer-events:none;}
 .card-deco2{position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;opacity:.04;background:var(--accent3);pointer-events:none;}
 .card-shine{position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none;}
+
+/* pulse ring when autoplay active */
+.autoplay-ring{position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;opacity:0;border:2px solid rgba(224,255,79,.0);transition:opacity .4s;}
+.autoplay-ring.pulse{animation:ringPulse 2s ease-in-out infinite;opacity:1;}
+@keyframes ringPulse{0%,100%{border-color:rgba(224,255,79,.0);}50%{border-color:rgba(224,255,79,.18);}}
 
 .card-content{display:flex;flex-direction:column;align-items:center;width:100%;}
 .card-meta{display:flex;gap:8px;align-items:center;margin-bottom:16px;}
@@ -68,8 +93,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .btn-fav:active{transform:scale(.93);}
 
 .swipe-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.18);padding-bottom:2px;flex-shrink:0;}
-.autoplay-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 1.2s ease-in-out infinite;margin-right:5px;vertical-align:middle;}
-@keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 
 .mode-panel{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
 .mode-panel.open{opacity:1;pointer-events:all;}
@@ -83,6 +106,15 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mode-card .mc-name{font-size:13px;font-weight:700;margin-bottom:2px;}
 .mode-card .mc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
 .mode-close{width:100%;margin-top:14px;height:46px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* autoplay setting inside mode panel */
+.autoplay-setting{margin-top:18px;background:rgba(224,255,79,.05);border:1px solid rgba(224,255,79,.15);border-radius:16px;padding:14px;}
+.autoplay-setting .as-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.as-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.as-label{font-size:12px;color:rgba(255,255,255,.55);}
+.speed-pills{display:flex;gap:6px;}
+.speed-pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;font-family:inherit;}
+.speed-pill.active{background:rgba(224,255,79,.2);border-color:rgba(224,255,79,.5);color:var(--accent);}
 
 .done-screen{display:none;position:absolute;inset:0;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px;z-index:100;}
 .done-screen.show{display:flex;}
@@ -112,6 +144,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="logo">/<span>/</span></div>
   <div class="header-right">
     <div class="streak-badge">🔥 <span id="streak-num">1</span> ngày</div>
+    <!-- AUTOPLAY TOGGLE -->
+    <button class="autoplay-btn off" id="autoplay-btn" onclick="toggleAutoplay()">
+      <span class="autoplay-icon">⏵</span><span id="autoplay-label">Tự động</span>
+    </button>
     <button class="mode-btn" onclick="openModePanel()">⚡ Chế độ</button>
   </div>
 </div>
@@ -123,10 +159,18 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="stat-pill"><div class="val val-today" id="s-today">0</div><div class="lbl">Hôm nay</div></div>
 </div>
 
+<!-- PROGRESS BAR -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-track" id="progress-track"></div>
+  <div class="progress-dot"></div>
+  <div class="progress-label" id="progress-label">⏱ 20s</div>
+</div>
+
 <div class="card-area">
   <div class="swipe-ind up ind-up" id="ind-up"><div class="icon">↑</div><div class="lbl">Quay lại</div></div>
   <div class="swipe-ind down ind-down" id="ind-down"><div class="icon">↓</div><div class="lbl">Tiếp theo</div></div>
   <div class="vocab-card" id="main-card">
+    <div class="autoplay-ring" id="autoplay-ring"></div>
     <div class="card-shine"></div><div class="card-deco"></div><div class="card-deco2"></div>
     <div class="card-content">
       <div class="card-meta">
@@ -143,7 +187,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<div class="swipe-hint"><span class="autoplay-dot"></span>Phát âm tự động · Vuốt lên/xuống · ❌✅ để đánh giá</div>
+<div class="swipe-hint">Vuốt lên/xuống · ❌✅ để đánh giá · ⏵ tự động 20s</div>
 
 <div class="bottom-bar">
   <button class="btn-remember btn-forgot" onclick="rateCard(false)">❌ Chưa nhớ</button>
@@ -177,6 +221,27 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="mc-desc">Random tự do, không theo thứ tự</div>
       </div>
     </div>
+
+    <!-- AUTOPLAY SETTINGS inside panel -->
+    <div class="autoplay-setting">
+      <div class="as-title">⏱ Tự động chuyển từ</div>
+      <div class="as-row">
+        <span class="as-label">Tốc độ chuyển</span>
+        <div class="speed-pills">
+          <button class="speed-pill" data-sec="10" onclick="setAutoSpeed(10)">10s</button>
+          <button class="speed-pill active" data-sec="20" onclick="setAutoSpeed(20)">20s</button>
+          <button class="speed-pill" data-sec="30" onclick="setAutoSpeed(30)">30s</button>
+          <button class="speed-pill" data-sec="60" onclick="setAutoSpeed(60)">60s</button>
+        </div>
+      </div>
+      <div class="as-row" style="margin-bottom:0;">
+        <span class="as-label" style="font-size:11px;color:rgba(255,255,255,.3);">Bật/tắt ngoài màn hình chính</span>
+        <button class="autoplay-btn off" id="autoplay-btn2" onclick="toggleAutoplay()" style="font-size:11px;padding:4px 10px;">
+          <span id="autoplay-label2">Đang tắt</span>
+        </button>
+      </div>
+    </div>
+
     <div style="margin-top:16px;">
       <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Học theo chủ đề</div>
       <div id="topic-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
@@ -417,9 +482,7 @@ const TOPIC_LABELS={general:"Tổng quát",family:"Gia đình",business:"Kinh do
 
 // ── SRS ENGINE ──────────────────────────────────────────────────────────────
 const SRS_KEY='wf_srs_v2', STREAK_KEY='wf_streak', TODAY_KEY='wf_today';
-// Intervals: forgot→5min, 1ok→10min, 2→1day, 3→3day, 4→7day, 5→21day
 const IVLS=[5*60000,10*60000,864e5,3*864e5,7*864e5,21*864e5];
-
 let srsData={}, todayCount=0, favorites=new Set();
 let sessionKnew=0, sessionForgot=0;
 let sessionSeen=[];
@@ -533,6 +596,112 @@ function startSpeakLoop(word){
   go();
 }
 
+// ── AUTOPLAY ─────────────────────────────────────────────────────────────────
+let autoplayOn = false;
+let autoplaySeconds = 20;
+let autoplayTimer = null;
+let autoplayCountdownInterval = null;
+let autoplayStartTime = null;
+
+function setAutoSpeed(sec) {
+  autoplaySeconds = sec;
+  document.querySelectorAll('.speed-pill').forEach(p => {
+    p.classList.toggle('active', parseInt(p.dataset.sec) === sec);
+  });
+  document.documentElement.style.setProperty('--auto-duration', sec + 's');
+  if (autoplayOn) {
+    resetAutoplayTimer();
+  }
+  showToast('⏱ Tự động chuyển sau ' + sec + 's');
+}
+
+function toggleAutoplay() {
+  autoplayOn = !autoplayOn;
+  updateAutoplayUI();
+  if (autoplayOn) {
+    resetAutoplayTimer();
+    showToast('⏵ Tự động bật – ' + autoplaySeconds + 's/từ');
+  } else {
+    clearAutoplayTimer();
+    showToast('⏸ Tự động đã tắt');
+  }
+}
+
+function updateAutoplayUI() {
+  const btn1 = document.getElementById('autoplay-btn');
+  const btn2 = document.getElementById('autoplay-btn2');
+  const label1 = document.getElementById('autoplay-label');
+  const label2 = document.getElementById('autoplay-label2');
+  const ring = document.getElementById('autoplay-ring');
+  const wrap = document.getElementById('progress-wrap');
+
+  if (autoplayOn) {
+    btn1.className = 'autoplay-btn on';
+    btn1.querySelector('.autoplay-icon').textContent = '⏸';
+    label1.textContent = autoplaySeconds + 's';
+    if (btn2) { btn2.className = 'autoplay-btn on'; label2.textContent = 'Đang bật'; }
+    ring.classList.add('pulse');
+    wrap.classList.add('active');
+  } else {
+    btn1.className = 'autoplay-btn off';
+    btn1.querySelector('.autoplay-icon').textContent = '⏵';
+    label1.textContent = 'Tự động';
+    if (btn2) { btn2.className = 'autoplay-btn off'; label2.textContent = 'Đang tắt'; }
+    ring.classList.remove('pulse');
+    wrap.classList.remove('active');
+    // reset track
+    const track = document.getElementById('progress-track');
+    track.classList.remove('running', 'full');
+    track.style.transform = 'scaleX(0)';
+    document.getElementById('progress-label').textContent = '⏱ ' + autoplaySeconds + 's';
+  }
+}
+
+function startProgressBar() {
+  const track = document.getElementById('progress-track');
+  const label = document.getElementById('progress-label');
+  // reset first
+  track.style.transition = 'none';
+  track.classList.remove('running', 'full');
+  track.style.transform = 'scaleX(0)';
+  void track.offsetWidth;
+  // animate
+  track.style.transition = 'transform ' + autoplaySeconds + 's linear';
+  track.style.transform = 'scaleX(1)';
+  // countdown label
+  let remaining = autoplaySeconds;
+  label.textContent = '⏱ ' + remaining + 's';
+  if (autoplayCountdownInterval) clearInterval(autoplayCountdownInterval);
+  autoplayCountdownInterval = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      label.textContent = '⏱ 0s';
+      clearInterval(autoplayCountdownInterval);
+    } else {
+      label.textContent = '⏱ ' + remaining + 's';
+    }
+  }, 1000);
+}
+
+function clearAutoplayTimer() {
+  if (autoplayTimer) { clearTimeout(autoplayTimer); autoplayTimer = null; }
+  if (autoplayCountdownInterval) { clearInterval(autoplayCountdownInterval); autoplayCountdownInterval = null; }
+  const track = document.getElementById('progress-track');
+  track.style.transition = 'none';
+  track.style.transform = 'scaleX(0)';
+}
+
+function resetAutoplayTimer() {
+  clearAutoplayTimer();
+  if (!autoplayOn) return;
+  startProgressBar();
+  autoplayTimer = setTimeout(() => {
+    if (autoplayOn) {
+      doNext();
+    }
+  }, autoplaySeconds * 1000);
+}
+
 // ── UI ───────────────────────────────────────────────────────────────────────
 const GRADS=['linear-gradient(135deg,#1a1a2e,#0f1b35)','linear-gradient(135deg,#0f3460,#1a1a2e)','linear-gradient(135deg,#1a2a1a,#0d1f0d)','linear-gradient(135deg,#2a1a0a,#1a0e00)','linear-gradient(135deg,#2a0a2a,#16001f)','linear-gradient(135deg,#0a2a2a,#001a1a)'];
 const card=document.getElementById('main-card');
@@ -563,6 +732,8 @@ function renderWord(word,dir){
   card.style.transform='translateY(0) scale(1)';card.style.opacity='1';
   updateStats();resetInds();isSwiping=false;
   setTimeout(()=>startSpeakLoop(word.w),450);
+  // restart autoplay timer on new card
+  if(autoplayOn) resetAutoplayTimer();
 }
 function updateStats(){
   const{newW,reviewW,knownW}=getPool();
@@ -584,6 +755,7 @@ function rateCard(knew){
 let isSwiping=false;
 function doNext(){
   if(isSwiping)return;isSwiping=true;stopSpeak();
+  clearAutoplayTimer();
   card.style.transition='transform .25s ease-in,opacity .25s ease';
   card.style.transform='translateY(-80px) scale(.96)';card.style.opacity='0';
   setTimeout(()=>{const w=nextWord();if(!w){showDone();isSwiping=false;}else renderWord(w,'next');},240);
@@ -592,6 +764,7 @@ function doPrev(){
   if(isSwiping)return;
   const p=prevWord();if(!p){showToast('Đây là từ đầu tiên');return;}
   isSwiping=true;stopSpeak();
+  clearAutoplayTimer();
   card.style.transition='transform .25s ease-in,opacity .25s ease';
   card.style.transform='translateY(80px) scale(.96)';card.style.opacity='0';
   setTimeout(()=>renderWord(p,'prev'),240);
@@ -607,6 +780,7 @@ function toggleFav(){
 }
 
 function showDone(){
+  clearAutoplayTimer();
   document.getElementById('d-knew').textContent=sessionKnew;
   document.getElementById('d-forgot').textContent=sessionForgot;
   document.getElementById('d-fav').textContent=favorites.size;
@@ -624,8 +798,14 @@ function continueSession(){
 }
 
 // Mode panel
-function openModePanel(){document.getElementById('mode-panel').classList.add('open');}
-function closeModePanel(){document.getElementById('mode-panel').classList.remove('open');}
+function openModePanel(){
+  clearAutoplayTimer();
+  document.getElementById('mode-panel').classList.add('open');
+}
+function closeModePanel(){
+  document.getElementById('mode-panel').classList.remove('open');
+  if(autoplayOn) resetAutoplayTimer();
+}
 function closeModeOnBg(e){if(e.target===document.getElementById('mode-panel'))closeModePanel();}
 function setMode(m){
   currentMode=m;currentTopic=null;
@@ -658,13 +838,16 @@ function buildTopics(){
   document.head.appendChild(s);
 }
 
-// Drag
+// Drag — pause autoplay while dragging
 let startX=0,startY=0,currentY=0,isDragging=false;
 card.addEventListener('mousedown',onS);card.addEventListener('touchstart',onS,{passive:true});
 document.addEventListener('mousemove',onM);document.addEventListener('touchmove',onM,{passive:true});
 document.addEventListener('mouseup',onE);document.addEventListener('touchend',onE);
 function gp(e){return{x:e.touches?e.touches[0].clientX:e.clientX,y:e.touches?e.touches[0].clientY:e.clientY};}
-function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';}
+function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';
+  // pause bar while dragging
+  if(autoplayOn){ clearAutoplayTimer(); }
+}
 function onM(e){
   if(!isDragging||isSwiping)return;
   const p=gp(e),dy=p.y-startY,dx=p.x-startX;
@@ -679,13 +862,20 @@ function onE(){
   if(!isDragging)return;isDragging=false;
   if(currentY<-70)doNext();
   else if(currentY>70)doPrev();
-  else{card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';card.style.transform='translateY(0)';resetInds();}
+  else{
+    card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';
+    card.style.transform='translateY(0)';
+    resetInds();
+    // resume autoplay if not swiped
+    if(autoplayOn) resetAutoplayTimer();
+  }
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowDown'||e.key==='ArrowRight')doNext();
   if(e.key==='ArrowUp'||e.key==='ArrowLeft')doPrev();
   if(e.key==='f'||e.key==='F')toggleFav();
   if(e.key==='1')rateCard(false);if(e.key==='2')rateCard(true);
+  if(e.key==='a'||e.key==='A')toggleAutoplay();
   if(e.key===' '){e.preventDefault();if(currentWordId!==null)startSpeakLoop(WORDS.find(w=>w.id===currentWordId).w);}
 });
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
