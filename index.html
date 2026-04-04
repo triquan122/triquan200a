@@ -6,824 +6,701 @@
 <title>WordFlow – Học từ vựng</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --accent: #e0ff4f;
-    --accent2: #ff6b6b;
-    --accent3: #4fc3f7;
-    --text: #f0f0f0;
-    --muted: #888;
-    --radius: 24px;
-  }
+:root {
+  --bg:#0a0a0f;--surface:#13131a;--accent:#e0ff4f;--accent2:#ff6b6b;--accent3:#4fc3f7;
+  --green:#4ade80;--red:#f87171;--text:#f0f0f0;--muted:#888;--radius:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;max-width:480px;margin:0 auto;user-select:none;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px;flex-shrink:0;gap:8px;}
+.logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.logo span{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:8px;}
+.streak-badge{display:flex;align-items:center;gap:5px;background:rgba(224,255,79,.1);border:1px solid rgba(224,255,79,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent);}
+.mode-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;}
+.mode-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
 
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    margin: 0 auto;
-    position: relative;
-    user-select: none;
-  }
+.stats-bar{display:flex;gap:6px;padding:4px 18px 8px;flex-shrink:0;}
+.stat-pill{flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:6px 4px;text-align:center;border:1px solid rgba(255,255,255,.06);}
+.stat-pill .val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.stat-pill .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:1px;}
+.val-new{color:var(--accent3);}.val-review{color:#fbbf24;}.val-known{color:var(--green);}.val-today{color:var(--accent);}
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px 8px;
-    z-index: 10;
-    flex-shrink: 0;
-  }
-  .logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-  .logo span { color: var(--accent); }
-  .streak-badge {
-    display: flex; align-items: center; gap: 6px;
-    background: rgba(224,255,79,0.12); border: 1px solid rgba(224,255,79,0.3);
-    border-radius: 20px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--accent);
-  }
+.card-area{flex:1;position:relative;overflow:hidden;padding:0 14px;}
+.vocab-card{position:absolute;inset:0;margin:0 0 8px;border-radius:var(--radius);padding:24px 24px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:grab;border:1px solid rgba(255,255,255,.06);will-change:transform;overflow:hidden;touch-action:none;}
+.vocab-card:active{cursor:grabbing;}
+.card-deco{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;opacity:.06;background:var(--accent);pointer-events:none;}
+.card-deco2{position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;opacity:.04;background:var(--accent3);pointer-events:none;}
+.card-shine{position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none;}
 
-  .progress-wrap { padding: 0 20px 12px; flex-shrink: 0; }
-  .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  .progress-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s ease; }
+.card-content{display:flex;flex-direction:column;align-items:center;width:100%;}
+.card-meta{display:flex;gap:8px;align-items:center;margin-bottom:16px;}
+.card-type-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;}
+.card-srs-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.badge-new{background:rgba(79,195,247,.15);color:var(--accent3);}
+.badge-review{background:rgba(251,191,36,.15);color:#fbbf24;}
+.badge-known{background:rgba(74,222,128,.15);color:var(--green);}
 
-  /* Card Stack Area */
-  .card-area {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    padding: 0 16px;
-  }
+.card-word{font-family:'Syne',sans-serif;font-size:clamp(34px,10vw,52px);font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:10px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card-ipa{font-size:16px;color:rgba(255,255,255,.4);font-style:italic;margin-bottom:22px;}
+.card-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:18px;width:56px;}
+.card-meaning-label{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.card-meaning{font-size:22px;font-weight:600;color:var(--accent);line-height:1.3;margin-bottom:18px;}
+.card-example{font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;border-left:2px solid rgba(255,255,255,.1);padding:0 12px;font-style:italic;text-align:left;max-width:300px;}
+.card-example em{color:rgba(255,255,255,.75);font-style:normal;font-weight:600;}
 
-  .vocab-card {
-    position: absolute;
-    inset: 0;
-    margin: 0 0 8px;
-    border-radius: var(--radius);
-    padding: 28px 28px 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    cursor: grab;
-    border: 1px solid rgba(255,255,255,0.06);
-    will-change: transform;
-    overflow: hidden;
-    touch-action: none;
-  }
-  .vocab-card:active { cursor: grabbing; }
+.swipe-ind{position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transition:opacity .1s;pointer-events:none;z-index:5;}
+.swipe-ind.up{top:14px;}.swipe-ind.down{bottom:14px;}
+.swipe-ind .icon{font-size:22px;}.swipe-ind .lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.ind-up{color:#a78bfa;}.ind-down{color:var(--green);}
 
-  .card-decoration {
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    opacity: 0.06;
-    background: var(--accent);
-    pointer-events: none;
-  }
-  .card-decoration2 {
-    position: absolute;
-    bottom: -80px; left: -40px;
-    width: 250px; height: 250px;
-    border-radius: 50%;
-    opacity: 0.04;
-    background: var(--accent3);
-    pointer-events: none;
-  }
-  .card-shine {
-    position: absolute; inset: 0; border-radius: var(--radius);
-    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
-    pointer-events: none;
-  }
+.bottom-bar{padding:8px 14px 18px;display:flex;gap:10px;align-items:center;flex-shrink:0;}
+.btn-remember{flex:1;height:52px;border-radius:16px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
+.btn-forgot{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25);}
+.btn-forgot:hover{background:rgba(248,113,113,.22);}
+.btn-knew{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.25);}
+.btn-knew:hover{background:rgba(74,222,128,.22);}
+.btn-remember:active{transform:scale(.96);}
+.btn-fav{width:52px;height:52px;border-radius:14px;flex-shrink:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:20px;}
+.btn-fav:hover{background:rgba(255,200,0,.15);}
+.btn-fav.active{background:rgba(255,200,0,.2);border-color:rgba(255,200,0,.4);}
+.btn-fav:active{transform:scale(.93);}
 
-  .card-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    width: 100%;
-  }
+.swipe-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.18);padding-bottom:2px;flex-shrink:0;}
+.autoplay-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 1.2s ease-in-out infinite;margin-right:5px;vertical-align:middle;}
+@keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 
-  .card-num { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+.mode-panel{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
+.mode-panel.open{opacity:1;pointer-events:all;}
+.mode-sheet{background:#13131a;border-radius:24px 24px 0 0;padding:20px 20px 36px;border-top:1px solid rgba(255,255,255,.08);transform:translateY(40px);transition:transform .3s cubic-bezier(.34,1.3,.64,1);max-height:90dvh;overflow-y:auto;}
+.mode-panel.open .mode-sheet{transform:translateY(0);}
+.mode-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:16px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mode-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;cursor:pointer;transition:all .2s;}
+.mode-card:hover,.mode-card.active{background:rgba(224,255,79,.1);border-color:rgba(224,255,79,.3);}
+.mode-card .mc-icon{font-size:24px;margin-bottom:6px;}
+.mode-card .mc-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+.mode-card .mc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.mode-close{width:100%;margin-top:14px;height:46px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
 
-  .card-word {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 11vw, 56px);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -2px;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.6));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.done-screen{display:none;position:absolute;inset:0;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px;z-index:100;}
+.done-screen.show{display:flex;}
+.done-emoji{font-size:64px;margin-bottom:20px;}
+.done-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;margin-bottom:10px;}
+.done-sub{color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:28px;}
+.done-stats{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;}
+.dstat{background:var(--surface);border-radius:14px;padding:14px 18px;text-align:center;border:1px solid rgba(255,255,255,.06);}
+.dstat-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;}
+.dstat-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+.restart-btn{background:var(--accent);color:#000;border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.restart-btn:hover{transform:scale(1.04);}
 
-  .card-ipa { font-size: 17px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 28px; }
+.start-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,10,15,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;backdrop-filter:blur(4px);transition:opacity .3s;}
+.start-overlay .so-icon{font-size:56px;}
+.start-overlay .so-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;}
+.start-overlay .so-sub{font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.6;padding:0 32px;}
+.start-overlay .so-btn{margin-top:8px;background:var(--accent);color:#000;border:none;border-radius:14px;padding:14px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
 
-  .card-divider { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 24px; width: 60px; }
-
-  .card-meaning-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-  .card-meaning { font-size: 24px; font-weight: 600; color: var(--accent); line-height: 1.3; margin-bottom: 20px; }
-
-  .card-example {
-    font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7;
-    border-left: 2px solid rgba(255,255,255,0.1); padding: 0 12px;
-    font-style: italic; text-align: left; max-width: 320px;
-  }
-  .card-example em { color: rgba(255,255,255,0.8); font-style: normal; font-weight: 600; }
-
-  .card-type {
-    margin-top: 24px;
-    font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
-    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4);
-    text-transform: uppercase; letter-spacing: 1px;
-  }
-
-  /* Swipe indicators — now up/down */
-  .swipe-indicator {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    opacity: 0; transition: opacity 0.1s; pointer-events: none; z-index: 5;
-  }
-  .swipe-indicator.up { top: 16px; }
-  .swipe-indicator.down { bottom: 16px; }
-  .swipe-indicator .icon { font-size: 26px; }
-  .swipe-indicator .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .indicator-up { color: #a78bfa; }
-  .indicator-down { color: #4ade80; }
-
-  /* Bottom bar — only fav button */
-  .bottom-bar {
-    padding: 12px 20px 24px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .btn-fav {
-    width: 56px; height: 56px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: all 0.2s;
-    font-size: 22px;
-  }
-  .btn-fav:hover { background: rgba(255,200,0,0.15); transform: scale(1.05); }
-  .btn-fav.active { background: rgba(255,200,0,0.2); border-color: rgba(255,200,0,0.4); }
-  .btn-fav:active { transform: scale(0.95); }
-
-  /* Hint text */
-  .swipe-hint {
-    text-align: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.2);
-    padding-bottom: 4px;
-    flex-shrink: 0;
-    letter-spacing: 0.5px;
-  }
-
-  /* Done screen */
-  .done-screen {
-    display: none;
-    position: absolute; inset: 0;
-    background: var(--bg);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px;
-    z-index: 100;
-  }
-  .done-screen.show { display: flex; }
-  .done-emoji { font-size: 72px; margin-bottom: 24px; }
-  .done-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; margin-bottom: 12px; }
-  .done-sub { color: var(--muted); font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
-  .done-stats { display: flex; gap: 20px; margin-bottom: 36px; }
-  .stat-box { background: var(--surface); border-radius: 16px; padding: 16px 24px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
-  .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .restart-btn {
-    background: var(--accent); color: #000; border: none; border-radius: 16px;
-    padding: 16px 40px; font-size: 16px; font-weight: 700; cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s;
-  }
-  .restart-btn:hover { transform: scale(1.04); }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.97); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .card-enter { animation: cardIn 0.32s cubic-bezier(0.34,1.56,0.64,1) both; }
-
-  /* Auto-play indicator */
-  .autoplay-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--accent); display: inline-block;
-    animation: pulse 1.2s ease-in-out infinite;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  @keyframes pulse { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
-
-  .toast {
-    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
-    background: rgba(30,30,40,0.95); color: #fff; padding: 10px 20px;
-    border-radius: 20px; font-size: 14px; font-weight: 600;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999;
-    border: 1px solid rgba(255,255,255,0.1); white-space: nowrap;
-  }
-  .toast.show { opacity: 1; }
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:rgba(30,30,40,.95);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;border:1px solid rgba(255,255,255,.1);white-space:nowrap;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="logo">Word<span>Flow</span></div>
-  <div class="streak-badge">🔥 <span id="streak">1</span> ngày</div>
+  <div class="header-right">
+    <div class="streak-badge">🔥 <span id="streak-num">1</span> ngày</div>
+    <button class="mode-btn" onclick="openModePanel()">⚡ Chế độ</button>
+  </div>
 </div>
 
-<div class="progress-wrap">
-  <div class="progress-info">
-    <span id="prog-text">Từ 1/200</span>
-    <span id="prog-pct">0%</span>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+<div class="stats-bar">
+  <div class="stat-pill"><div class="val val-new" id="s-new">0</div><div class="lbl">Mới</div></div>
+  <div class="stat-pill"><div class="val val-review" id="s-review">0</div><div class="lbl">Ôn tập</div></div>
+  <div class="stat-pill"><div class="val val-known" id="s-known">0</div><div class="lbl">Đã nhớ</div></div>
+  <div class="stat-pill"><div class="val val-today" id="s-today">0</div><div class="lbl">Hôm nay</div></div>
 </div>
 
-<div class="card-area" id="card-area">
-  <div class="swipe-indicator up indicator-up" id="ind-up">
-    <div class="icon">↑</div>
-    <div class="label">Quay lại</div>
-  </div>
-  <div class="swipe-indicator down indicator-down" id="ind-down">
-    <div class="icon">↓</div>
-    <div class="label">Tiếp theo</div>
-  </div>
-
+<div class="card-area">
+  <div class="swipe-ind up ind-up" id="ind-up"><div class="icon">↑</div><div class="lbl">Quay lại</div></div>
+  <div class="swipe-ind down ind-down" id="ind-down"><div class="icon">↓</div><div class="lbl">Tiếp theo</div></div>
   <div class="vocab-card" id="main-card">
-    <div class="card-shine"></div>
-    <div class="card-decoration"></div>
-    <div class="card-decoration2"></div>
+    <div class="card-shine"></div><div class="card-deco"></div><div class="card-deco2"></div>
     <div class="card-content">
-      <div class="card-num" id="c-num">001 / 200</div>
+      <div class="card-meta">
+        <div class="card-type-badge" id="c-type">n</div>
+        <div class="card-srs-badge badge-new" id="c-srs">Mới</div>
+      </div>
       <div class="card-word" id="c-word">daughter</div>
       <div class="card-ipa" id="c-ipa">/ˈdɔːtər/</div>
       <div class="card-divider"></div>
       <div class="card-meaning-label">Nghĩa tiếng Việt</div>
       <div class="card-meaning" id="c-meaning">con gái</div>
-      <div class="card-example" id="c-example">She is my <em>daughter</em>. – Cô ấy là con gái tôi.</div>
-      <div class="card-type" id="c-type">noun</div>
+      <div class="card-example" id="c-example">...</div>
     </div>
   </div>
 </div>
 
-<div class="swipe-hint">
-  <span class="autoplay-dot"></span> Phát âm tự động &nbsp;·&nbsp; Vuốt lên/xuống để điều hướng
-</div>
+<div class="swipe-hint"><span class="autoplay-dot"></span>Phát âm tự động · Vuốt lên/xuống · ❌✅ để đánh giá</div>
 
 <div class="bottom-bar">
+  <button class="btn-remember btn-forgot" onclick="rateCard(false)">❌ Chưa nhớ</button>
   <button class="btn-fav" id="btn-fav" onclick="toggleFav()">♡</button>
+  <button class="btn-remember btn-knew" onclick="rateCard(true)">✅ Nhớ rồi</button>
 </div>
 
+<!-- Mode Panel -->
+<div class="mode-panel" id="mode-panel" onclick="closeModeOnBg(event)">
+  <div class="mode-sheet">
+    <div class="mode-title">Chọn chế độ học</div>
+    <div class="mode-grid">
+      <div class="mode-card active" id="mode-smart" onclick="setMode('smart')">
+        <div class="mc-icon">🧠</div>
+        <div class="mc-name">Thông minh</div>
+        <div class="mc-desc">SRS + random có kiểm soát 50/30/20</div>
+      </div>
+      <div class="mode-card" id="mode-new" onclick="setMode('new')">
+        <div class="mc-icon">✨</div>
+        <div class="mc-name">Từ mới</div>
+        <div class="mc-desc">Chỉ học các từ chưa gặp bao giờ</div>
+      </div>
+      <div class="mode-card" id="mode-review" onclick="setMode('review')">
+        <div class="mc-icon">🔄</div>
+        <div class="mc-name">Ôn tập</div>
+        <div class="mc-desc">Chỉ từ đã học nhưng chưa nhớ chắc</div>
+      </div>
+      <div class="mode-card" id="mode-explore" onclick="setMode('explore')">
+        <div class="mc-icon">🗺️</div>
+        <div class="mc-name">Khám phá</div>
+        <div class="mc-desc">Random tự do, không theo thứ tự</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Học theo chủ đề</div>
+      <div id="topic-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+    <button class="mode-close" onclick="closeModePanel()">Xong ✓</button>
+  </div>
+</div>
+
+<!-- Done Screen -->
 <div class="done-screen" id="done-screen">
   <div class="done-emoji">🎉</div>
-  <div class="done-title">Hoàn thành!</div>
-  <div class="done-sub">Bạn đã lướt qua tất cả 200 từ.<br>Não bộ đang xử lý... cứ tiếp tục nhé!</div>
+  <div class="done-title">Xuất sắc!</div>
+  <div class="done-sub" id="done-sub">Hoàn thành session hôm nay!</div>
   <div class="done-stats">
-    <div class="stat-box">
-      <div class="stat-num" id="stat-seen" style="color:#4ade80">0</div>
-      <div class="stat-label">Đã xem</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num" id="stat-fav" style="color:#fbbf24">0</div>
-      <div class="stat-label">Yêu thích</div>
-    </div>
+    <div class="dstat"><div class="dstat-num" id="d-knew" style="color:var(--green)">0</div><div class="dstat-lbl">Đã nhớ</div></div>
+    <div class="dstat"><div class="dstat-num" id="d-forgot" style="color:var(--red)">0</div><div class="dstat-lbl">Chưa nhớ</div></div>
+    <div class="dstat"><div class="dstat-num" id="d-fav" style="color:#fbbf24">0</div><div class="dstat-lbl">Yêu thích</div></div>
   </div>
-  <button class="restart-btn" onclick="restart()">🔄 Học lại từ đầu</button>
+  <button class="restart-btn" onclick="continueSession()">▶ Tiếp tục học</button>
 </div>
 
-<div id="start-overlay" style="
-  position:fixed;inset:0;z-index:200;
-  background:rgba(10,10,15,0.92);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:16px;cursor:pointer;
-  backdrop-filter:blur(4px);
-">
-  <div style="font-size:52px">🔊</div>
-  <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;">WordFlow</div>
-  <div style="font-size:15px;color:rgba(255,255,255,0.5);text-align:center;line-height:1.6;padding:0 32px;">
-    Chạm để bắt đầu<br><span style="font-size:13px;">Phát âm tự động sẽ được kích hoạt</span>
-  </div>
-  <div style="margin-top:8px;background:#e0ff4f;color:#000;border-radius:14px;padding:14px 36px;font-weight:700;font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;">
-    Bắt đầu học ▶
-  </div>
+<!-- Start Overlay -->
+<div class="start-overlay" id="start-overlay">
+  <div class="so-icon">🔊</div>
+  <div class="so-title">WordFlow</div>
+  <div class="so-sub">Học từ vựng thông minh với Spaced Repetition<br><span style="font-size:12px;color:rgba(255,255,255,.3)">Chạm để bắt đầu & kích hoạt phát âm</span></div>
+  <button class="so-btn" id="start-btn">Bắt đầu học ▶</button>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const WORDS = [
-  {w:"daughter",ipa:"/ˈdɔːtər/",vn:"con gái",ex:'She loves her <em>daughter</em> very much.',t:"n"},
-  {w:"bond",ipa:"/bɒnd/",vn:"mối liên kết / trái phiếu",ex:'A strong <em>bond</em> keeps them together.',t:"n"},
-  {w:"finance",ipa:"/ˈfaɪnæns/",vn:"tài chính",ex:'He works in <em>finance</em>.',t:"n"},
-  {w:"please",ipa:"/pliːz/",vn:"làm ơn / xin vui lòng",ex:'<em>Please</em> sit down.',t:"adv"},
-  {w:"ability",ipa:"/əˈbɪlɪti/",vn:"khả năng",ex:'She has the <em>ability</em> to learn fast.',t:"n"},
-  {w:"spring",ipa:"/sprɪŋ/",vn:"mùa xuân / lò xo",ex:'Flowers bloom in <em>spring</em>.',t:"n"},
-  {w:"desert",ipa:"/ˈdezərt/",vn:"sa mạc",ex:'The <em>desert</em> is very hot and dry.',t:"n"},
-  {w:"church",ipa:"/tʃɜːrtʃ/",vn:"nhà thờ",ex:'They go to <em>church</em> every Sunday.',t:"n"},
-  {w:"positive",ipa:"/ˈpɒzɪtɪv/",vn:"tích cực / dương tính",ex:'Stay <em>positive</em> no matter what.',t:"adj"},
-  {w:"condition",ipa:"/kənˈdɪʃən/",vn:"điều kiện / tình trạng",ex:'The car is in good <em>condition</em>.',t:"n"},
-  {w:"distance",ipa:"/ˈdɪstəns/",vn:"khoảng cách",ex:'What is the <em>distance</em> to the city?',t:"n"},
-  {w:"interest",ipa:"/ˈɪntrəst/",vn:"sở thích / lãi suất",ex:'He has an <em>interest</em> in music.',t:"n"},
-  {w:"chief",ipa:"/tʃiːf/",vn:"trưởng / chủ yếu",ex:'She is the <em>chief</em> of the department.',t:"n/adj"},
-  {w:"living",ipa:"/ˈlɪvɪŋ/",vn:"sinh sống / cuộc sống",ex:'He makes a <em>living</em> as a teacher.',t:"n/adj"},
-  {w:"industry",ipa:"/ˈɪndəstri/",vn:"ngành công nghiệp",ex:'The tech <em>industry</em> is growing fast.',t:"n"},
-  {w:"expert",ipa:"/ˈekspɜːrt/",vn:"chuyên gia",ex:'She is an <em>expert</em> in nutrition.',t:"n"},
-  {w:"small",ipa:"/smɔːl/",vn:"nhỏ bé",ex:'He lives in a <em>small</em> apartment.',t:"adj"},
-  {w:"age",ipa:"/eɪdʒ/",vn:"tuổi / thời đại",ex:'At her <em>age</em>, she runs marathons.',t:"n"},
-  {w:"woman",ipa:"/ˈwʊmən/",vn:"người phụ nữ",ex:'That <em>woman</em> is very talented.',t:"n"},
-  {w:"health",ipa:"/helθ/",vn:"sức khỏe",ex:'Good <em>health</em> is a treasure.',t:"n"},
-  {w:"certain",ipa:"/ˈsɜːrtən/",vn:"chắc chắn / một số",ex:"I'm <em>certain</em> she will come.",t:"adj"},
-  {w:"dry",ipa:"/draɪ/",vn:"khô / làm khô",ex:'The air is very <em>dry</em> in winter.',t:"adj/v"},
-  {w:"fact",ipa:"/fækt/",vn:"sự thật / thực tế",ex:'That is a well-known <em>fact</em>.',t:"n"},
-  {w:"include",ipa:"/ɪnˈkluːd/",vn:"bao gồm",ex:'The price <em>includes</em> tax.',t:"v"},
-  {w:"through",ipa:"/θruː/",vn:"qua / xuyên qua",ex:'She walked <em>through</em> the door.',t:"prep"},
-  {w:"rain",ipa:"/reɪn/",vn:"mưa",ex:'It will <em>rain</em> tomorrow.',t:"n/v"},
-  {w:"class",ipa:"/klɑːs/",vn:"lớp học / tầng lớp",ex:'The <em>class</em> starts at 8am.',t:"n"},
-  {w:"hair",ipa:"/heər/",vn:"tóc",ex:'Her <em>hair</em> is long and black.',t:"n"},
-  {w:"each",ipa:"/iːtʃ/",vn:"mỗi",ex:'<em>Each</em> student got a book.',t:"det"},
-  {w:"gift",ipa:"/ɡɪft/",vn:"món quà / tài năng",ex:'She received a beautiful <em>gift</em>.',t:"n"},
-  {w:"piece",ipa:"/piːs/",vn:"mảnh / tác phẩm",ex:'Give me a <em>piece</em> of cake.',t:"n"},
-  {w:"space",ipa:"/speɪs/",vn:"không gian / vũ trụ",ex:"There's not enough <em>space</em> here.",t:"n"},
-  {w:"level",ipa:"/ˈlevəl/",vn:"mức độ / tầng",ex:'Her English <em>level</em> is advanced.',t:"n"},
-  {w:"general",ipa:"/ˈdʒenərəl/",vn:"chung / tướng quân",ex:'In <em>general</em>, he is a good student.',t:"adj/n"},
-  {w:"within",ipa:"/wɪˈðɪn/",vn:"trong vòng / bên trong",ex:'Finish <em>within</em> two hours.',t:"prep"},
-  {w:"both",ipa:"/bəʊθ/",vn:"cả hai",ex:'<em>Both</em> of them are right.',t:"det"},
-  {w:"field",ipa:"/fiːld/",vn:"cánh đồng / lĩnh vực",ex:'He works in the medical <em>field</em>.',t:"n"},
-  {w:"meet",ipa:"/miːt/",vn:"gặp gỡ",ex:"Let's <em>meet</em> at noon.",t:"v"},
-  {w:"self",ipa:"/self/",vn:"bản thân",ex:'Be true to your <em>self</em>.',t:"n"},
-  {w:"chair",ipa:"/tʃeər/",vn:"ghế / chủ tịch",ex:'Please take a <em>chair</em>.',t:"n"},
-  {w:"begin",ipa:"/bɪˈɡɪn/",vn:"bắt đầu",ex:"Let's <em>begin</em> the lesson.",t:"v"},
-  {w:"dark",ipa:"/dɑːrk/",vn:"tối / tối tăm",ex:'It gets <em>dark</em> early in winter.',t:"adj"},
-  {w:"government",ipa:"/ˈɡʌvərnmənt/",vn:"chính phủ",ex:'The <em>government</em> passed a new law.',t:"n"},
-  {w:"material",ipa:"/məˈtɪəriəl/",vn:"vật liệu / tài liệu",ex:'What <em>material</em> is this shirt made of?',t:"n"},
-  {w:"edge",ipa:"/edʒ/",vn:"cạnh / bờ / lợi thế",ex:"Don't stand at the <em>edge</em> of the cliff.",t:"n"},
-  {w:"fall",ipa:"/fɔːl/",vn:"ngã / mùa thu",ex:'Be careful not to <em>fall</em>.',t:"v/n"},
-  {w:"press",ipa:"/pres/",vn:"nhấn / báo chí",ex:'<em>Press</em> the button to start.',t:"v/n"},
-  {w:"clear",ipa:"/klɪər/",vn:"rõ ràng / trong sáng",ex:'Her explanation was very <em>clear</em>.',t:"adj/v"},
-  {w:"shape",ipa:"/ʃeɪp/",vn:"hình dạng",ex:'What <em>shape</em> is that object?',t:"n"},
-  {w:"would",ipa:"/wʊd/",vn:"sẽ / thường (quá khứ)",ex:'I <em>would</em> love to travel more.',t:"modal"},
-  {w:"common",ipa:"/ˈkɒmən/",vn:"phổ biến / chung",ex:'Cold is a <em>common</em> illness in winter.',t:"adj"},
-  {w:"introduce",ipa:"/ˌɪntrəˈdjuːs/",vn:"giới thiệu",ex:'Let me <em>introduce</em> my friend Tom.',t:"v"},
-  {w:"fresh",ipa:"/freʃ/",vn:"tươi / mới",ex:'I love the smell of <em>fresh</em> bread.',t:"adj"},
-  {w:"perhaps",ipa:"/pərˈhæps/",vn:"có lẽ",ex:'<em>Perhaps</em> she will call later.',t:"adv"},
-  {w:"composed",ipa:"/kəmˈpəʊzd/",vn:"bình tĩnh / được tạo thành",ex:'She remained <em>composed</em> under pressure.',t:"adj"},
-  {w:"court",ipa:"/kɔːrt/",vn:"tòa án / sân",ex:'The case went to <em>court</em>.',t:"n"},
-  {w:"affect",ipa:"/əˈfekt/",vn:"ảnh hưởng đến",ex:'Stress can <em>affect</em> your health.',t:"v"},
-  {w:"impact",ipa:"/ˈɪmpækt/",vn:"tác động / ảnh hưởng",ex:'The news had a big <em>impact</em> on him.',t:"n"},
-  {w:"price",ipa:"/praɪs/",vn:"giá cả",ex:'The <em>price</em> of milk has risen.',t:"n"},
-  {w:"deal",ipa:"/diːl/",vn:"giao dịch / đối phó",ex:'They made a great <em>deal</em>.',t:"n/v"},
-  {w:"rude",ipa:"/ruːd/",vn:"thô lỗ",ex:'It is <em>rude</em> to interrupt someone.',t:"adj"},
-  {w:"detail",ipa:"/ˈdiːteɪl/",vn:"chi tiết",ex:'Pay attention to <em>detail</em>.',t:"n"},
-  {w:"focus",ipa:"/ˈfəʊkəs/",vn:"tập trung",ex:'<em>Focus</em> on what matters most.',t:"v/n"},
-  {w:"holiday",ipa:"/ˈhɒlɪdeɪ/",vn:"kỳ nghỉ / ngày lễ",ex:"We're going on <em>holiday</em> next week.",t:"n"},
-  {w:"bridge",ipa:"/brɪdʒ/",vn:"cây cầu / kết nối",ex:'The <em>bridge</em> connects the two towns.',t:"n"},
-  {w:"forbid",ipa:"/fərˈbɪd/",vn:"cấm",ex:'Smoking is <em>forbidden</em> here.',t:"v"},
-  {w:"carpet",ipa:"/ˈkɑːrpɪt/",vn:"thảm trải sàn",ex:'The <em>carpet</em> is soft and warm.',t:"n"},
-  {w:"justice",ipa:"/ˈdʒʌstɪs/",vn:"công lý",ex:'Everyone deserves <em>justice</em>.',t:"n"},
-  {w:"essential",ipa:"/ɪˈsenʃəl/",vn:"thiết yếu / cần thiết",ex:'Water is <em>essential</em> for life.',t:"adj"},
-  {w:"increase",ipa:"/ɪnˈkriːs/",vn:"tăng / sự tăng",ex:'Sales <em>increased</em> by 20%.',t:"v/n"},
-  {w:"talent",ipa:"/ˈtælənt/",vn:"tài năng",ex:'She has a <em>talent</em> for singing.',t:"n"},
-  {w:"special",ipa:"/ˈspeʃəl/",vn:"đặc biệt",ex:'Today is a very <em>special</em> day.',t:"adj"},
-  {w:"uncle",ipa:"/ˈʌŋkəl/",vn:"chú / cậu / bác (trai)",ex:'My <em>uncle</em> lives in Hanoi.',t:"n"},
-  {w:"article",ipa:"/ˈɑːrtɪkəl/",vn:"bài báo / mạo từ",ex:'I read an interesting <em>article</em> today.',t:"n"},
-  {w:"accept",ipa:"/əkˈsept/",vn:"chấp nhận",ex:'She <em>accepted</em> the job offer.',t:"v"},
-  {w:"cheap",ipa:"/tʃiːp/",vn:"rẻ",ex:'This phone is surprisingly <em>cheap</em>.',t:"adj"},
-  {w:"propose",ipa:"/prəˈpəʊz/",vn:"đề xuất / cầu hôn",ex:'He <em>proposed</em> a new idea at the meeting.',t:"v"},
-  {w:"bus",ipa:"/bʌs/",vn:"xe buýt",ex:'She takes the <em>bus</em> to work every day.',t:"n"},
-  {w:"storage",ipa:"/ˈstɔːrɪdʒ/",vn:"kho lưu trữ",ex:'We need more <em>storage</em> space.',t:"n"},
-  {w:"contribution",ipa:"/ˌkɒntrɪˈbjuːʃən/",vn:"sự đóng góp",ex:'Her <em>contribution</em> was invaluable.',t:"n"},
-  {w:"fluid",ipa:"/ˈfluːɪd/",vn:"chất lỏng / linh hoạt",ex:'Drink plenty of <em>fluid</em> when sick.',t:"n/adj"},
-  {w:"favourite",ipa:"/ˈfeɪvərɪt/",vn:"yêu thích nhất",ex:'Pizza is my <em>favourite</em> food.',t:"adj/n"},
-  {w:"scientist",ipa:"/ˈsaɪəntɪst/",vn:"nhà khoa học",ex:'She became a famous <em>scientist</em>.',t:"n"},
-  {w:"calculate",ipa:"/ˈkælkjuleɪt/",vn:"tính toán",ex:'Can you <em>calculate</em> the total cost?',t:"v"},
-  {w:"attract",ipa:"/əˈtrækt/",vn:"thu hút",ex:'Flowers <em>attract</em> bees.',t:"v"},
-  {w:"belong",ipa:"/bɪˈlɒŋ/",vn:"thuộc về",ex:'This book <em>belongs</em> to me.',t:"v"},
-  {w:"mean",ipa:"/miːn/",vn:"có nghĩa là / ý muốn nói",ex:'What does this word <em>mean</em>?',t:"v"},
-  {w:"imagine",ipa:"/ɪˈmædʒɪn/",vn:"tưởng tượng",ex:'<em>Imagine</em> a world without war.',t:"v"},
-  {w:"various",ipa:"/ˈveəriəs/",vn:"khác nhau / nhiều loại",ex:'There are <em>various</em> ways to solve this.',t:"adj"},
-  {w:"reduce",ipa:"/rɪˈdjuːs/",vn:"giảm / giảm thiểu",ex:'We need to <em>reduce</em> waste.',t:"v"},
-  {w:"compare",ipa:"/kəmˈpeər/",vn:"so sánh",ex:'<em>Compare</em> these two prices.',t:"v"},
-  {w:"succeed",ipa:"/səkˈsiːd/",vn:"thành công / kế vị",ex:'Hard work helps you <em>succeed</em>.',t:"v"},
-  {w:"produce",ipa:"/prəˈdjuːs/",vn:"sản xuất / tạo ra",ex:'The factory <em>produces</em> cars.',t:"v"},
-  {w:"expect",ipa:"/ɪkˈspekt/",vn:"mong đợi / dự kiến",ex:'I <em>expect</em> a reply soon.',t:"v"},
-  {w:"opinion",ipa:"/əˈpɪnjən/",vn:"ý kiến / quan điểm",ex:'In my <em>opinion</em>, this is wrong.',t:"n"},
-  {w:"describe",ipa:"/dɪˈskraɪb/",vn:"mô tả",ex:'Can you <em>describe</em> what you saw?',t:"v"},
-  {w:"suggest",ipa:"/səˈdʒest/",vn:"gợi ý / đề nghị",ex:'I <em>suggest</em> we leave early.',t:"v"},
-  {w:"freedom",ipa:"/ˈfriːdəm/",vn:"tự do",ex:'<em>Freedom</em> is a basic human right.',t:"n"},
-  {w:"prefer",ipa:"/prɪˈfɜːr/",vn:"thích hơn",ex:'I <em>prefer</em> tea to coffee.',t:"v"},
-  {w:"challenge",ipa:"/ˈtʃælɪndʒ/",vn:"thách thức",ex:'Learning a language is a <em>challenge</em>.',t:"n/v"},
-  {w:"gather",ipa:"/ˈɡæðər/",vn:"tập hợp / thu thập",ex:'Friends <em>gathered</em> at the park.',t:"v"},
-  {w:"examine",ipa:"/ɪɡˈzæmɪn/",vn:"kiểm tra / xét nghiệm",ex:'The doctor will <em>examine</em> you now.',t:"v"},
-  {w:"force",ipa:"/fɔːrs/",vn:"lực / buộc phải",ex:'He was <em>forced</em> to apologize.',t:"n/v"},
-  {w:"curious",ipa:"/ˈkjʊəriəs/",vn:"tò mò",ex:'Children are naturally <em>curious</em>.',t:"adj"},
-  {w:"responsible",ipa:"/rɪˈspɒnsɪbəl/",vn:"có trách nhiệm",ex:'Be <em>responsible</em> for your actions.',t:"adj"},
-  {w:"allow",ipa:"/əˈlaʊ/",vn:"cho phép",ex:'They do not <em>allow</em> smoking here.',t:"v"},
-  {w:"achieve",ipa:"/əˈtʃiːv/",vn:"đạt được",ex:'You can <em>achieve</em> your goals.',t:"v"},
-  {w:"purpose",ipa:"/ˈpɜːrpəs/",vn:"mục đích",ex:'What is the <em>purpose</em> of this meeting?',t:"n"},
-  {w:"consider",ipa:"/kənˈsɪdər/",vn:"xem xét / cân nhắc",ex:'Please <em>consider</em> my suggestion.',t:"v"},
-  {w:"entire",ipa:"/ɪnˈtaɪər/",vn:"toàn bộ / toàn vẹn",ex:'She read the <em>entire</em> book in a day.',t:"adj"},
-  {w:"establish",ipa:"/ɪˈstæblɪʃ/",vn:"thành lập / thiết lập",ex:'They <em>established</em> a new company.',t:"v"},
-  {w:"region",ipa:"/ˈriːdʒən/",vn:"vùng / khu vực",ex:'This <em>region</em> is known for its food.',t:"n"},
-  {w:"nature",ipa:"/ˈneɪtʃər/",vn:"thiên nhiên / bản chất",ex:'She loves spending time in <em>nature</em>.',t:"n"},
-  {w:"claim",ipa:"/kleɪm/",vn:"tuyên bố / yêu cầu",ex:'He <em>claimed</em> he was innocent.',t:"v/n"},
-  {w:"demand",ipa:"/dɪˈmɑːnd/",vn:"yêu cầu / nhu cầu",ex:'There is high <em>demand</em> for this product.',t:"n/v"},
-  {w:"strategy",ipa:"/ˈstrætɪdʒi/",vn:"chiến lược",ex:'We need a new marketing <em>strategy</em>.',t:"n"},
-  {w:"environment",ipa:"/ɪnˈvaɪrənmənt/",vn:"môi trường",ex:'We must protect the <em>environment</em>.',t:"n"},
-  {w:"balance",ipa:"/ˈbæləns/",vn:"sự cân bằng",ex:'Maintain a good work-life <em>balance</em>.',t:"n/v"},
-  {w:"manage",ipa:"/ˈmænɪdʒ/",vn:"quản lý / xoay sở",ex:'She <em>manages</em> a team of 20.',t:"v"},
-  {w:"opportunity",ipa:"/ˌɒpəˈtjuːnɪti/",vn:"cơ hội",ex:"Don't miss this great <em>opportunity</em>.",t:"n"},
-  {w:"quality",ipa:"/ˈkwɒlɪti/",vn:"chất lượng",ex:'The food here is high <em>quality</em>.',t:"n"},
-  {w:"culture",ipa:"/ˈkʌltʃər/",vn:"văn hóa",ex:'Vietnam has a rich <em>culture</em>.',t:"n"},
-  {w:"attempt",ipa:"/əˈtempt/",vn:"cố gắng / nỗ lực",ex:'Make another <em>attempt</em>.',t:"v/n"},
-  {w:"discover",ipa:"/dɪˈskʌvər/",vn:"khám phá / phát hiện",ex:'She <em>discovered</em> a new recipe.',t:"v"},
-  {w:"feature",ipa:"/ˈfiːtʃər/",vn:"tính năng / đặc điểm",ex:'This phone has many great <em>features</em>.',t:"n"},
-  {w:"develop",ipa:"/dɪˈveləp/",vn:"phát triển",ex:'We need to <em>develop</em> new skills.',t:"v"},
-  {w:"process",ipa:"/ˈprəʊses/",vn:"quá trình / xử lý",ex:'The <em>process</em> takes three days.',t:"n/v"},
-  {w:"approach",ipa:"/əˈprəʊtʃ/",vn:"tiếp cận / phương pháp",ex:'Try a different <em>approach</em>.',t:"n/v"},
-  {w:"benefit",ipa:"/ˈbenɪfɪt/",vn:"lợi ích",ex:'Exercise has many <em>benefits</em>.',t:"n/v"},
-  {w:"improve",ipa:"/ɪmˈpruːv/",vn:"cải thiện",ex:'Practice will <em>improve</em> your skills.',t:"v"},
-  {w:"support",ipa:"/səˈpɔːrt/",vn:"hỗ trợ / ủng hộ",ex:'I <em>support</em> your decision.',t:"v/n"},
-  {w:"result",ipa:"/rɪˈzʌlt/",vn:"kết quả",ex:'Hard work leads to good <em>results</em>.',t:"n"},
-  {w:"value",ipa:"/ˈvæljuː/",vn:"giá trị / đánh giá cao",ex:'Family is the greatest <em>value</em>.',t:"n/v"},
-  {w:"create",ipa:"/kriˈeɪt/",vn:"tạo ra",ex:'Artists <em>create</em> beautiful things.',t:"v"},
-  {w:"identify",ipa:"/aɪˈdentɪfaɪ/",vn:"xác định / nhận ra",ex:'Can you <em>identify</em> the problem?',t:"v"},
-  {w:"indicate",ipa:"/ˈɪndɪkeɪt/",vn:"chỉ ra / cho thấy",ex:'The data <em>indicates</em> a trend.',t:"v"},
-  {w:"significant",ipa:"/sɪɡˈnɪfɪkənt/",vn:"đáng kể / quan trọng",ex:'This is a <em>significant</em> achievement.',t:"adj"},
-  {w:"available",ipa:"/əˈveɪləbəl/",vn:"có sẵn / rảnh rỗi",ex:'Is this item <em>available</em> in blue?',t:"adj"},
-  {w:"major",ipa:"/ˈmeɪdʒər/",vn:"lớn / chuyên ngành",ex:'This is a <em>major</em> decision.',t:"adj/n"},
-  {w:"reveal",ipa:"/rɪˈviːl/",vn:"tiết lộ / hé lộ",ex:'She <em>revealed</em> the surprise.',t:"v"},
-  {w:"indeed",ipa:"/ɪnˈdiːd/",vn:"thực sự / quả thật",ex:'That is <em>indeed</em> a good idea.',t:"adv"},
-  {w:"specific",ipa:"/spɪˈsɪfɪk/",vn:"cụ thể / đặc hiệu",ex:'Be more <em>specific</em> in your answer.',t:"adj"},
-  {w:"global",ipa:"/ˈɡləʊbəl/",vn:"toàn cầu",ex:'Climate change is a <em>global</em> issue.',t:"adj"},
-  {w:"involve",ipa:"/ɪnˈvɒlv/",vn:"liên quan / bao gồm",ex:'The project <em>involves</em> many steps.',t:"v"},
-  {w:"exist",ipa:"/ɪɡˈzɪst/",vn:"tồn tại",ex:'Do aliens <em>exist</em>?',t:"v"},
-  {w:"solution",ipa:"/səˈluːʃən/",vn:"giải pháp",ex:'We need a creative <em>solution</em>.',t:"n"},
-  {w:"promote",ipa:"/prəˈməʊt/",vn:"thúc đẩy / quảng bá / thăng chức",ex:'She was <em>promoted</em> to manager.',t:"v"},
-  {w:"unique",ipa:"/juːˈniːk/",vn:"độc đáo",ex:'Each person is <em>unique</em>.',t:"adj"},
-  {w:"potential",ipa:"/pəˈtenʃəl/",vn:"tiềm năng",ex:'She has great <em>potential</em>.',t:"n/adj"},
-  {w:"confident",ipa:"/ˈkɒnfɪdənt/",vn:"tự tin",ex:'Be <em>confident</em> in yourself.',t:"adj"},
-  {w:"recognize",ipa:"/ˈrekəɡnaɪz/",vn:"nhận ra / công nhận",ex:"I didn't <em>recognize</em> him at first.",t:"v"},
-  {w:"priority",ipa:"/praɪˈɒrɪti/",vn:"ưu tiên",ex:'Health is my top <em>priority</em>.',t:"n"},
-  {w:"reliable",ipa:"/rɪˈlaɪəbəl/",vn:"đáng tin cậy",ex:'She is a very <em>reliable</em> person.',t:"adj"},
-  {w:"flexible",ipa:"/ˈfleksɪbəl/",vn:"linh hoạt / dẻo dai",ex:'This job requires a <em>flexible</em> schedule.',t:"adj"},
-  {w:"innovative",ipa:"/ˈɪnəveɪtɪv/",vn:"sáng tạo / đổi mới",ex:'They have an <em>innovative</em> approach.',t:"adj"},
-  {w:"efficient",ipa:"/ɪˈfɪʃənt/",vn:"hiệu quả",ex:'This engine is very <em>efficient</em>.',t:"adj"},
-  {w:"relevant",ipa:"/ˈreləvənt/",vn:"liên quan / phù hợp",ex:'Please provide <em>relevant</em> information.',t:"adj"},
-  {w:"consistent",ipa:"/kənˈsɪstənt/",vn:"nhất quán / đều đặn",ex:'Be <em>consistent</em> in your efforts.',t:"adj"},
-  {w:"contribute",ipa:"/kənˈtrɪbjuːt/",vn:"đóng góp",ex:'Everyone should <em>contribute</em> to society.',t:"v"},
-  {w:"transform",ipa:"/trænsˈfɔːrm/",vn:"biến đổi / chuyển hóa",ex:'Exercise can <em>transform</em> your body.',t:"v"},
-  {w:"sufficient",ipa:"/səˈfɪʃənt/",vn:"đủ / thỏa đáng",ex:'Is one hour <em>sufficient</em>?',t:"adj"},
-  {w:"implement",ipa:"/ˈɪmplɪment/",vn:"thực hiện / triển khai",ex:'We need to <em>implement</em> the plan.',t:"v"},
-  {w:"analyze",ipa:"/ˈænəlaɪz/",vn:"phân tích",ex:'We need to <em>analyze</em> the data.',t:"v"},
-  {w:"perspective",ipa:"/pəˈspektɪv/",vn:"quan điểm / góc nhìn",ex:'Try to see it from my <em>perspective</em>.',t:"n"},
-  {w:"communicate",ipa:"/kəˈmjuːnɪkeɪt/",vn:"giao tiếp / truyền đạt",ex:"It's important to <em>communicate</em> clearly.",t:"v"},
-  {w:"evaluate",ipa:"/ɪˈvæljueɪt/",vn:"đánh giá",ex:"Let's <em>evaluate</em> the options.",t:"v"},
-  {w:"organize",ipa:"/ˈɔːrɡənaɪz/",vn:"tổ chức / sắp xếp",ex:'Can you <em>organize</em> the files?',t:"v"},
-  {w:"demonstrate",ipa:"/ˈdemənstreɪt/",vn:"chứng minh / biểu diễn",ex:'Please <em>demonstrate</em> how it works.',t:"v"},
-  {w:"accommodate",ipa:"/əˈkɒmədeɪt/",vn:"cung cấp chỗ ở / đáp ứng",ex:'The hotel can <em>accommodate</em> 300 guests.',t:"v"},
-  {w:"emphasize",ipa:"/ˈemfəsaɪz/",vn:"nhấn mạnh",ex:'The teacher <em>emphasized</em> the key points.',t:"v"},
-  {w:"negotiate",ipa:"/nɪˈɡəʊʃieɪt/",vn:"đàm phán / thương lượng",ex:'They had to <em>negotiate</em> a deal.',t:"v"},
-  {w:"accomplish",ipa:"/əˈkʌmplɪʃ/",vn:"hoàn thành / đạt được",ex:'You can <em>accomplish</em> anything you set your mind to.',t:"v"},
-  {w:"phenomenon",ipa:"/fɪˈnɒmɪnən/",vn:"hiện tượng",ex:'This is a natural <em>phenomenon</em>.',t:"n"},
-  {w:"contemporary",ipa:"/kənˈtempərəri/",vn:"đương đại / cùng thời",ex:'He is a <em>contemporary</em> artist.',t:"adj/n"},
-  {w:"fundamental",ipa:"/ˌfʌndəˈmentəl/",vn:"cơ bản / căn bản",ex:'This is a <em>fundamental</em> skill.',t:"adj"},
-  {w:"circumstance",ipa:"/ˈsɜːrkəmstæns/",vn:"hoàn cảnh / tình huống",ex:'Under these <em>circumstances</em>, we must adapt.',t:"n"},
-  {w:"acknowledge",ipa:"/əkˈnɒlɪdʒ/",vn:"thừa nhận / ghi nhận",ex:'She <em>acknowledged</em> her mistake.',t:"v"},
-  {w:"controversy",ipa:"/ˈkɒntrəvɜːrsi/",vn:"tranh cãi / gây tranh cãi",ex:'The decision caused <em>controversy</em>.',t:"n"},
-  {w:"sophisticated",ipa:"/səˈfɪstɪkeɪtɪd/",vn:"tinh vi / sành điệu",ex:'She has very <em>sophisticated</em> taste.',t:"adj"},
-  {w:"ambitious",ipa:"/æmˈbɪʃəs/",vn:"tham vọng / đầy hoài bão",ex:'He is an <em>ambitious</em> young entrepreneur.',t:"adj"},
-  {w:"enthusiasm",ipa:"/ɪnˈθjuːziæzəm/",vn:"nhiệt tình / hăng hái",ex:'She tackled the project with great <em>enthusiasm</em>.',t:"n"},
-  {w:"collaborate",ipa:"/kəˈlæbəreɪt/",vn:"cộng tác / hợp tác",ex:'We must <em>collaborate</em> to finish on time.',t:"v"},
-  {w:"initiative",ipa:"/ɪˈnɪʃətɪv/",vn:"sáng kiến / chủ động",ex:'Take the <em>initiative</em> and lead.',t:"n"},
-  {w:"consequence",ipa:"/ˈkɒnsɪkwəns/",vn:"hậu quả / kết quả",ex:'Think about the <em>consequences</em> of your actions.',t:"n"},
-  {w:"sustainable",ipa:"/səˈsteɪnəbəl/",vn:"bền vững",ex:'We need <em>sustainable</em> energy sources.',t:"adj"},
-  {w:"transparent",ipa:"/trænsˈpærənt/",vn:"minh bạch / trong suốt",ex:'The government should be <em>transparent</em>.',t:"adj"},
-  {w:"commitment",ipa:"/kəˈmɪtmənt/",vn:"cam kết / sự tận tâm",ex:'Success requires <em>commitment</em>.',t:"n"},
+// ── WORD DATA ──────────────────────────────────────────────────────────────
+const WORDS=[
+{id:0,w:"daughter",ipa:"/ˈdɔːtər/",vn:"con gái",ex:'She loves her <em>daughter</em> very much.',t:"n",topic:"family"},
+{id:1,w:"bond",ipa:"/bɒnd/",vn:"mối liên kết / trái phiếu",ex:'A strong <em>bond</em> keeps them together.',t:"n",topic:"general"},
+{id:2,w:"finance",ipa:"/ˈfaɪnæns/",vn:"tài chính",ex:'He works in <em>finance</em>.',t:"n",topic:"business"},
+{id:3,w:"please",ipa:"/pliːz/",vn:"làm ơn / xin vui lòng",ex:'<em>Please</em> sit down.',t:"adv",topic:"general"},
+{id:4,w:"ability",ipa:"/əˈbɪlɪti/",vn:"khả năng",ex:'She has the <em>ability</em> to learn fast.',t:"n",topic:"general"},
+{id:5,w:"spring",ipa:"/sprɪŋ/",vn:"mùa xuân / lò xo",ex:'Flowers bloom in <em>spring</em>.',t:"n",topic:"nature"},
+{id:6,w:"desert",ipa:"/ˈdezərt/",vn:"sa mạc",ex:'The <em>desert</em> is very hot and dry.',t:"n",topic:"nature"},
+{id:7,w:"church",ipa:"/tʃɜːrtʃ/",vn:"nhà thờ",ex:'They go to <em>church</em> every Sunday.',t:"n",topic:"place"},
+{id:8,w:"positive",ipa:"/ˈpɒzɪtɪv/",vn:"tích cực / dương tính",ex:'Stay <em>positive</em> no matter what.',t:"adj",topic:"general"},
+{id:9,w:"condition",ipa:"/kənˈdɪʃən/",vn:"điều kiện / tình trạng",ex:'The car is in good <em>condition</em>.',t:"n",topic:"general"},
+{id:10,w:"distance",ipa:"/ˈdɪstəns/",vn:"khoảng cách",ex:'What is the <em>distance</em> to the city?',t:"n",topic:"general"},
+{id:11,w:"interest",ipa:"/ˈɪntrəst/",vn:"sở thích / lãi suất",ex:'He has an <em>interest</em> in music.',t:"n",topic:"business"},
+{id:12,w:"chief",ipa:"/tʃiːf/",vn:"trưởng / chủ yếu",ex:'She is the <em>chief</em> of the department.',t:"n",topic:"work"},
+{id:13,w:"living",ipa:"/ˈlɪvɪŋ/",vn:"sinh sống / cuộc sống",ex:'He makes a <em>living</em> as a teacher.',t:"n",topic:"general"},
+{id:14,w:"industry",ipa:"/ˈɪndəstri/",vn:"ngành công nghiệp",ex:'The tech <em>industry</em> is growing fast.',t:"n",topic:"business"},
+{id:15,w:"expert",ipa:"/ˈekspɜːrt/",vn:"chuyên gia",ex:'She is an <em>expert</em> in nutrition.',t:"n",topic:"work"},
+{id:16,w:"small",ipa:"/smɔːl/",vn:"nhỏ bé",ex:'He lives in a <em>small</em> apartment.',t:"adj",topic:"general"},
+{id:17,w:"age",ipa:"/eɪdʒ/",vn:"tuổi / thời đại",ex:'At her <em>age</em>, she runs marathons.',t:"n",topic:"general"},
+{id:18,w:"woman",ipa:"/ˈwʊmən/",vn:"người phụ nữ",ex:'That <em>woman</em> is very talented.',t:"n",topic:"general"},
+{id:19,w:"health",ipa:"/helθ/",vn:"sức khỏe",ex:'Good <em>health</em> is a treasure.',t:"n",topic:"health"},
+{id:20,w:"certain",ipa:"/ˈsɜːrtən/",vn:"chắc chắn / một số",ex:"I'm <em>certain</em> she will come.",t:"adj",topic:"general"},
+{id:21,w:"dry",ipa:"/draɪ/",vn:"khô / làm khô",ex:'The air is very <em>dry</em> in winter.',t:"adj",topic:"nature"},
+{id:22,w:"fact",ipa:"/fækt/",vn:"sự thật / thực tế",ex:'That is a well-known <em>fact</em>.',t:"n",topic:"general"},
+{id:23,w:"include",ipa:"/ɪnˈkluːd/",vn:"bao gồm",ex:'The price <em>includes</em> tax.',t:"v",topic:"general"},
+{id:24,w:"through",ipa:"/θruː/",vn:"qua / xuyên qua",ex:'She walked <em>through</em> the door.',t:"prep",topic:"general"},
+{id:25,w:"rain",ipa:"/reɪn/",vn:"mưa",ex:'It will <em>rain</em> tomorrow.',t:"n",topic:"nature"},
+{id:26,w:"class",ipa:"/klɑːs/",vn:"lớp học / tầng lớp",ex:'The <em>class</em> starts at 8am.',t:"n",topic:"education"},
+{id:27,w:"hair",ipa:"/heər/",vn:"tóc",ex:'Her <em>hair</em> is long and black.',t:"n",topic:"body"},
+{id:28,w:"each",ipa:"/iːtʃ/",vn:"mỗi",ex:'<em>Each</em> student got a book.',t:"det",topic:"general"},
+{id:29,w:"gift",ipa:"/ɡɪft/",vn:"món quà / tài năng",ex:'She received a beautiful <em>gift</em>.',t:"n",topic:"general"},
+{id:30,w:"piece",ipa:"/piːs/",vn:"mảnh / tác phẩm",ex:'Give me a <em>piece</em> of cake.',t:"n",topic:"general"},
+{id:31,w:"space",ipa:"/speɪs/",vn:"không gian / vũ trụ",ex:"There's not enough <em>space</em> here.",t:"n",topic:"science"},
+{id:32,w:"level",ipa:"/ˈlevəl/",vn:"mức độ / tầng",ex:'Her English <em>level</em> is advanced.',t:"n",topic:"education"},
+{id:33,w:"general",ipa:"/ˈdʒenərəl/",vn:"chung / tướng quân",ex:'In <em>general</em>, he is a good student.',t:"adj",topic:"general"},
+{id:34,w:"within",ipa:"/wɪˈðɪn/",vn:"trong vòng / bên trong",ex:'Finish <em>within</em> two hours.',t:"prep",topic:"general"},
+{id:35,w:"both",ipa:"/bəʊθ/",vn:"cả hai",ex:'<em>Both</em> of them are right.',t:"det",topic:"general"},
+{id:36,w:"field",ipa:"/fiːld/",vn:"cánh đồng / lĩnh vực",ex:'He works in the medical <em>field</em>.',t:"n",topic:"work"},
+{id:37,w:"meet",ipa:"/miːt/",vn:"gặp gỡ",ex:"Let's <em>meet</em> at noon.",t:"v",topic:"general"},
+{id:38,w:"self",ipa:"/self/",vn:"bản thân",ex:'Be true to your <em>self</em>.',t:"n",topic:"general"},
+{id:39,w:"chair",ipa:"/tʃeər/",vn:"ghế / chủ tịch",ex:'Please take a <em>chair</em>.',t:"n",topic:"place"},
+{id:40,w:"begin",ipa:"/bɪˈɡɪn/",vn:"bắt đầu",ex:"Let's <em>begin</em> the lesson.",t:"v",topic:"general"},
+{id:41,w:"dark",ipa:"/dɑːrk/",vn:"tối / tối tăm",ex:'It gets <em>dark</em> early in winter.',t:"adj",topic:"general"},
+{id:42,w:"government",ipa:"/ˈɡʌvərnmənt/",vn:"chính phủ",ex:'The <em>government</em> passed a new law.',t:"n",topic:"society"},
+{id:43,w:"material",ipa:"/məˈtɪəriəl/",vn:"vật liệu / tài liệu",ex:'What <em>material</em> is this shirt made of?',t:"n",topic:"general"},
+{id:44,w:"edge",ipa:"/edʒ/",vn:"cạnh / bờ / lợi thế",ex:"Don't stand at the <em>edge</em> of the cliff.",t:"n",topic:"general"},
+{id:45,w:"fall",ipa:"/fɔːl/",vn:"ngã / mùa thu",ex:'Be careful not to <em>fall</em>.',t:"v",topic:"general"},
+{id:46,w:"press",ipa:"/pres/",vn:"nhấn / báo chí",ex:'<em>Press</em> the button to start.',t:"v",topic:"general"},
+{id:47,w:"clear",ipa:"/klɪər/",vn:"rõ ràng / trong sáng",ex:'Her explanation was very <em>clear</em>.',t:"adj",topic:"general"},
+{id:48,w:"shape",ipa:"/ʃeɪp/",vn:"hình dạng",ex:'What <em>shape</em> is that object?',t:"n",topic:"general"},
+{id:49,w:"would",ipa:"/wʊd/",vn:"sẽ / thường (quá khứ)",ex:'I <em>would</em> love to travel more.',t:"modal",topic:"general"},
+{id:50,w:"common",ipa:"/ˈkɒmən/",vn:"phổ biến / chung",ex:'Cold is a <em>common</em> illness in winter.',t:"adj",topic:"general"},
+{id:51,w:"introduce",ipa:"/ˌɪntrəˈdjuːs/",vn:"giới thiệu",ex:'Let me <em>introduce</em> my friend Tom.',t:"v",topic:"social"},
+{id:52,w:"fresh",ipa:"/freʃ/",vn:"tươi / mới",ex:'I love the smell of <em>fresh</em> bread.',t:"adj",topic:"food"},
+{id:53,w:"perhaps",ipa:"/pərˈhæps/",vn:"có lẽ",ex:'<em>Perhaps</em> she will call later.',t:"adv",topic:"general"},
+{id:54,w:"composed",ipa:"/kəmˈpəʊzd/",vn:"bình tĩnh / được tạo thành",ex:'She remained <em>composed</em> under pressure.',t:"adj",topic:"general"},
+{id:55,w:"court",ipa:"/kɔːrt/",vn:"tòa án / sân",ex:'The case went to <em>court</em>.',t:"n",topic:"society"},
+{id:56,w:"affect",ipa:"/əˈfekt/",vn:"ảnh hưởng đến",ex:'Stress can <em>affect</em> your health.',t:"v",topic:"health"},
+{id:57,w:"impact",ipa:"/ˈɪmpækt/",vn:"tác động / ảnh hưởng",ex:'The news had a big <em>impact</em> on him.',t:"n",topic:"general"},
+{id:58,w:"price",ipa:"/praɪs/",vn:"giá cả",ex:'The <em>price</em> of milk has risen.',t:"n",topic:"business"},
+{id:59,w:"deal",ipa:"/diːl/",vn:"giao dịch / đối phó",ex:'They made a great <em>deal</em>.',t:"n",topic:"business"},
+{id:60,w:"rude",ipa:"/ruːd/",vn:"thô lỗ",ex:'It is <em>rude</em> to interrupt someone.',t:"adj",topic:"social"},
+{id:61,w:"detail",ipa:"/ˈdiːteɪl/",vn:"chi tiết",ex:'Pay attention to <em>detail</em>.',t:"n",topic:"general"},
+{id:62,w:"focus",ipa:"/ˈfəʊkəs/",vn:"tập trung",ex:'<em>Focus</em> on what matters most.',t:"v",topic:"general"},
+{id:63,w:"holiday",ipa:"/ˈhɒlɪdeɪ/",vn:"kỳ nghỉ / ngày lễ",ex:"We're going on <em>holiday</em> next week.",t:"n",topic:"travel"},
+{id:64,w:"bridge",ipa:"/brɪdʒ/",vn:"cây cầu / kết nối",ex:'The <em>bridge</em> connects the two towns.',t:"n",topic:"place"},
+{id:65,w:"forbid",ipa:"/fərˈbɪd/",vn:"cấm",ex:'Smoking is <em>forbidden</em> here.',t:"v",topic:"society"},
+{id:66,w:"carpet",ipa:"/ˈkɑːrpɪt/",vn:"thảm trải sàn",ex:'The <em>carpet</em> is soft and warm.',t:"n",topic:"home"},
+{id:67,w:"justice",ipa:"/ˈdʒʌstɪs/",vn:"công lý",ex:'Everyone deserves <em>justice</em>.',t:"n",topic:"society"},
+{id:68,w:"essential",ipa:"/ɪˈsenʃəl/",vn:"thiết yếu / cần thiết",ex:'Water is <em>essential</em> for life.',t:"adj",topic:"general"},
+{id:69,w:"increase",ipa:"/ɪnˈkriːs/",vn:"tăng / sự tăng",ex:'Sales <em>increased</em> by 20%.',t:"v",topic:"business"},
+{id:70,w:"talent",ipa:"/ˈtælənt/",vn:"tài năng",ex:'She has a <em>talent</em> for singing.',t:"n",topic:"general"},
+{id:71,w:"special",ipa:"/ˈspeʃəl/",vn:"đặc biệt",ex:'Today is a very <em>special</em> day.',t:"adj",topic:"general"},
+{id:72,w:"uncle",ipa:"/ˈʌŋkəl/",vn:"chú / cậu / bác (trai)",ex:'My <em>uncle</em> lives in Hanoi.',t:"n",topic:"family"},
+{id:73,w:"article",ipa:"/ˈɑːrtɪkəl/",vn:"bài báo / mạo từ",ex:'I read an interesting <em>article</em> today.',t:"n",topic:"education"},
+{id:74,w:"accept",ipa:"/əkˈsept/",vn:"chấp nhận",ex:'She <em>accepted</em> the job offer.',t:"v",topic:"general"},
+{id:75,w:"cheap",ipa:"/tʃiːp/",vn:"rẻ",ex:'This phone is surprisingly <em>cheap</em>.',t:"adj",topic:"business"},
+{id:76,w:"propose",ipa:"/prəˈpəʊz/",vn:"đề xuất / cầu hôn",ex:'He <em>proposed</em> a new idea at the meeting.',t:"v",topic:"social"},
+{id:77,w:"bus",ipa:"/bʌs/",vn:"xe buýt",ex:'She takes the <em>bus</em> to work every day.',t:"n",topic:"travel"},
+{id:78,w:"storage",ipa:"/ˈstɔːrɪdʒ/",vn:"kho lưu trữ",ex:'We need more <em>storage</em> space.',t:"n",topic:"home"},
+{id:79,w:"contribution",ipa:"/ˌkɒntrɪˈbjuːʃən/",vn:"sự đóng góp",ex:'Her <em>contribution</em> was invaluable.',t:"n",topic:"work"},
+{id:80,w:"fluid",ipa:"/ˈfluːɪd/",vn:"chất lỏng / linh hoạt",ex:'Drink plenty of <em>fluid</em> when sick.',t:"n",topic:"health"},
+{id:81,w:"favourite",ipa:"/ˈfeɪvərɪt/",vn:"yêu thích nhất",ex:'Pizza is my <em>favourite</em> food.',t:"adj",topic:"food"},
+{id:82,w:"scientist",ipa:"/ˈsaɪəntɪst/",vn:"nhà khoa học",ex:'She became a famous <em>scientist</em>.',t:"n",topic:"science"},
+{id:83,w:"calculate",ipa:"/ˈkælkjuleɪt/",vn:"tính toán",ex:'Can you <em>calculate</em> the total cost?',t:"v",topic:"science"},
+{id:84,w:"attract",ipa:"/əˈtrækt/",vn:"thu hút",ex:'Flowers <em>attract</em> bees.',t:"v",topic:"general"},
+{id:85,w:"belong",ipa:"/bɪˈlɒŋ/",vn:"thuộc về",ex:'This book <em>belongs</em> to me.',t:"v",topic:"general"},
+{id:86,w:"mean",ipa:"/miːn/",vn:"có nghĩa là",ex:'What does this word <em>mean</em>?',t:"v",topic:"education"},
+{id:87,w:"imagine",ipa:"/ɪˈmædʒɪn/",vn:"tưởng tượng",ex:'<em>Imagine</em> a world without war.',t:"v",topic:"general"},
+{id:88,w:"various",ipa:"/ˈveəriəs/",vn:"khác nhau / nhiều loại",ex:'There are <em>various</em> ways to solve this.',t:"adj",topic:"general"},
+{id:89,w:"reduce",ipa:"/rɪˈdjuːs/",vn:"giảm / giảm thiểu",ex:'We need to <em>reduce</em> waste.',t:"v",topic:"nature"},
+{id:90,w:"compare",ipa:"/kəmˈpeər/",vn:"so sánh",ex:'<em>Compare</em> these two prices.',t:"v",topic:"general"},
+{id:91,w:"succeed",ipa:"/səkˈsiːd/",vn:"thành công / kế vị",ex:'Hard work helps you <em>succeed</em>.',t:"v",topic:"work"},
+{id:92,w:"produce",ipa:"/prəˈdjuːs/",vn:"sản xuất / tạo ra",ex:'The factory <em>produces</em> cars.',t:"v",topic:"business"},
+{id:93,w:"expect",ipa:"/ɪkˈspekt/",vn:"mong đợi / dự kiến",ex:'I <em>expect</em> a reply soon.',t:"v",topic:"general"},
+{id:94,w:"opinion",ipa:"/əˈpɪnjən/",vn:"ý kiến / quan điểm",ex:'In my <em>opinion</em>, this is wrong.',t:"n",topic:"social"},
+{id:95,w:"describe",ipa:"/dɪˈskraɪb/",vn:"mô tả",ex:'Can you <em>describe</em> what you saw?',t:"v",topic:"general"},
+{id:96,w:"suggest",ipa:"/səˈdʒest/",vn:"gợi ý / đề nghị",ex:'I <em>suggest</em> we leave early.',t:"v",topic:"social"},
+{id:97,w:"freedom",ipa:"/ˈfriːdəm/",vn:"tự do",ex:'<em>Freedom</em> is a basic human right.',t:"n",topic:"society"},
+{id:98,w:"prefer",ipa:"/prɪˈfɜːr/",vn:"thích hơn",ex:'I <em>prefer</em> tea to coffee.',t:"v",topic:"general"},
+{id:99,w:"challenge",ipa:"/ˈtʃælɪndʒ/",vn:"thách thức",ex:'Learning a language is a <em>challenge</em>.',t:"n",topic:"general"},
+{id:100,w:"gather",ipa:"/ˈɡæðər/",vn:"tập hợp / thu thập",ex:'Friends <em>gathered</em> at the park.',t:"v",topic:"social"},
+{id:101,w:"examine",ipa:"/ɪɡˈzæmɪn/",vn:"kiểm tra / xét nghiệm",ex:'The doctor will <em>examine</em> you now.',t:"v",topic:"health"},
+{id:102,w:"force",ipa:"/fɔːrs/",vn:"lực / buộc phải",ex:'He was <em>forced</em> to apologize.',t:"n",topic:"general"},
+{id:103,w:"curious",ipa:"/ˈkjʊəriəs/",vn:"tò mò",ex:'Children are naturally <em>curious</em>.',t:"adj",topic:"general"},
+{id:104,w:"responsible",ipa:"/rɪˈspɒnsɪbəl/",vn:"có trách nhiệm",ex:'Be <em>responsible</em> for your actions.',t:"adj",topic:"work"},
+{id:105,w:"allow",ipa:"/əˈlaʊ/",vn:"cho phép",ex:'They do not <em>allow</em> smoking here.',t:"v",topic:"society"},
+{id:106,w:"achieve",ipa:"/əˈtʃiːv/",vn:"đạt được",ex:'You can <em>achieve</em> your goals.',t:"v",topic:"general"},
+{id:107,w:"purpose",ipa:"/ˈpɜːrpəs/",vn:"mục đích",ex:'What is the <em>purpose</em> of this meeting?',t:"n",topic:"work"},
+{id:108,w:"consider",ipa:"/kənˈsɪdər/",vn:"xem xét / cân nhắc",ex:'Please <em>consider</em> my suggestion.',t:"v",topic:"general"},
+{id:109,w:"entire",ipa:"/ɪnˈtaɪər/",vn:"toàn bộ / toàn vẹn",ex:'She read the <em>entire</em> book in a day.',t:"adj",topic:"general"},
+{id:110,w:"establish",ipa:"/ɪˈstæblɪʃ/",vn:"thành lập / thiết lập",ex:'They <em>established</em> a new company.',t:"v",topic:"business"},
+{id:111,w:"region",ipa:"/ˈriːdʒən/",vn:"vùng / khu vực",ex:'This <em>region</em> is known for its food.',t:"n",topic:"place"},
+{id:112,w:"nature",ipa:"/ˈneɪtʃər/",vn:"thiên nhiên / bản chất",ex:'She loves spending time in <em>nature</em>.',t:"n",topic:"nature"},
+{id:113,w:"claim",ipa:"/kleɪm/",vn:"tuyên bố / yêu cầu",ex:'He <em>claimed</em> he was innocent.',t:"v",topic:"society"},
+{id:114,w:"demand",ipa:"/dɪˈmɑːnd/",vn:"yêu cầu / nhu cầu",ex:'There is high <em>demand</em> for this product.',t:"n",topic:"business"},
+{id:115,w:"strategy",ipa:"/ˈstrætɪdʒi/",vn:"chiến lược",ex:'We need a new marketing <em>strategy</em>.',t:"n",topic:"business"},
+{id:116,w:"environment",ipa:"/ɪnˈvaɪrənmənt/",vn:"môi trường",ex:'We must protect the <em>environment</em>.',t:"n",topic:"nature"},
+{id:117,w:"balance",ipa:"/ˈbæləns/",vn:"sự cân bằng",ex:'Maintain a good work-life <em>balance</em>.',t:"n",topic:"health"},
+{id:118,w:"manage",ipa:"/ˈmænɪdʒ/",vn:"quản lý / xoay sở",ex:'She <em>manages</em> a team of 20.',t:"v",topic:"work"},
+{id:119,w:"opportunity",ipa:"/ˌɒpəˈtjuːnɪti/",vn:"cơ hội",ex:"Don't miss this great <em>opportunity</em>.",t:"n",topic:"work"},
+{id:120,w:"quality",ipa:"/ˈkwɒlɪti/",vn:"chất lượng",ex:'The food here is high <em>quality</em>.',t:"n",topic:"general"},
+{id:121,w:"culture",ipa:"/ˈkʌltʃər/",vn:"văn hóa",ex:'Vietnam has a rich <em>culture</em>.',t:"n",topic:"society"},
+{id:122,w:"attempt",ipa:"/əˈtempt/",vn:"cố gắng / nỗ lực",ex:'Make another <em>attempt</em>.',t:"v",topic:"general"},
+{id:123,w:"discover",ipa:"/dɪˈskʌvər/",vn:"khám phá / phát hiện",ex:'She <em>discovered</em> a new recipe.',t:"v",topic:"science"},
+{id:124,w:"feature",ipa:"/ˈfiːtʃər/",vn:"tính năng / đặc điểm",ex:'This phone has many great <em>features</em>.',t:"n",topic:"general"},
+{id:125,w:"develop",ipa:"/dɪˈveləp/",vn:"phát triển",ex:'We need to <em>develop</em> new skills.',t:"v",topic:"general"},
+{id:126,w:"process",ipa:"/ˈprəʊses/",vn:"quá trình / xử lý",ex:'The <em>process</em> takes three days.',t:"n",topic:"work"},
+{id:127,w:"approach",ipa:"/əˈprəʊtʃ/",vn:"tiếp cận / phương pháp",ex:'Try a different <em>approach</em>.',t:"n",topic:"general"},
+{id:128,w:"benefit",ipa:"/ˈbenɪfɪt/",vn:"lợi ích",ex:'Exercise has many <em>benefits</em>.',t:"n",topic:"health"},
+{id:129,w:"improve",ipa:"/ɪmˈpruːv/",vn:"cải thiện",ex:'Practice will <em>improve</em> your skills.',t:"v",topic:"general"},
+{id:130,w:"support",ipa:"/səˈpɔːrt/",vn:"hỗ trợ / ủng hộ",ex:'I <em>support</em> your decision.',t:"v",topic:"social"},
+{id:131,w:"result",ipa:"/rɪˈzʌlt/",vn:"kết quả",ex:'Hard work leads to good <em>results</em>.',t:"n",topic:"general"},
+{id:132,w:"value",ipa:"/ˈvæljuː/",vn:"giá trị / đánh giá cao",ex:'Family is the greatest <em>value</em>.',t:"n",topic:"general"},
+{id:133,w:"create",ipa:"/kriˈeɪt/",vn:"tạo ra",ex:'Artists <em>create</em> beautiful things.',t:"v",topic:"general"},
+{id:134,w:"identify",ipa:"/aɪˈdentɪfaɪ/",vn:"xác định / nhận ra",ex:'Can you <em>identify</em> the problem?',t:"v",topic:"general"},
+{id:135,w:"indicate",ipa:"/ˈɪndɪkeɪt/",vn:"chỉ ra / cho thấy",ex:'The data <em>indicates</em> a trend.',t:"v",topic:"science"},
+{id:136,w:"significant",ipa:"/sɪɡˈnɪfɪkənt/",vn:"đáng kể / quan trọng",ex:'This is a <em>significant</em> achievement.',t:"adj",topic:"general"},
+{id:137,w:"available",ipa:"/əˈveɪləbəl/",vn:"có sẵn / rảnh rỗi",ex:'Is this item <em>available</em> in blue?',t:"adj",topic:"general"},
+{id:138,w:"major",ipa:"/ˈmeɪdʒər/",vn:"lớn / chuyên ngành",ex:'This is a <em>major</em> decision.',t:"adj",topic:"education"},
+{id:139,w:"reveal",ipa:"/rɪˈviːl/",vn:"tiết lộ / hé lộ",ex:'She <em>revealed</em> the surprise.',t:"v",topic:"general"},
+{id:140,w:"indeed",ipa:"/ɪnˈdiːd/",vn:"thực sự / quả thật",ex:'That is <em>indeed</em> a good idea.',t:"adv",topic:"general"},
+{id:141,w:"specific",ipa:"/spɪˈsɪfɪk/",vn:"cụ thể / đặc hiệu",ex:'Be more <em>specific</em> in your answer.',t:"adj",topic:"general"},
+{id:142,w:"global",ipa:"/ˈɡləʊbəl/",vn:"toàn cầu",ex:'Climate change is a <em>global</em> issue.',t:"adj",topic:"society"},
+{id:143,w:"involve",ipa:"/ɪnˈvɒlv/",vn:"liên quan / bao gồm",ex:'The project <em>involves</em> many steps.',t:"v",topic:"work"},
+{id:144,w:"exist",ipa:"/ɪɡˈzɪst/",vn:"tồn tại",ex:'Do aliens <em>exist</em>?',t:"v",topic:"science"},
+{id:145,w:"solution",ipa:"/səˈluːʃən/",vn:"giải pháp",ex:'We need a creative <em>solution</em>.',t:"n",topic:"general"},
+{id:146,w:"promote",ipa:"/prəˈməʊt/",vn:"thúc đẩy / quảng bá / thăng chức",ex:'She was <em>promoted</em> to manager.',t:"v",topic:"work"},
+{id:147,w:"unique",ipa:"/juːˈniːk/",vn:"độc đáo",ex:'Each person is <em>unique</em>.',t:"adj",topic:"general"},
+{id:148,w:"potential",ipa:"/pəˈtenʃəl/",vn:"tiềm năng",ex:'She has great <em>potential</em>.',t:"n",topic:"general"},
+{id:149,w:"confident",ipa:"/ˈkɒnfɪdənt/",vn:"tự tin",ex:'Be <em>confident</em> in yourself.',t:"adj",topic:"general"},
+{id:150,w:"recognize",ipa:"/ˈrekəɡnaɪz/",vn:"nhận ra / công nhận",ex:"I didn't <em>recognize</em> him at first.",t:"v",topic:"general"},
+{id:151,w:"priority",ipa:"/praɪˈɒrɪti/",vn:"ưu tiên",ex:'Health is my top <em>priority</em>.',t:"n",topic:"work"},
+{id:152,w:"reliable",ipa:"/rɪˈlaɪəbəl/",vn:"đáng tin cậy",ex:'She is a very <em>reliable</em> person.',t:"adj",topic:"work"},
+{id:153,w:"flexible",ipa:"/ˈfleksɪbəl/",vn:"linh hoạt / dẻo dai",ex:'This job requires a <em>flexible</em> schedule.',t:"adj",topic:"work"},
+{id:154,w:"innovative",ipa:"/ˈɪnəveɪtɪv/",vn:"sáng tạo / đổi mới",ex:'They have an <em>innovative</em> approach.',t:"adj",topic:"business"},
+{id:155,w:"efficient",ipa:"/ɪˈfɪʃənt/",vn:"hiệu quả",ex:'This engine is very <em>efficient</em>.',t:"adj",topic:"work"},
+{id:156,w:"relevant",ipa:"/ˈreləvənt/",vn:"liên quan / phù hợp",ex:'Please provide <em>relevant</em> information.',t:"adj",topic:"general"},
+{id:157,w:"consistent",ipa:"/kənˈsɪstənt/",vn:"nhất quán / đều đặn",ex:'Be <em>consistent</em> in your efforts.',t:"adj",topic:"general"},
+{id:158,w:"contribute",ipa:"/kənˈtrɪbjuːt/",vn:"đóng góp",ex:'Everyone should <em>contribute</em> to society.',t:"v",topic:"society"},
+{id:159,w:"transform",ipa:"/trænsˈfɔːrm/",vn:"biến đổi / chuyển hóa",ex:'Exercise can <em>transform</em> your body.',t:"v",topic:"health"},
+{id:160,w:"sufficient",ipa:"/səˈfɪʃənt/",vn:"đủ / thỏa đáng",ex:'Is one hour <em>sufficient</em>?',t:"adj",topic:"general"},
+{id:161,w:"implement",ipa:"/ˈɪmplɪment/",vn:"thực hiện / triển khai",ex:'We need to <em>implement</em> the plan.',t:"v",topic:"work"},
+{id:162,w:"analyze",ipa:"/ˈænəlaɪz/",vn:"phân tích",ex:'We need to <em>analyze</em> the data.',t:"v",topic:"science"},
+{id:163,w:"perspective",ipa:"/pəˈspektɪv/",vn:"quan điểm / góc nhìn",ex:'Try to see it from my <em>perspective</em>.',t:"n",topic:"social"},
+{id:164,w:"communicate",ipa:"/kəˈmjuːnɪkeɪt/",vn:"giao tiếp / truyền đạt",ex:"It's important to <em>communicate</em> clearly.",t:"v",topic:"social"},
+{id:165,w:"evaluate",ipa:"/ɪˈvæljueɪt/",vn:"đánh giá",ex:"Let's <em>evaluate</em> the options.",t:"v",topic:"work"},
+{id:166,w:"organize",ipa:"/ˈɔːrɡənaɪz/",vn:"tổ chức / sắp xếp",ex:'Can you <em>organize</em> the files?',t:"v",topic:"work"},
+{id:167,w:"demonstrate",ipa:"/ˈdemənstreɪt/",vn:"chứng minh / biểu diễn",ex:'Please <em>demonstrate</em> how it works.',t:"v",topic:"education"},
+{id:168,w:"accommodate",ipa:"/əˈkɒmədeɪt/",vn:"cung cấp chỗ ở / đáp ứng",ex:'The hotel can <em>accommodate</em> 300 guests.',t:"v",topic:"travel"},
+{id:169,w:"emphasize",ipa:"/ˈemfəsaɪz/",vn:"nhấn mạnh",ex:'The teacher <em>emphasized</em> the key points.',t:"v",topic:"education"},
+{id:170,w:"negotiate",ipa:"/nɪˈɡəʊʃieɪt/",vn:"đàm phán / thương lượng",ex:'They had to <em>negotiate</em> a deal.',t:"v",topic:"business"},
+{id:171,w:"accomplish",ipa:"/əˈkʌmplɪʃ/",vn:"hoàn thành / đạt được",ex:'You can <em>accomplish</em> anything you set your mind to.',t:"v",topic:"general"},
+{id:172,w:"phenomenon",ipa:"/fɪˈnɒmɪnən/",vn:"hiện tượng",ex:'This is a natural <em>phenomenon</em>.',t:"n",topic:"science"},
+{id:173,w:"contemporary",ipa:"/kənˈtempərəri/",vn:"đương đại / cùng thời",ex:'He is a <em>contemporary</em> artist.',t:"adj",topic:"society"},
+{id:174,w:"fundamental",ipa:"/ˌfʌndəˈmentəl/",vn:"cơ bản / căn bản",ex:'This is a <em>fundamental</em> skill.',t:"adj",topic:"education"},
+{id:175,w:"circumstance",ipa:"/ˈsɜːrkəmstæns/",vn:"hoàn cảnh / tình huống",ex:'Under these <em>circumstances</em>, we must adapt.',t:"n",topic:"general"},
+{id:176,w:"acknowledge",ipa:"/əkˈnɒlɪdʒ/",vn:"thừa nhận / ghi nhận",ex:'She <em>acknowledged</em> her mistake.',t:"v",topic:"social"},
+{id:177,w:"controversy",ipa:"/ˈkɒntrəvɜːrsi/",vn:"tranh cãi / gây tranh cãi",ex:'The decision caused <em>controversy</em>.',t:"n",topic:"society"},
+{id:178,w:"sophisticated",ipa:"/səˈfɪstɪkeɪtɪd/",vn:"tinh vi / sành điệu",ex:'She has very <em>sophisticated</em> taste.',t:"adj",topic:"general"},
+{id:179,w:"ambitious",ipa:"/æmˈbɪʃəs/",vn:"tham vọng / đầy hoài bão",ex:'He is an <em>ambitious</em> young entrepreneur.',t:"adj",topic:"work"},
+{id:180,w:"enthusiasm",ipa:"/ɪnˈθjuːziæzəm/",vn:"nhiệt tình / hăng hái",ex:'She tackled the project with great <em>enthusiasm</em>.',t:"n",topic:"general"},
+{id:181,w:"collaborate",ipa:"/kəˈlæbəreɪt/",vn:"cộng tác / hợp tác",ex:'We must <em>collaborate</em> to finish on time.',t:"v",topic:"work"},
+{id:182,w:"initiative",ipa:"/ɪˈnɪʃətɪv/",vn:"sáng kiến / chủ động",ex:'Take the <em>initiative</em> and lead.',t:"n",topic:"work"},
+{id:183,w:"consequence",ipa:"/ˈkɒnsɪkwəns/",vn:"hậu quả / kết quả",ex:'Think about the <em>consequences</em> of your actions.',t:"n",topic:"general"},
+{id:184,w:"sustainable",ipa:"/səˈsteɪnəbəl/",vn:"bền vững",ex:'We need <em>sustainable</em> energy sources.',t:"adj",topic:"nature"},
+{id:185,w:"transparent",ipa:"/trænsˈpærənt/",vn:"minh bạch / trong suốt",ex:'The government should be <em>transparent</em>.',t:"adj",topic:"society"},
+{id:186,w:"commitment",ipa:"/kəˈmɪtmənt/",vn:"cam kết / sự tận tâm",ex:'Success requires <em>commitment</em>.',t:"n",topic:"general"},
+{id:187,w:"appetite",ipa:"/ˈæpɪtaɪt/",vn:"sự thèm ăn / ham muốn",ex:'The walk gave me a good <em>appetite</em>.',t:"n",topic:"food"},
+{id:188,w:"ingredient",ipa:"/ɪnˈɡriːdiənt/",vn:"nguyên liệu",ex:'What <em>ingredients</em> do you need?',t:"n",topic:"food"},
+{id:189,w:"delicious",ipa:"/dɪˈlɪʃəs/",vn:"ngon tuyệt",ex:'The soup is absolutely <em>delicious</em>.',t:"adj",topic:"food"},
+{id:190,w:"exercise",ipa:"/ˈeksəsaɪz/",vn:"bài tập / luyện tập",ex:'Daily <em>exercise</em> keeps you healthy.',t:"n",topic:"health"},
+{id:191,w:"symptom",ipa:"/ˈsɪmptəm/",vn:"triệu chứng",ex:'Fever is a common <em>symptom</em> of flu.',t:"n",topic:"health"},
+{id:192,w:"technology",ipa:"/tekˈnɒlədʒi/",vn:"công nghệ",ex:'<em>Technology</em> changes our lives.',t:"n",topic:"science"},
+{id:193,w:"digital",ipa:"/ˈdɪdʒɪtəl/",vn:"kỹ thuật số",ex:'We live in a <em>digital</em> age.',t:"adj",topic:"science"},
+{id:194,w:"destination",ipa:"/ˌdestɪˈneɪʃən/",vn:"điểm đến",ex:'Paris is a popular <em>destination</em>.',t:"n",topic:"travel"},
+{id:195,w:"luggage",ipa:"/ˈlʌɡɪdʒ/",vn:"hành lý",ex:"Don't forget your <em>luggage</em>!",t:"n",topic:"travel"},
+{id:196,w:"sibling",ipa:"/ˈsɪblɪŋ/",vn:"anh chị em ruột",ex:'She has two <em>siblings</em>.',t:"n",topic:"family"},
+{id:197,w:"household",ipa:"/ˈhaʊshəʊld/",vn:"hộ gia đình",ex:'It is a common <em>household</em> item.',t:"n",topic:"home"},
+{id:198,w:"furniture",ipa:"/ˈfɜːrnɪtʃər/",vn:"đồ nội thất",ex:'They bought new <em>furniture</em> for the room.',t:"n",topic:"home"},
+{id:199,w:"colleague",ipa:"/ˈkɒliːɡ/",vn:"đồng nghiệp",ex:'She is a trusted <em>colleague</em>.',t:"n",topic:"work"},
 ];
 
-const GRADIENTS = [
-  'linear-gradient(135deg, #1a1a2e 0%, #0f1b35 100%)',
-  'linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%)',
-  'linear-gradient(135deg, #1a2a1a 0%, #0d1f0d 100%)',
-  'linear-gradient(135deg, #2a1a0a 0%, #1a0e00 100%)',
-  'linear-gradient(135deg, #2a0a2a 0%, #16001f 100%)',
-  'linear-gradient(135deg, #0a2a2a 0%, #001a1a 100%)',
-];
+const TOPIC_LABELS={general:"Tổng quát",family:"Gia đình",business:"Kinh doanh",nature:"Thiên nhiên",place:"Địa điểm",health:"Sức khỏe",work:"Công việc",education:"Giáo dục",social:"Xã hội",food:"Ẩm thực",science:"Khoa học",society:"Xã hội-PL",travel:"Du lịch",home:"Nhà cửa",body:"Cơ thể"};
 
-let idx = 0;
-let favorites = new Set();
-let streakDays = parseInt(localStorage.getItem('wf_streak') || '1');
+// ── SRS ENGINE ──────────────────────────────────────────────────────────────
+const SRS_KEY='wf_srs_v2', STREAK_KEY='wf_streak', TODAY_KEY='wf_today';
+// Intervals: forgot→5min, 1ok→10min, 2→1day, 3→3day, 4→7day, 5→21day
+const IVLS=[5*60000,10*60000,864e5,3*864e5,7*864e5,21*864e5];
 
-// Drag state
-let startX = 0, startY = 0, currentY = 0, isDragging = false;
-let isSwiping = false;
+let srsData={}, todayCount=0, favorites=new Set();
+let sessionKnew=0, sessionForgot=0;
+let sessionSeen=[];
+const RECENT=8;
 
-// Auto-repeat speak — mobile safe
-let speakLoop = null;
-let speakActive = false;
-let audioUnlocked = false;
-let pendingWord = null;
+function loadData(){
+  try{const r=localStorage.getItem(SRS_KEY);if(r)srsData=JSON.parse(r);}catch(e){}
+  const today=new Date().toDateString();
+  try{const d=JSON.parse(localStorage.getItem(TODAY_KEY)||'{}');if(d.date===today)todayCount=d.count||0;}catch(e){}
+  try{const f=localStorage.getItem('wf_favs');if(f)favorites=new Set(JSON.parse(f));}catch(e){}
+}
+function saveData(){
+  localStorage.setItem(SRS_KEY,JSON.stringify(srsData));
+  localStorage.setItem(TODAY_KEY,JSON.stringify({date:new Date().toDateString(),count:todayCount}));
+  localStorage.setItem('wf_favs',JSON.stringify([...favorites]));
+}
+function getState(id){
+  const d=srsData[id];
+  if(!d||!d.seen)return'new';
+  if((d.ease||1)<=1)return'review';
+  if((d.interval||0)>=IVLS[4])return'known';
+  return'review';
+}
+function isDue(id){
+  const d=srsData[id];
+  if(!d||!d.seen)return true;
+  return Date.now()>=(d.nextReview||0);
+}
+function recordRating(id,knew){
+  let d=srsData[id]||{interval:0,ease:1,seen:false,nextReview:0};
+  d.seen=true;
+  if(knew){d.ease=Math.min((d.ease||1)+1,5);d.interval=IVLS[Math.min(d.ease,IVLS.length-1)];}
+  else{d.ease=Math.max((d.ease||1)-1,0);d.interval=IVLS[0];}
+  d.nextReview=Date.now()+d.interval;
+  srsData[id]=d;
+  todayCount++;
+  saveData();
+}
 
-// iOS/Android require a real user gesture before speechSynthesis works
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  if (!('speechSynthesis' in window)) return;
-  // Fire a zero-volume utterance to unlock the audio session
-  const warm = new SpeechSynthesisUtterance(' ');
-  warm.volume = 0;
-  warm.onend = () => {
-    if (pendingWord) {
-      const w = pendingWord; pendingWord = null;
-      startSpeakLoop(w);
-    }
+// ── SMART QUEUE ─────────────────────────────────────────────────────────────
+let currentMode='smart', currentTopic=null, currentWordId=null;
+let history=[], historyPos=-1;
+
+function getPool(){
+  let pool=currentTopic?WORDS.filter(w=>w.topic===currentTopic):WORDS;
+  return{
+    all:pool,
+    newW:pool.filter(w=>getState(w.id)==='new'),
+    reviewW:pool.filter(w=>getState(w.id)==='review'&&isDue(w.id)),
+    knownW:pool.filter(w=>getState(w.id)==='known'&&isDue(w.id)),
   };
-  window.speechSynthesis.speak(warm);
+}
+function pick(){
+  const{all,newW,reviewW,knownW}=getPool();
+  const recent=new Set(sessionSeen.slice(-RECENT));
+  const fN=newW.filter(w=>!recent.has(w.id));
+  const fR=reviewW.filter(w=>!recent.has(w.id));
+  const fK=knownW.filter(w=>!recent.has(w.id));
+  let pool;
+  if(currentMode==='new') pool=fN.length?fN:newW;
+  else if(currentMode==='review') pool=fR.length?fR:(reviewW.length?reviewW:(fN.length?fN:all));
+  else if(currentMode==='explore'){const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}
+  else{
+    const r=Math.random();
+    if(r<.5&&fN.length)pool=fN;
+    else if(r<.8&&fR.length)pool=fR;
+    else if(fK.length)pool=fK;
+    else{const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}
+  }
+  if(!pool||!pool.length)return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function nextWord(){
+  if(historyPos<history.length-1){historyPos++;return WORDS.find(w=>w.id===history[historyPos]);}
+  const w=pick();if(!w)return null;
+  history.push(w.id);historyPos=history.length-1;
+  sessionSeen.push(w.id);if(sessionSeen.length>50)sessionSeen.shift();
+  return w;
+}
+function prevWord(){
+  if(historyPos>0){historyPos--;return WORDS.find(w=>w.id===history[historyPos]);}
+  return null;
 }
 
-function stopSpeak() {
-  speakActive = false;
-  if (speakLoop) { clearTimeout(speakLoop); speakLoop = null; }
-  try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch(e) {}
+// ── AUDIO ───────────────────────────────────────────────────────────────────
+let speakLoop=null,speakActive=false,audioUnlocked=false,pendingWord=null;
+function unlockAudio(){
+  if(audioUnlocked)return; audioUnlocked=true;
+  if(!('speechSynthesis'in window))return;
+  const u=new SpeechSynthesisUtterance(' ');u.volume=0;
+  u.onend=()=>{if(pendingWord){const w=pendingWord;pendingWord=null;startSpeakLoop(w);}};
+  window.speechSynthesis.speak(u);
+}
+function stopSpeak(){
+  speakActive=false;if(speakLoop){clearTimeout(speakLoop);speakLoop=null;}
+  try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}
+}
+function startSpeakLoop(word){
+  stopSpeak();if(!('speechSynthesis'in window))return;
+  if(!audioUnlocked){pendingWord=word;return;}
+  speakActive=true;
+  function go(){
+    if(!speakActive)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=0.88;u.volume=1;
+    let wd=setTimeout(()=>{if(!speakActive)return;try{window.speechSynthesis.cancel();}catch(e){}speakLoop=setTimeout(go,200);},7000);
+    u.onend=()=>{clearTimeout(wd);if(!speakActive)return;speakLoop=setTimeout(go,900);};
+    u.onerror=()=>{clearTimeout(wd);if(!speakActive)return;speakLoop=setTimeout(go,600);};
+    try{window.speechSynthesis.speak(u);}catch(e){}
+  }
+  go();
 }
 
-function startSpeakLoop(word) {
-  stopSpeak();
-  if (!('speechSynthesis' in window)) return;
+// ── UI ───────────────────────────────────────────────────────────────────────
+const GRADS=['linear-gradient(135deg,#1a1a2e,#0f1b35)','linear-gradient(135deg,#0f3460,#1a1a2e)','linear-gradient(135deg,#1a2a1a,#0d1f0d)','linear-gradient(135deg,#2a1a0a,#1a0e00)','linear-gradient(135deg,#2a0a2a,#16001f)','linear-gradient(135deg,#0a2a2a,#001a1a)'];
+const card=document.getElementById('main-card');
+const indUp=document.getElementById('ind-up'),indDown=document.getElementById('ind-down');
 
-  // Queue if audio not yet unlocked by user gesture
-  if (!audioUnlocked) {
-    pendingWord = word;
-    return;
-  }
-
-  speakActive = true;
-
-  function doSpeak() {
-    if (!speakActive) return;
-    try { window.speechSynthesis.cancel(); } catch(e) {}
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.lang = 'en-US';
-    utter.rate = 0.88;
-    utter.volume = 1;
-
-    let watchdog = setTimeout(() => {
-      // iOS sometimes hangs silently — force restart
-      if (!speakActive) return;
-      try { window.speechSynthesis.cancel(); } catch(e) {}
-      speakLoop = setTimeout(doSpeak, 200);
-    }, 7000);
-
-    utter.onend = () => {
-      clearTimeout(watchdog);
-      if (!speakActive) return;
-      speakLoop = setTimeout(doSpeak, 900);
-    };
-    utter.onerror = () => {
-      clearTimeout(watchdog);
-      if (!speakActive) return;
-      speakLoop = setTimeout(doSpeak, 600);
-    };
-
-    try { window.speechSynthesis.speak(utter); } catch(e) {}
-  }
-
-  doSpeak();
-}
-
-const card = document.getElementById('main-card');
-const indUp = document.getElementById('ind-up');
-const indDown = document.getElementById('ind-down');
-
-
-
-function renderCard(i, direction) {
-  const d = WORDS[i];
-  document.getElementById('c-num').textContent = String(i + 1).padStart(3, '0') + ' / ' + WORDS.length;
-  document.getElementById('c-word').textContent = d.w;
-  document.getElementById('c-ipa').textContent = d.ipa;
-  document.getElementById('c-meaning').textContent = d.vn;
-  document.getElementById('c-example').innerHTML = d.ex;
-  document.getElementById('c-type').textContent = d.t;
-  card.style.background = GRADIENTS[i % GRADIENTS.length];
-
-  const fav = document.getElementById('btn-fav');
-  fav.textContent = favorites.has(i) ? '❤️' : '♡';
-  fav.classList.toggle('active', favorites.has(i));
-
-  const fill = Math.round((i / WORDS.length) * 100);
-  document.getElementById('progress-fill').style.width = fill + '%';
-  document.getElementById('prog-text').textContent = `Từ ${i + 1}/${WORDS.length}`;
-  document.getElementById('prog-pct').textContent = fill + '%';
-
-  // Animate in
-  card.style.transition = 'none';
-  if (direction === 'down') {
-    card.style.transform = 'translateY(60px) scale(0.97)';
-    card.style.opacity = '0';
-  } else if (direction === 'up') {
-    card.style.transform = 'translateY(-60px) scale(0.97)';
-    card.style.opacity = '0';
-  } else {
-    card.style.transform = 'translateY(0)';
-    card.style.opacity = '1';
-  }
-
+function renderWord(word,dir){
+  if(!word)return;
+  currentWordId=word.id;
+  document.getElementById('c-word').textContent=word.w;
+  document.getElementById('c-ipa').textContent=word.ipa;
+  document.getElementById('c-meaning').textContent=word.vn;
+  document.getElementById('c-example').innerHTML=word.ex;
+  document.getElementById('c-type').textContent=word.t;
+  const st=getState(word.id),sb=document.getElementById('c-srs');
+  if(st==='new'){sb.textContent='Mới';sb.className='card-srs-badge badge-new';}
+  else if(st==='review'){sb.textContent='Ôn tập';sb.className='card-srs-badge badge-review';}
+  else{sb.textContent='Đã nhớ';sb.className='card-srs-badge badge-known';}
+  card.style.background=GRADS[word.id%GRADS.length];
+  const fav=document.getElementById('btn-fav');
+  fav.textContent=favorites.has(word.id)?'❤️':'♡';
+  fav.classList.toggle('active',favorites.has(word.id));
+  card.style.transition='none';
+  if(dir==='next'){card.style.transform='translateY(60px) scale(.97)';card.style.opacity='0';}
+  else if(dir==='prev'){card.style.transform='translateY(-60px) scale(.97)';card.style.opacity='0';}
+  else{card.style.transform='translateY(0)';card.style.opacity='1';}
   void card.offsetWidth;
-  card.style.transition = 'transform 0.32s cubic-bezier(0.34,1.4,0.64,1), opacity 0.28s ease';
-  card.style.transform = 'translateY(0) scale(1)';
-  card.style.opacity = '1';
+  card.style.transition='transform .32s cubic-bezier(.34,1.4,.64,1),opacity .28s ease';
+  card.style.transform='translateY(0) scale(1)';card.style.opacity='1';
+  updateStats();resetInds();isSwiping=false;
+  setTimeout(()=>startSpeakLoop(word.w),450);
+}
+function updateStats(){
+  const{newW,reviewW,knownW}=getPool();
+  document.getElementById('s-new').textContent=newW.length;
+  document.getElementById('s-review').textContent=reviewW.length;
+  document.getElementById('s-known').textContent=knownW.length;
+  document.getElementById('s-today').textContent=todayCount;
+}
+function resetInds(){indUp.style.opacity='0';indDown.style.opacity='0';currentY=0;}
 
-  resetIndicators();
-  isSwiping = false;
-
-  // Bắt đầu lặp phát âm (delay đủ để animation card xong)
-  setTimeout(() => startSpeakLoop(d.w), 450);
+function rateCard(knew){
+  if(currentWordId===null)return;
+  recordRating(currentWordId,knew);
+  if(knew)sessionKnew++;else sessionForgot++;
+  showToast(knew?'✅ Tốt! Sẽ ôn sau':'❌ Sẽ nhắc lại sớm');
+  doNext();
 }
 
-function resetIndicators() {
-  indUp.style.opacity = '0';
-  indDown.style.opacity = '0';
-  currentY = 0;
+let isSwiping=false;
+function doNext(){
+  if(isSwiping)return;isSwiping=true;stopSpeak();
+  card.style.transition='transform .25s ease-in,opacity .25s ease';
+  card.style.transform='translateY(-80px) scale(.96)';card.style.opacity='0';
+  setTimeout(()=>{const w=nextWord();if(!w){showDone();isSwiping=false;}else renderWord(w,'next');},240);
+}
+function doPrev(){
+  if(isSwiping)return;
+  const p=prevWord();if(!p){showToast('Đây là từ đầu tiên');return;}
+  isSwiping=true;stopSpeak();
+  card.style.transition='transform .25s ease-in,opacity .25s ease';
+  card.style.transform='translateY(80px) scale(.96)';card.style.opacity='0';
+  setTimeout(()=>renderWord(p,'prev'),240);
+}
+function toggleFav(){
+  if(currentWordId===null)return;
+  if(favorites.has(currentWordId)){favorites.delete(currentWordId);showToast('Đã bỏ yêu thích');}
+  else{favorites.add(currentWordId);showToast('❤️ Đã thêm yêu thích!');}
+  saveData();
+  const fav=document.getElementById('btn-fav');
+  fav.textContent=favorites.has(currentWordId)?'❤️':'♡';
+  fav.classList.toggle('active',favorites.has(currentWordId));
 }
 
-function goNext() {
-  if (isSwiping) return;
-  isSwiping = true;
-  stopSpeak();
-
-  card.style.transition = 'transform 0.28s ease-in, opacity 0.28s ease';
-  card.style.transform = 'translateY(-80px) scale(0.96)';
-  card.style.opacity = '0';
-
-  setTimeout(() => {
-    idx++;
-    if (idx >= WORDS.length) {
-      showDone();
-    } else {
-      renderCard(idx, 'down');
-    }
-  }, 270);
-}
-
-function goPrev() {
-  if (isSwiping || idx <= 0) return;
-  isSwiping = true;
-  stopSpeak();
-
-  card.style.transition = 'transform 0.28s ease-in, opacity 0.28s ease';
-  card.style.transform = 'translateY(80px) scale(0.96)';
-  card.style.opacity = '0';
-
-  setTimeout(() => {
-    idx--;
-    renderCard(idx, 'up');
-  }, 270);
-}
-
-function toggleFav() {
-  if (favorites.has(idx)) {
-    favorites.delete(idx);
-    showToast('Đã bỏ yêu thích');
-  } else {
-    favorites.add(idx);
-    showToast('❤️ Đã thêm vào yêu thích!');
-  }
-  const fav = document.getElementById('btn-fav');
-  fav.textContent = favorites.has(idx) ? '❤️' : '♡';
-  fav.classList.toggle('active', favorites.has(idx));
-}
-
-function showDone() {
+function showDone(){
+  document.getElementById('d-knew').textContent=sessionKnew;
+  document.getElementById('d-forgot').textContent=sessionForgot;
+  document.getElementById('d-fav').textContent=favorites.size;
+  const{newW}=getPool();
+  document.getElementById('done-sub').textContent=`Bạn đã học ${todayCount} từ hôm nay · Còn ${newW.length} từ mới chưa học`;
   document.getElementById('done-screen').classList.add('show');
-  document.getElementById('stat-seen').textContent = WORDS.length;
-  document.getElementById('stat-fav').textContent = favorites.size;
-  streakDays++;
-  localStorage.setItem('wf_streak', streakDays);
+  let s=parseInt(localStorage.getItem(STREAK_KEY)||'1')+1;
+  localStorage.setItem(STREAK_KEY,s);
+  document.getElementById('streak-num').textContent=s;
 }
-
-function restart() {
-  idx = 0;
-  favorites = new Set();
+function continueSession(){
   document.getElementById('done-screen').classList.remove('show');
-  renderCard(0, null);
+  sessionKnew=0;sessionForgot=0;
+  const w=nextWord();if(w)renderWord(w,'next');
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
+// Mode panel
+function openModePanel(){document.getElementById('mode-panel').classList.add('open');}
+function closeModePanel(){document.getElementById('mode-panel').classList.remove('open');}
+function closeModeOnBg(e){if(e.target===document.getElementById('mode-panel'))closeModePanel();}
+function setMode(m){
+  currentMode=m;currentTopic=null;
+  document.querySelectorAll('.mode-card').forEach(el=>el.classList.remove('active'));
+  document.getElementById('mode-'+m).classList.add('active');
+  document.querySelectorAll('.topic-pill').forEach(el=>el.classList.remove('active'));
+  showToast('Chế độ: '+{smart:'Thông minh',new:'Từ mới',review:'Ôn tập',explore:'Khám phá'}[m]);
+}
+function setTopic(tp){
+  currentTopic=tp===currentTopic?null:tp;currentMode='smart';
+  document.querySelectorAll('.mode-card').forEach(el=>el.classList.remove('active'));
+  document.getElementById('mode-smart').classList.add('active');
+  document.querySelectorAll('.topic-pill').forEach(el=>el.classList.toggle('active',el.dataset.topic===currentTopic));
+  showToast('Chủ đề: '+(currentTopic?TOPIC_LABELS[currentTopic]:'Tất cả'));
+}
+function buildTopics(){
+  const topics=[...new Set(WORDS.map(w=>w.topic))].sort();
+  const grid=document.getElementById('topic-grid');
+  topics.forEach(tp=>{
+    const c=WORDS.filter(w=>w.topic===tp).length;
+    const b=document.createElement('button');
+    b.className='topic-pill';b.dataset.topic=tp;
+    b.textContent=(TOPIC_LABELS[tp]||tp)+' ('+c+')';
+    b.style.cssText='background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;font-family:inherit;';
+    b.addEventListener('click',()=>setTopic(tp));
+    grid.appendChild(b);
+  });
+  const s=document.createElement('style');
+  s.textContent='.topic-pill.active{background:rgba(224,255,79,.15)!important;border-color:rgba(224,255,79,.4)!important;color:var(--accent)!important;}';
+  document.head.appendChild(s);
 }
 
-// Touch & mouse events — vertical swipe
-card.addEventListener('mousedown', onStart);
-card.addEventListener('touchstart', onStart, { passive: true });
-document.addEventListener('mousemove', onMove);
-document.addEventListener('touchmove', onMove, { passive: true });
-document.addEventListener('mouseup', onEnd);
-document.addEventListener('touchend', onEnd);
-
-function getPos(e) {
-  return {
-    x: e.touches ? e.touches[0].clientX : e.clientX,
-    y: e.touches ? e.touches[0].clientY : e.clientY
-  };
+// Drag
+let startX=0,startY=0,currentY=0,isDragging=false;
+card.addEventListener('mousedown',onS);card.addEventListener('touchstart',onS,{passive:true});
+document.addEventListener('mousemove',onM);document.addEventListener('touchmove',onM,{passive:true});
+document.addEventListener('mouseup',onE);document.addEventListener('touchend',onE);
+function gp(e){return{x:e.touches?e.touches[0].clientX:e.clientX,y:e.touches?e.touches[0].clientY:e.clientY};}
+function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';}
+function onM(e){
+  if(!isDragging||isSwiping)return;
+  const p=gp(e),dy=p.y-startY,dx=p.x-startX;
+  if(Math.abs(dx)>Math.abs(dy)*1.5)return;
+  currentY=dy;card.style.transform=`translateY(${dy}px) rotate(${dy*.01}deg)`;
+  const r=Math.min(Math.abs(dy)/100,1);
+  if(dy<-15){indUp.style.opacity=r;indDown.style.opacity='0';}
+  else if(dy>15){indDown.style.opacity=r;indUp.style.opacity='0';}
+  else{indUp.style.opacity='0';indDown.style.opacity='0';}
 }
-
-function onStart(e) {
-  unlockAudio(); // unlock speech on first user touch
-  const pos = getPos(e);
-  startX = pos.x;
-  startY = pos.y;
-  isDragging = true;
-  card.style.transition = 'none';
+function onE(){
+  if(!isDragging)return;isDragging=false;
+  if(currentY<-70)doNext();
+  else if(currentY>70)doPrev();
+  else{card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';card.style.transform='translateY(0)';resetInds();}
 }
-
-function onMove(e) {
-  if (!isDragging || isSwiping) return;
-  const pos = getPos(e);
-  const dy = pos.y - startY;
-  const dx = pos.x - startX;
-
-  // Only handle vertical
-  if (Math.abs(dx) > Math.abs(dy) * 1.5) return;
-
-  currentY = dy;
-  const rot = dy * 0.01;
-  card.style.transform = `translateY(${dy}px) rotate(${rot}deg)`;
-
-  const ratio = Math.min(Math.abs(dy) / 100, 1);
-  if (dy < -15) {
-    indUp.style.opacity = ratio;
-    indDown.style.opacity = '0';
-  } else if (dy > 15) {
-    indDown.style.opacity = ratio;
-    indUp.style.opacity = '0';
-  } else {
-    indUp.style.opacity = '0';
-    indDown.style.opacity = '0';
-  }
-}
-
-function onEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-
-  if (currentY < -70) {
-    goNext();
-  } else if (currentY > 70) {
-    goPrev();
-  } else {
-    card.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
-    card.style.transform = 'translateY(0) rotate(0deg)';
-    resetIndicators();
-  }
-}
-
-// Keyboard support
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') goNext();
-  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') goPrev();
-  if (e.key === 'f' || e.key === 'F') toggleFav();
-  if (e.key === ' ') { e.preventDefault(); startSpeakLoop(WORDS[idx].w); }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='ArrowRight')doNext();
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft')doPrev();
+  if(e.key==='f'||e.key==='F')toggleFav();
+  if(e.key==='1')rateCard(false);if(e.key==='2')rateCard(true);
+  if(e.key===' '){e.preventDefault();if(currentWordId!==null)startSpeakLoop(WORDS.find(w=>w.id===currentWordId).w);}
 });
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
 
-document.getElementById('streak').textContent = streakDays;
-renderCard(0, null);
+// ── INIT ─────────────────────────────────────────────────────────────────────
+loadData();buildTopics();
+document.getElementById('streak-num').textContent=localStorage.getItem(STREAK_KEY)||'1';
+updateStats();
 
-// Start overlay — needed for mobile audio unlock
-const overlay = document.getElementById('start-overlay');
-overlay.addEventListener('click', () => {
-  overlay.style.transition = 'opacity 0.3s';
-  overlay.style.opacity = '0';
-  setTimeout(() => overlay.style.display = 'none', 300);
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const o=document.getElementById('start-overlay');
+  o.style.opacity='0';setTimeout(()=>o.style.display='none',300);
   unlockAudio();
-  // After unlock warmup, start speaking
-  setTimeout(() => startSpeakLoop(WORDS[0].w), 500);
+  const w=nextWord();
+  if(w){renderWord(w,null);setTimeout(()=>startSpeakLoop(w.w),500);}
 });
 </script>
 </body>
