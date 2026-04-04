@@ -315,7 +315,23 @@
   <button class="restart-btn" onclick="restart()">🔄 Học lại từ đầu</button>
 </div>
 
-<div class="toast" id="toast"></div>
+<div id="start-overlay" style="
+  position:fixed;inset:0;z-index:200;
+  background:rgba(10,10,15,0.92);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:16px;cursor:pointer;
+  backdrop-filter:blur(4px);
+">
+  <div style="font-size:52px">🔊</div>
+  <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;">WordFlow</div>
+  <div style="font-size:15px;color:rgba(255,255,255,0.5);text-align:center;line-height:1.6;padding:0 32px;">
+    Chạm để bắt đầu<br><span style="font-size:13px;">Phát âm tự động sẽ được kích hoạt</span>
+  </div>
+  <div style="margin-top:8px;background:#e0ff4f;color:#000;border-radius:14px;padding:14px 36px;font-weight:700;font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;">
+    Bắt đầu học ▶
+  </div>
+</div>
 
 <script>
 const WORDS = [
@@ -525,32 +541,74 @@ let streakDays = parseInt(localStorage.getItem('wf_streak') || '1');
 let startX = 0, startY = 0, currentY = 0, isDragging = false;
 let isSwiping = false;
 
-// Auto-repeat speak
+// Auto-repeat speak — mobile safe
 let speakLoop = null;
 let speakActive = false;
+let audioUnlocked = false;
+let pendingWord = null;
+
+// iOS/Android require a real user gesture before speechSynthesis works
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  if (!('speechSynthesis' in window)) return;
+  // Fire a zero-volume utterance to unlock the audio session
+  const warm = new SpeechSynthesisUtterance(' ');
+  warm.volume = 0;
+  warm.onend = () => {
+    if (pendingWord) {
+      const w = pendingWord; pendingWord = null;
+      startSpeakLoop(w);
+    }
+  };
+  window.speechSynthesis.speak(warm);
+}
 
 function stopSpeak() {
   speakActive = false;
   if (speakLoop) { clearTimeout(speakLoop); speakLoop = null; }
-  window.speechSynthesis && window.speechSynthesis.cancel();
+  try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch(e) {}
 }
 
 function startSpeakLoop(word) {
   stopSpeak();
   if (!('speechSynthesis' in window)) return;
+
+  // Queue if audio not yet unlocked by user gesture
+  if (!audioUnlocked) {
+    pendingWord = word;
+    return;
+  }
+
   speakActive = true;
 
   function doSpeak() {
     if (!speakActive) return;
-    window.speechSynthesis.cancel();
+    try { window.speechSynthesis.cancel(); } catch(e) {}
     const utter = new SpeechSynthesisUtterance(word);
     utter.lang = 'en-US';
     utter.rate = 0.88;
-    utter.onend = () => {
+    utter.volume = 1;
+
+    let watchdog = setTimeout(() => {
+      // iOS sometimes hangs silently — force restart
       if (!speakActive) return;
-      speakLoop = setTimeout(doSpeak, 800); // nghỉ 0.8s giữa các lần
+      try { window.speechSynthesis.cancel(); } catch(e) {}
+      speakLoop = setTimeout(doSpeak, 200);
+    }, 7000);
+
+    utter.onend = () => {
+      clearTimeout(watchdog);
+      if (!speakActive) return;
+      speakLoop = setTimeout(doSpeak, 900);
     };
-    window.speechSynthesis.speak(utter);
+    utter.onerror = () => {
+      clearTimeout(watchdog);
+      if (!speakActive) return;
+      speakLoop = setTimeout(doSpeak, 600);
+    };
+
+    try { window.speechSynthesis.speak(utter); } catch(e) {}
   }
 
   doSpeak();
@@ -602,8 +660,8 @@ function renderCard(i, direction) {
   resetIndicators();
   isSwiping = false;
 
-  // Bắt đầu lặp phát âm
-  setTimeout(() => startSpeakLoop(d.w), 300);
+  // Bắt đầu lặp phát âm (delay đủ để animation card xong)
+  setTimeout(() => startSpeakLoop(d.w), 450);
 }
 
 function resetIndicators() {
@@ -697,6 +755,7 @@ function getPos(e) {
 }
 
 function onStart(e) {
+  unlockAudio(); // unlock speech on first user touch
   const pos = getPos(e);
   startX = pos.x;
   startY = pos.y;
@@ -755,6 +814,17 @@ document.addEventListener('keydown', e => {
 
 document.getElementById('streak').textContent = streakDays;
 renderCard(0, null);
+
+// Start overlay — needed for mobile audio unlock
+const overlay = document.getElementById('start-overlay');
+overlay.addEventListener('click', () => {
+  overlay.style.transition = 'opacity 0.3s';
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.style.display = 'none', 300);
+  unlockAudio();
+  // After unlock warmup, start speaking
+  setTimeout(() => startSpeakLoop(WORDS[0].w), 500);
+});
 </script>
 </body>
 </html>
