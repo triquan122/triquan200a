@@ -9,11 +9,6 @@
   :root {
     --bg: #0a0a0f;
     --surface: #13131a;
-    --card1: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    --card2: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
-    --card3: linear-gradient(135deg, #1a2a1a 0%, #0a1a0a 100%);
-    --card4: linear-gradient(135deg, #2a1a0a 0%, #1a0a00 100%);
-    --card5: linear-gradient(135deg, #2a0a2a 0%, #1a001a 100%);
     --accent: #e0ff4f;
     --accent2: #ff6b6b;
     --accent3: #4fc3f7;
@@ -38,7 +33,6 @@
     user-select: none;
   }
 
-  /* Header */
   .header {
     display: flex;
     align-items: center;
@@ -55,7 +49,6 @@
     border-radius: 20px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--accent);
   }
 
-  /* Progress bar */
   .progress-wrap { padding: 0 20px 12px; flex-shrink: 0; }
   .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   .progress-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
@@ -69,21 +62,22 @@
     padding: 0 16px;
   }
 
-  /* Individual card */
   .vocab-card {
     position: absolute;
     inset: 0;
     margin: 0 0 8px;
     border-radius: var(--radius);
-    padding: 36px 28px 28px;
+    padding: 28px 28px 24px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     cursor: grab;
-    transition: transform 0.08s ease, box-shadow 0.08s ease;
     border: 1px solid rgba(255,255,255,0.06);
     will-change: transform;
     overflow: hidden;
+    touch-action: none;
   }
   .vocab-card:active { cursor: grabbing; }
 
@@ -94,6 +88,7 @@
     border-radius: 50%;
     opacity: 0.06;
     background: var(--accent);
+    pointer-events: none;
   }
   .card-decoration2 {
     position: absolute;
@@ -102,88 +97,103 @@
     border-radius: 50%;
     opacity: 0.04;
     background: var(--accent3);
+    pointer-events: none;
+  }
+  .card-shine {
+    position: absolute; inset: 0; border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+    pointer-events: none;
   }
 
-  .card-top {}
-  .card-num { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+
+  .card-num { font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+
   .card-word {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 8vw, 42px);
+    font-size: clamp(36px, 11vw, 56px);
     font-weight: 800;
     line-height: 1;
     letter-spacing: -2px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.6));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .card-ipa { font-size: 16px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 20px; }
-  .card-divider { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 20px; }
-  .card-meaning-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
-  .card-meaning { font-size: 22px; font-weight: 600; color: var(--accent); line-height: 1.3; margin-bottom: 16px; }
+
+  .card-ipa { font-size: 17px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 28px; }
+
+  .card-divider { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 24px; width: 60px; }
+
+  .card-meaning-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .card-meaning { font-size: 24px; font-weight: 600; color: var(--accent); line-height: 1.3; margin-bottom: 20px; }
+
   .card-example {
-    font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6;
-    border-left: 2px solid rgba(255,255,255,0.1); padding-left: 12px;
-    font-style: italic;
+    font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7;
+    border-left: 2px solid rgba(255,255,255,0.1); padding: 0 12px;
+    font-style: italic; text-align: left; max-width: 320px;
   }
   .card-example em { color: rgba(255,255,255,0.8); font-style: normal; font-weight: 600; }
 
-  .card-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
-  .card-type { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; }
-  .speak-btn {
-    width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 18px; transition: all 0.2s; flex-shrink: 0;
+  .card-type {
+    margin-top: 24px;
+    font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 1px;
   }
-  .speak-btn:hover { background: rgba(255,255,255,0.12); transform: scale(1.1); }
-  .speak-btn:active { transform: scale(0.95); }
 
-  /* Swipe indicators */
+  /* Swipe indicators — now up/down */
   .swipe-indicator {
-    position: absolute; top: 50%; transform: translateY(-50%);
+    position: absolute; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 6px;
     opacity: 0; transition: opacity 0.1s; pointer-events: none; z-index: 5;
   }
-  .swipe-indicator.left { left: 20px; }
-  .swipe-indicator.right { right: 20px; }
-  .swipe-indicator .icon { font-size: 28px; }
+  .swipe-indicator.up { top: 16px; }
+  .swipe-indicator.down { bottom: 16px; }
+  .swipe-indicator .icon { font-size: 26px; }
   .swipe-indicator .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .indicator-left { color: var(--accent2); }
-  .indicator-right { color: #4ade80; }
+  .indicator-up { color: #a78bfa; }
+  .indicator-down { color: #4ade80; }
 
-  /* Bottom actions */
+  /* Bottom bar — only fav button */
   .bottom-bar {
-    padding: 12px 20px 20px;
+    padding: 12px 20px 24px;
     display: flex;
     gap: 10px;
     align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
-  .action-btn {
-    flex: 1; height: 52px; border-radius: 16px; border: none; cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.2s; letter-spacing: 0.5px;
-  }
-  .btn-hard {
-    background: rgba(255,107,107,0.12); color: var(--accent2);
-    border: 1px solid rgba(255,107,107,0.25);
-  }
-  .btn-hard:hover { background: rgba(255,107,107,0.22); transform: translateY(-1px); }
+
   .btn-fav {
-    width: 52px; flex: none; background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1); font-size: 20px; border-radius: 16px;
-    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 22px;
   }
   .btn-fav:hover { background: rgba(255,200,0,0.15); transform: scale(1.05); }
   .btn-fav.active { background: rgba(255,200,0,0.2); border-color: rgba(255,200,0,0.4); }
-  .btn-easy {
-    background: rgba(74,222,128,0.12); color: #4ade80;
-    border: 1px solid rgba(74,222,128,0.25);
+  .btn-fav:active { transform: scale(0.95); }
+
+  /* Hint text */
+  .swipe-hint {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    padding-bottom: 4px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
   }
-  .btn-easy:hover { background: rgba(74,222,128,0.22); transform: translateY(-1px); }
-  .action-btn:active { transform: scale(0.97) !important; }
 
   /* Done screen */
   .done-screen {
@@ -212,29 +222,30 @@
   }
   .restart-btn:hover { transform: scale(1.04); }
 
-  /* Entrance animation */
   @keyframes cardIn {
-    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
-  .card-enter { animation: cardIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .card-enter { animation: cardIn 0.32s cubic-bezier(0.34,1.56,0.64,1) both; }
 
-  /* Toast */
+  /* Auto-play indicator */
+  .autoplay-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    animation: pulse 1.2s ease-in-out infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+
   .toast {
-    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
     background: rgba(30,30,40,0.95); color: #fff; padding: 10px 20px;
     border-radius: 20px; font-size: 14px; font-weight: 600;
     opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999;
     border: 1px solid rgba(255,255,255,0.1); white-space: nowrap;
   }
   .toast.show { opacity: 1; }
-
-  /* Shine effect */
-  .card-shine {
-    position: absolute; inset: 0; border-radius: var(--radius);
-    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
-    pointer-events: none;
-  }
 </style>
 </head>
 <body>
@@ -253,19 +264,20 @@
 </div>
 
 <div class="card-area" id="card-area">
-  <div class="swipe-indicator left indicator-left" id="ind-left">
-    <div class="icon">😅</div>
-    <div class="label">Khó</div>
+  <div class="swipe-indicator up indicator-up" id="ind-up">
+    <div class="icon">↑</div>
+    <div class="label">Quay lại</div>
   </div>
-  <div class="swipe-indicator right indicator-right" id="ind-right">
-    <div class="icon">😎</div>
-    <div class="label">Dễ</div>
+  <div class="swipe-indicator down indicator-down" id="ind-down">
+    <div class="icon">↓</div>
+    <div class="label">Tiếp theo</div>
   </div>
+
   <div class="vocab-card" id="main-card">
     <div class="card-shine"></div>
     <div class="card-decoration"></div>
     <div class="card-decoration2"></div>
-    <div class="card-top">
+    <div class="card-content">
       <div class="card-num" id="c-num">001 / 200</div>
       <div class="card-word" id="c-word">daughter</div>
       <div class="card-ipa" id="c-ipa">/ˈdɔːtər/</div>
@@ -273,18 +285,17 @@
       <div class="card-meaning-label">Nghĩa tiếng Việt</div>
       <div class="card-meaning" id="c-meaning">con gái</div>
       <div class="card-example" id="c-example">She is my <em>daughter</em>. – Cô ấy là con gái tôi.</div>
-    </div>
-    <div class="card-bottom">
       <div class="card-type" id="c-type">noun</div>
-      <button class="speak-btn" id="speak-btn" title="Phát âm">🔊</button>
     </div>
   </div>
 </div>
 
+<div class="swipe-hint">
+  <span class="autoplay-dot"></span> Phát âm tự động &nbsp;·&nbsp; Vuốt lên/xuống để điều hướng
+</div>
+
 <div class="bottom-bar">
-  <button class="action-btn btn-hard" id="btn-hard" onclick="swipeCard('left')">😅 Khó</button>
   <button class="btn-fav" id="btn-fav" onclick="toggleFav()">♡</button>
-  <button class="action-btn btn-easy" id="btn-easy" onclick="swipeCard('right')">Dễ 😎</button>
 </div>
 
 <div class="done-screen" id="done-screen">
@@ -293,16 +304,12 @@
   <div class="done-sub">Bạn đã lướt qua tất cả 200 từ.<br>Não bộ đang xử lý... cứ tiếp tục nhé!</div>
   <div class="done-stats">
     <div class="stat-box">
-      <div class="stat-num" id="stat-easy" style="color:#4ade80">0</div>
-      <div class="stat-label">Dễ</div>
+      <div class="stat-num" id="stat-seen" style="color:#4ade80">0</div>
+      <div class="stat-label">Đã xem</div>
     </div>
     <div class="stat-box">
       <div class="stat-num" id="stat-fav" style="color:#fbbf24">0</div>
       <div class="stat-label">Yêu thích</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num" id="stat-hard" style="color:#f87171">0</div>
-      <div class="stat-label">Khó</div>
     </div>
   </div>
   <button class="restart-btn" onclick="restart()">🔄 Học lại từ đầu</button>
@@ -332,7 +339,7 @@ const WORDS = [
   {w:"age",ipa:"/eɪdʒ/",vn:"tuổi / thời đại",ex:'At her <em>age</em>, she runs marathons.',t:"n"},
   {w:"woman",ipa:"/ˈwʊmən/",vn:"người phụ nữ",ex:'That <em>woman</em> is very talented.',t:"n"},
   {w:"health",ipa:"/helθ/",vn:"sức khỏe",ex:'Good <em>health</em> is a treasure.',t:"n"},
-  {w:"certain",ipa:"/ˈsɜːrtən/",vn:"chắc chắn / một số",ex:'I\'m <em>certain</em> she will come.',t:"adj"},
+  {w:"certain",ipa:"/ˈsɜːrtən/",vn:"chắc chắn / một số",ex:"I'm <em>certain</em> she will come.",t:"adj"},
   {w:"dry",ipa:"/draɪ/",vn:"khô / làm khô",ex:'The air is very <em>dry</em> in winter.',t:"adj/v"},
   {w:"fact",ipa:"/fækt/",vn:"sự thật / thực tế",ex:'That is a well-known <em>fact</em>.',t:"n"},
   {w:"include",ipa:"/ɪnˈkluːd/",vn:"bao gồm",ex:'The price <em>includes</em> tax.',t:"v"},
@@ -343,20 +350,20 @@ const WORDS = [
   {w:"each",ipa:"/iːtʃ/",vn:"mỗi",ex:'<em>Each</em> student got a book.',t:"det"},
   {w:"gift",ipa:"/ɡɪft/",vn:"món quà / tài năng",ex:'She received a beautiful <em>gift</em>.',t:"n"},
   {w:"piece",ipa:"/piːs/",vn:"mảnh / tác phẩm",ex:'Give me a <em>piece</em> of cake.',t:"n"},
-  {w:"space",ipa:"/speɪs/",vn:"không gian / vũ trụ",ex:'There\'s not enough <em>space</em> here.',t:"n"},
+  {w:"space",ipa:"/speɪs/",vn:"không gian / vũ trụ",ex:"There's not enough <em>space</em> here.",t:"n"},
   {w:"level",ipa:"/ˈlevəl/",vn:"mức độ / tầng",ex:'Her English <em>level</em> is advanced.',t:"n"},
   {w:"general",ipa:"/ˈdʒenərəl/",vn:"chung / tướng quân",ex:'In <em>general</em>, he is a good student.',t:"adj/n"},
   {w:"within",ipa:"/wɪˈðɪn/",vn:"trong vòng / bên trong",ex:'Finish <em>within</em> two hours.',t:"prep"},
   {w:"both",ipa:"/bəʊθ/",vn:"cả hai",ex:'<em>Both</em> of them are right.',t:"det"},
   {w:"field",ipa:"/fiːld/",vn:"cánh đồng / lĩnh vực",ex:'He works in the medical <em>field</em>.',t:"n"},
-  {w:"meet",ipa:"/miːt/",vn:"gặp gỡ",ex:'Let\'s <em>meet</em> at noon.',t:"v"},
+  {w:"meet",ipa:"/miːt/",vn:"gặp gỡ",ex:"Let's <em>meet</em> at noon.",t:"v"},
   {w:"self",ipa:"/self/",vn:"bản thân",ex:'Be true to your <em>self</em>.',t:"n"},
   {w:"chair",ipa:"/tʃeər/",vn:"ghế / chủ tịch",ex:'Please take a <em>chair</em>.',t:"n"},
-  {w:"begin",ipa:"/bɪˈɡɪn/",vn:"bắt đầu",ex:'Let\'s <em>begin</em> the lesson.',t:"v"},
+  {w:"begin",ipa:"/bɪˈɡɪn/",vn:"bắt đầu",ex:"Let's <em>begin</em> the lesson.",t:"v"},
   {w:"dark",ipa:"/dɑːrk/",vn:"tối / tối tăm",ex:'It gets <em>dark</em> early in winter.',t:"adj"},
   {w:"government",ipa:"/ˈɡʌvərnmənt/",vn:"chính phủ",ex:'The <em>government</em> passed a new law.',t:"n"},
   {w:"material",ipa:"/məˈtɪəriəl/",vn:"vật liệu / tài liệu",ex:'What <em>material</em> is this shirt made of?',t:"n"},
-  {w:"edge",ipa:"/edʒ/",vn:"cạnh / bờ / lợi thế",ex:'Don\'t stand at the <em>edge</em> of the cliff.',t:"n"},
+  {w:"edge",ipa:"/edʒ/",vn:"cạnh / bờ / lợi thế",ex:"Don't stand at the <em>edge</em> of the cliff.",t:"n"},
   {w:"fall",ipa:"/fɔːl/",vn:"ngã / mùa thu",ex:'Be careful not to <em>fall</em>.',t:"v/n"},
   {w:"press",ipa:"/pres/",vn:"nhấn / báo chí",ex:'<em>Press</em> the button to start.',t:"v/n"},
   {w:"clear",ipa:"/klɪər/",vn:"rõ ràng / trong sáng",ex:'Her explanation was very <em>clear</em>.',t:"adj/v"},
@@ -373,10 +380,9 @@ const WORDS = [
   {w:"price",ipa:"/praɪs/",vn:"giá cả",ex:'The <em>price</em> of milk has risen.',t:"n"},
   {w:"deal",ipa:"/diːl/",vn:"giao dịch / đối phó",ex:'They made a great <em>deal</em>.',t:"n/v"},
   {w:"rude",ipa:"/ruːd/",vn:"thô lỗ",ex:'It is <em>rude</em> to interrupt someone.',t:"adj"},
-  {w:"through",ipa:"/θruː/",vn:"qua / xuyên qua",ex:'Light passed <em>through</em> the glass.',t:"prep"},
   {w:"detail",ipa:"/ˈdiːteɪl/",vn:"chi tiết",ex:'Pay attention to <em>detail</em>.',t:"n"},
   {w:"focus",ipa:"/ˈfəʊkəs/",vn:"tập trung",ex:'<em>Focus</em> on what matters most.',t:"v/n"},
-  {w:"holiday",ipa:"/ˈhɒlɪdeɪ/",vn:"kỳ nghỉ / ngày lễ",ex:'We\'re going on <em>holiday</em> next week.',t:"n"},
+  {w:"holiday",ipa:"/ˈhɒlɪdeɪ/",vn:"kỳ nghỉ / ngày lễ",ex:"We're going on <em>holiday</em> next week.",t:"n"},
   {w:"bridge",ipa:"/brɪdʒ/",vn:"cây cầu / kết nối",ex:'The <em>bridge</em> connects the two towns.',t:"n"},
   {w:"forbid",ipa:"/fərˈbɪd/",vn:"cấm",ex:'Smoking is <em>forbidden</em> here.',t:"v"},
   {w:"carpet",ipa:"/ˈkɑːrpɪt/",vn:"thảm trải sàn",ex:'The <em>carpet</em> is soft and warm.',t:"n"},
@@ -432,7 +438,7 @@ const WORDS = [
   {w:"environment",ipa:"/ɪnˈvaɪrənmənt/",vn:"môi trường",ex:'We must protect the <em>environment</em>.',t:"n"},
   {w:"balance",ipa:"/ˈbæləns/",vn:"sự cân bằng",ex:'Maintain a good work-life <em>balance</em>.',t:"n/v"},
   {w:"manage",ipa:"/ˈmænɪdʒ/",vn:"quản lý / xoay sở",ex:'She <em>manages</em> a team of 20.',t:"v"},
-  {w:"opportunity",ipa:"/ˌɒpəˈtjuːnɪti/",vn:"cơ hội",ex:'Don\'t miss this great <em>opportunity</em>.',t:"n"},
+  {w:"opportunity",ipa:"/ˌɒpəˈtjuːnɪti/",vn:"cơ hội",ex:"Don't miss this great <em>opportunity</em>.",t:"n"},
   {w:"quality",ipa:"/ˈkwɒlɪti/",vn:"chất lượng",ex:'The food here is high <em>quality</em>.',t:"n"},
   {w:"culture",ipa:"/ˈkʌltʃər/",vn:"văn hóa",ex:'Vietnam has a rich <em>culture</em>.',t:"n"},
   {w:"attempt",ipa:"/əˈtempt/",vn:"cố gắng / nỗ lực",ex:'Make another <em>attempt</em>.',t:"v/n"},
@@ -460,12 +466,10 @@ const WORDS = [
   {w:"exist",ipa:"/ɪɡˈzɪst/",vn:"tồn tại",ex:'Do aliens <em>exist</em>?',t:"v"},
   {w:"solution",ipa:"/səˈluːʃən/",vn:"giải pháp",ex:'We need a creative <em>solution</em>.',t:"n"},
   {w:"promote",ipa:"/prəˈməʊt/",vn:"thúc đẩy / quảng bá / thăng chức",ex:'She was <em>promoted</em> to manager.',t:"v"},
-  {w:"increase",ipa:"/ɪnˈkriːs/",vn:"tăng lên",ex:'Prices continue to <em>increase</em>.',t:"v/n"},
   {w:"unique",ipa:"/juːˈniːk/",vn:"độc đáo",ex:'Each person is <em>unique</em>.',t:"adj"},
   {w:"potential",ipa:"/pəˈtenʃəl/",vn:"tiềm năng",ex:'She has great <em>potential</em>.',t:"n/adj"},
   {w:"confident",ipa:"/ˈkɒnfɪdənt/",vn:"tự tin",ex:'Be <em>confident</em> in yourself.',t:"adj"},
-  {w:"recognize",ipa:"/ˈrekəɡnaɪz/",vn:"nhận ra / công nhận",ex:'I didn\'t <em>recognize</em> him at first.',t:"v"},
-  {w:"achieve",ipa:"/əˈtʃiːv/",vn:"đạt được",ex:'Work hard to <em>achieve</em> your dreams.',t:"v"},
+  {w:"recognize",ipa:"/ˈrekəɡnaɪz/",vn:"nhận ra / công nhận",ex:"I didn't <em>recognize</em> him at first.",t:"v"},
   {w:"priority",ipa:"/praɪˈɒrɪti/",vn:"ưu tiên",ex:'Health is my top <em>priority</em>.',t:"n"},
   {w:"reliable",ipa:"/rɪˈlaɪəbəl/",vn:"đáng tin cậy",ex:'She is a very <em>reliable</em> person.',t:"adj"},
   {w:"flexible",ipa:"/ˈfleksɪbəl/",vn:"linh hoạt / dẻo dai",ex:'This job requires a <em>flexible</em> schedule.',t:"adj"},
@@ -479,8 +483,8 @@ const WORDS = [
   {w:"implement",ipa:"/ˈɪmplɪment/",vn:"thực hiện / triển khai",ex:'We need to <em>implement</em> the plan.',t:"v"},
   {w:"analyze",ipa:"/ˈænəlaɪz/",vn:"phân tích",ex:'We need to <em>analyze</em> the data.',t:"v"},
   {w:"perspective",ipa:"/pəˈspektɪv/",vn:"quan điểm / góc nhìn",ex:'Try to see it from my <em>perspective</em>.',t:"n"},
-  {w:"communicate",ipa:"/kəˈmjuːnɪkeɪt/",vn:"giao tiếp / truyền đạt",ex:'It\'s important to <em>communicate</em> clearly.',t:"v"},
-  {w:"evaluate",ipa:"/ɪˈvæljueɪt/",vn:"đánh giá",ex:'Let\'s <em>evaluate</em> the options.',t:"v"},
+  {w:"communicate",ipa:"/kəˈmjuːnɪkeɪt/",vn:"giao tiếp / truyền đạt",ex:"It's important to <em>communicate</em> clearly.",t:"v"},
+  {w:"evaluate",ipa:"/ɪˈvæljueɪt/",vn:"đánh giá",ex:"Let's <em>evaluate</em> the options.",t:"v"},
   {w:"organize",ipa:"/ˈɔːrɡənaɪz/",vn:"tổ chức / sắp xếp",ex:'Can you <em>organize</em> the files?',t:"v"},
   {w:"demonstrate",ipa:"/ˈdemənstreɪt/",vn:"chứng minh / biểu diễn",ex:'Please <em>demonstrate</em> how it works.',t:"v"},
   {w:"accommodate",ipa:"/əˈkɒmədeɪt/",vn:"cung cấp chỗ ở / đáp ứng",ex:'The hotel can <em>accommodate</em> 300 guests.',t:"v"},
@@ -514,20 +518,53 @@ const GRADIENTS = [
 ];
 
 let idx = 0;
-let hardCount = 0, easyCount = 0, favCount = 0;
 let favorites = new Set();
-let ratings = {};
-let streakDays = parseInt(localStorage.getItem('wf_streak')||'1');
-let startX, startY, isDragging = false;
-let currentX = 0;
+let streakDays = parseInt(localStorage.getItem('wf_streak') || '1');
+
+// Drag state
+let startX = 0, startY = 0, currentY = 0, isDragging = false;
+let isSwiping = false;
+
+// Auto-repeat speak
+let speakLoop = null;
+let speakActive = false;
+
+function stopSpeak() {
+  speakActive = false;
+  if (speakLoop) { clearTimeout(speakLoop); speakLoop = null; }
+  window.speechSynthesis && window.speechSynthesis.cancel();
+}
+
+function startSpeakLoop(word) {
+  stopSpeak();
+  if (!('speechSynthesis' in window)) return;
+  speakActive = true;
+
+  function doSpeak() {
+    if (!speakActive) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.lang = 'en-US';
+    utter.rate = 0.88;
+    utter.onend = () => {
+      if (!speakActive) return;
+      speakLoop = setTimeout(doSpeak, 800); // nghỉ 0.8s giữa các lần
+    };
+    window.speechSynthesis.speak(utter);
+  }
+
+  doSpeak();
+}
 
 const card = document.getElementById('main-card');
-const indLeft = document.getElementById('ind-left');
-const indRight = document.getElementById('ind-right');
+const indUp = document.getElementById('ind-up');
+const indDown = document.getElementById('ind-down');
 
-function renderCard(i, animate=true) {
+
+
+function renderCard(i, direction) {
   const d = WORDS[i];
-  document.getElementById('c-num').textContent = String(i+1).padStart(3,'0') + ' / ' + WORDS.length;
+  document.getElementById('c-num').textContent = String(i + 1).padStart(3, '0') + ' / ' + WORDS.length;
   document.getElementById('c-word').textContent = d.w;
   document.getElementById('c-ipa').textContent = d.ipa;
   document.getElementById('c-meaning').textContent = d.vn;
@@ -541,46 +578,72 @@ function renderCard(i, animate=true) {
 
   const fill = Math.round((i / WORDS.length) * 100);
   document.getElementById('progress-fill').style.width = fill + '%';
-  document.getElementById('prog-text').textContent = `Từ ${i+1}/${WORDS.length}`;
+  document.getElementById('prog-text').textContent = `Từ ${i + 1}/${WORDS.length}`;
   document.getElementById('prog-pct').textContent = fill + '%';
 
-  if (animate) {
-    card.classList.remove('card-enter');
-    void card.offsetWidth;
-    card.classList.add('card-enter');
+  // Animate in
+  card.style.transition = 'none';
+  if (direction === 'down') {
+    card.style.transform = 'translateY(60px) scale(0.97)';
+    card.style.opacity = '0';
+  } else if (direction === 'up') {
+    card.style.transform = 'translateY(-60px) scale(0.97)';
+    card.style.opacity = '0';
+  } else {
+    card.style.transform = 'translateY(0)';
+    card.style.opacity = '1';
   }
-  resetCard();
+
+  void card.offsetWidth;
+  card.style.transition = 'transform 0.32s cubic-bezier(0.34,1.4,0.64,1), opacity 0.28s ease';
+  card.style.transform = 'translateY(0) scale(1)';
+  card.style.opacity = '1';
+
+  resetIndicators();
+  isSwiping = false;
+
+  // Bắt đầu lặp phát âm
+  setTimeout(() => startSpeakLoop(d.w), 300);
 }
 
-function resetCard() {
-  card.style.transform = '';
-  card.style.opacity = '';
-  indLeft.style.opacity = '0';
-  indRight.style.opacity = '0';
-  isDragging = false;
-  currentX = 0;
+function resetIndicators() {
+  indUp.style.opacity = '0';
+  indDown.style.opacity = '0';
+  currentY = 0;
 }
 
-function swipeCard(dir) {
-  if (idx >= WORDS.length) return;
+function goNext() {
+  if (isSwiping) return;
+  isSwiping = true;
+  stopSpeak();
 
-  const targetX = dir === 'left' ? -500 : 500;
-  card.style.transition = 'transform 0.35s cubic-bezier(0.55,0,1,0.45), opacity 0.35s ease';
-  card.style.transform = `translateX(${targetX}px) rotate(${dir === 'left' ? -20 : 20}deg)`;
+  card.style.transition = 'transform 0.28s ease-in, opacity 0.28s ease';
+  card.style.transform = 'translateY(-80px) scale(0.96)';
   card.style.opacity = '0';
 
-  if (dir === 'left') { hardCount++; ratings[idx] = 'hard'; }
-  else { easyCount++; ratings[idx] = 'easy'; }
-
   setTimeout(() => {
-    card.style.transition = '';
     idx++;
     if (idx >= WORDS.length) {
       showDone();
     } else {
-      renderCard(idx);
+      renderCard(idx, 'down');
     }
-  }, 350);
+  }, 270);
+}
+
+function goPrev() {
+  if (isSwiping || idx <= 0) return;
+  isSwiping = true;
+  stopSpeak();
+
+  card.style.transition = 'transform 0.28s ease-in, opacity 0.28s ease';
+  card.style.transform = 'translateY(80px) scale(0.96)';
+  card.style.opacity = '0';
+
+  setTimeout(() => {
+    idx--;
+    renderCard(idx, 'up');
+  }, 270);
 }
 
 function toggleFav() {
@@ -589,7 +652,6 @@ function toggleFav() {
     showToast('Đã bỏ yêu thích');
   } else {
     favorites.add(idx);
-    favCount++;
     showToast('❤️ Đã thêm vào yêu thích!');
   }
   const fav = document.getElementById('btn-fav');
@@ -597,29 +659,19 @@ function toggleFav() {
   fav.classList.toggle('active', favorites.has(idx));
 }
 
-function speak() {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(WORDS[idx].w);
-    utter.lang = 'en-US'; utter.rate = 0.9;
-    window.speechSynthesis.speak(utter);
-  }
-}
-
 function showDone() {
   document.getElementById('done-screen').classList.add('show');
-  document.getElementById('stat-easy').textContent = easyCount;
-  document.getElementById('stat-hard').textContent = hardCount;
+  document.getElementById('stat-seen').textContent = WORDS.length;
   document.getElementById('stat-fav').textContent = favorites.size;
   streakDays++;
   localStorage.setItem('wf_streak', streakDays);
 }
 
 function restart() {
-  idx = 0; hardCount = 0; easyCount = 0; favCount = 0;
-  favorites = new Set(); ratings = {};
+  idx = 0;
+  favorites = new Set();
   document.getElementById('done-screen').classList.remove('show');
-  renderCard(0);
+  renderCard(0, null);
 }
 
 function showToast(msg) {
@@ -629,51 +681,80 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-// Touch/mouse drag
-card.addEventListener('mousedown', dragStart);
-card.addEventListener('touchstart', dragStart, {passive:true});
-document.addEventListener('mousemove', dragMove);
-document.addEventListener('touchmove', dragMove, {passive:true});
-document.addEventListener('mouseup', dragEnd);
-document.addEventListener('touchend', dragEnd);
+// Touch & mouse events — vertical swipe
+card.addEventListener('mousedown', onStart);
+card.addEventListener('touchstart', onStart, { passive: true });
+document.addEventListener('mousemove', onMove);
+document.addEventListener('touchmove', onMove, { passive: true });
+document.addEventListener('mouseup', onEnd);
+document.addEventListener('touchend', onEnd);
 
-function getX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
-function getY(e) { return e.touches ? e.touches[0].clientY : e.clientY; }
+function getPos(e) {
+  return {
+    x: e.touches ? e.touches[0].clientX : e.clientX,
+    y: e.touches ? e.touches[0].clientY : e.clientY
+  };
+}
 
-function dragStart(e) {
-  startX = getX(e); startY = getY(e);
+function onStart(e) {
+  const pos = getPos(e);
+  startX = pos.x;
+  startY = pos.y;
   isDragging = true;
-  card.style.transition = '';
+  card.style.transition = 'none';
 }
 
-function dragMove(e) {
-  if (!isDragging) return;
-  currentX = getX(e) - startX;
-  const dy = getY(e) - startY;
-  if (Math.abs(dy) > Math.abs(currentX) * 1.5) return;
-  const rot = currentX * 0.08;
-  card.style.transform = `translateX(${currentX}px) rotate(${rot}deg)`;
-  const ratio = Math.min(Math.abs(currentX) / 120, 1);
-  if (currentX < -20) { indLeft.style.opacity = ratio; indRight.style.opacity = '0'; }
-  else if (currentX > 20) { indRight.style.opacity = ratio; indLeft.style.opacity = '0'; }
-  else { indLeft.style.opacity = '0'; indRight.style.opacity = '0'; }
-}
+function onMove(e) {
+  if (!isDragging || isSwiping) return;
+  const pos = getPos(e);
+  const dy = pos.y - startY;
+  const dx = pos.x - startX;
 
-function dragEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  if (currentX < -80) { swipeCard('left'); }
-  else if (currentX > 80) { swipeCard('right'); }
-  else {
-    card.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
-    resetCard();
+  // Only handle vertical
+  if (Math.abs(dx) > Math.abs(dy) * 1.5) return;
+
+  currentY = dy;
+  const rot = dy * 0.01;
+  card.style.transform = `translateY(${dy}px) rotate(${rot}deg)`;
+
+  const ratio = Math.min(Math.abs(dy) / 100, 1);
+  if (dy < -15) {
+    indUp.style.opacity = ratio;
+    indDown.style.opacity = '0';
+  } else if (dy > 15) {
+    indDown.style.opacity = ratio;
+    indUp.style.opacity = '0';
+  } else {
+    indUp.style.opacity = '0';
+    indDown.style.opacity = '0';
   }
 }
 
-document.getElementById('speak-btn').addEventListener('click', speak);
-document.getElementById('streak').textContent = streakDays;
+function onEnd() {
+  if (!isDragging) return;
+  isDragging = false;
 
-renderCard(0, false);
+  if (currentY < -70) {
+    goNext();
+  } else if (currentY > 70) {
+    goPrev();
+  } else {
+    card.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+    card.style.transform = 'translateY(0) rotate(0deg)';
+    resetIndicators();
+  }
+}
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') goPrev();
+  if (e.key === 'f' || e.key === 'F') toggleFav();
+  if (e.key === ' ') { e.preventDefault(); startSpeakLoop(WORDS[idx].w); }
+});
+
+document.getElementById('streak').textContent = streakDays;
+renderCard(0, null);
 </script>
 </body>
 </html>
