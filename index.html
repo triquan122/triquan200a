@@ -67,7 +67,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge-review{background:rgba(251,191,36,.15);color:#fbbf24;}
 .badge-known{background:rgba(74,222,128,.15);color:var(--green);}
 
-.card-word{font-family:'Syne',sans-serif;font-size:clamp(28px,14vw,72px);font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:10px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;width:100%;text-align:center;word-break:break-word;overflow-wrap:break-word;}
+.card-word{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;line-height:1;letter-spacing:-2px;margin-bottom:10px;background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;width:100%;text-align:center;white-space:nowrap;display:block;transform-origin:center center;}
 .card-ipa{font-size:clamp(18px,7vw,42px);font-weight:700;color:var(--accent3);font-style:italic;margin-bottom:18px;letter-spacing:.5px;text-shadow:0 0 24px rgba(79,195,247,.35);line-height:1.1;}
 .card-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:14px;width:56px;}
 .card-meaning-label{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
@@ -709,16 +709,18 @@ const indUp=document.getElementById('ind-up'),indDown=document.getElementById('i
 
 function scaleWordFont(){
   const el=document.getElementById('c-word');
-  const len=el.textContent.length;
-  let px;
-  if(len<=6) px=72;
-  else if(len<=9) px=60;
-  else if(len<=12) px=50;
-  else if(len<=16) px=40;
-  else if(len<=20) px=32;
-  else px=26;
-  el.style.fontSize=px+'px';
-  el.style.letterSpacing=len>12?'-1px':'-2px';
+  el.style.transform='scaleX(1)';
+  el.style.fontSize='72px';
+  el.style.letterSpacing='-2px';
+  requestAnimationFrame(()=>{
+    const container=el.parentElement;
+    const available=container.offsetWidth - 48;
+    const actual=el.scrollWidth;
+    if(actual>available){
+      const ratio=available/actual;
+      el.style.transform='scaleX('+ratio+')';
+    }
+  });
 }
 
 function renderWord(word,dir){
